@@ -90,43 +90,54 @@ const Navbar=()=>{
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              
+              <Link to="/appointment" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
-                  <Link to="/appointment" style={{textDecoration:'none',color:'black'}}>Appointment</Link>
+                  Appointment
                   </Typography>
                 </MenuItem>
+              </Link>
 
+              <Link to="/medicalRecord" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
-                  <Link to="/medicalRecord" style={{textDecoration:'none',color:'black'}}>Medical Record</Link>
+                  Medical Record
                   </Typography>
                 </MenuItem>
+              </Link>
 
+              <Link to="/register" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
-                  <Link to="/register" style={{textDecoration:'none',color:'black'}}>Register</Link>
+                    Register
                   </Typography>
                 </MenuItem>
+              </Link>
 
+              <Link to="/login" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
-                  <Link to="/login" style={{textDecoration:'none',color:'black'}}>Login</Link>
+                  Login
                   </Typography>
                 </MenuItem>
+                </Link>
 
-                {/* <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                  <Link style={{textDecoration:'none',color:'black'}}>Logout</Link>
-                  </Typography>
-                </MenuItem> */}
-
+                {/* <Link style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
-                  <Link to="/dashboard" style={{textDecoration:'none',color:'black'}}>Dashboard</Link>
+                  Logout
                   </Typography>
                 </MenuItem>
-            
+                </Link> */}
+
+                <Link to="/dashboard" style={{textDecoration:'none',color:'black'}}>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>
+                  Dashboard
+                  </Typography>
+                </MenuItem>
+                </Link>
+                
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
