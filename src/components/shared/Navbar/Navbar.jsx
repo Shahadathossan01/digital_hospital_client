@@ -9,18 +9,41 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import { Badge } from '@mui/material';
 
 const Navbar=()=>{
   const [anchorElNav, setAnchorElNav] =useState(null);
+  const {user,isLogoutUser}=useStoreState(state=>state.user)
+  const {logoutUser}=useStoreActions(action=>action.user)
+  const [username,setUsername]=useState(null)
+  const navigate=useNavigate()
+
+  useEffect(()=>{
+    if(user?.username){
+      setUsername(user.username)
+    }
+    else{
+      const user=JSON.parse(localStorage.getItem("user"))
+      if(user?.username){
+        setUsername(user.username)
+      }
+    }
+  },[user,isLogoutUser])
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  
+
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const handleLogout=()=>{
+    logoutUser({navigate})
+    setUsername(null)
+  }
 
   return (
     <AppBar>
@@ -90,6 +113,14 @@ const Navbar=()=>{
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
+              <Link to="/" style={{textDecoration:'none',color:'black'}}>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>
+                  Home
+                  </Typography>
+                </MenuItem>
+              </Link>
+
               <Link to="/appointment" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
@@ -142,17 +173,25 @@ const Navbar=()=>{
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 
+            <Link to="/" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button></Link>
+
             <Link to="/appointment" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Appointment</Button></Link>
 
             <Link to="/medicalRecord" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Medical Record</Button></Link>
 
             <Link to="/register" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Register</Button></Link>
+            {
+              user?
+              <Link onClick={handleLogout} style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Logout</Button></Link>
+              :
+              <Link to="/login" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
+            }
 
-            <Link to="/login" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
-
-            {/* <Link style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Logout</Button></Link> */}
-
-            <Link to="/dashboard" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button></Link>
+            <Link to="/dashboard" style={{textDecoration:'none'}}>
+              <Badge anchorOrigin={{vertical: 'top',horizontal: 'right',}} sx={{'.MuiBadge-badge': {transform: 'scale(1) translate(-7%, -0%)'},pt: -3}} badgeContent={username}  color="secondary">
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button>
+              </Badge>
+            </Link>
 
           </Box>
         </Toolbar>

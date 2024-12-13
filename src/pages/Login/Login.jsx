@@ -1,11 +1,14 @@
 
+import { useStoreActions } from 'easy-peasy';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const {register,handleSubmit}=useForm()
+    const {loginUser}=useStoreActions(action=>action.user)
+    const navigate=useNavigate()
     const onSubmit=(data)=>{
-        console.log(data)
+        loginUser({data,navigate})
     }
     return (
         <>

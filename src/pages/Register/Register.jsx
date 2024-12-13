@@ -1,13 +1,15 @@
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
     const {register,handleSubmit,watch,formState:{errors}}=useForm()
     const {registerUser}=useStoreActions(action=>action.user)
+    const {registerError}=useStoreState(state=>state.user)
+    const navigate=useNavigate()
     const onSubmit=(data)=>{
         const {username,email,confirmPassword}=data
-       registerUser({username,email,password:confirmPassword})
+       registerUser({username,email,password:confirmPassword,navigate})
     }
     const password=watch("password")
     return (
@@ -24,6 +26,11 @@ const Register = () => {
                             <div>
                                 <label htmlFor="email">Email:</label><br />
                                 <input required {...register("email")} type="email" name="email" id="email" />
+                                {
+                                    registerError&& (
+                                        <p style={{ color: 'red' }}>{registerError}</p>
+                                    )
+                                }
                             </div>
                         </div>
                         <div style={{display:'flex',gap:'20px',marginBottom:'20px'}}>
