@@ -1,11 +1,13 @@
+import { useStoreActions } from "easy-peasy";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-
 const Register = () => {
     const {register,handleSubmit,watch,formState:{errors}}=useForm()
+    const {registerUser}=useStoreActions(action=>action.user)
     const onSubmit=(data)=>{
-        console.log(data)
+        const {username,email,confirmPassword}=data
+       registerUser({username,email,password:confirmPassword})
     }
     const password=watch("password")
     return (
