@@ -55,9 +55,72 @@ const userModel={
         
     })
 }
+const doctorModel={
+    data:[],
+    addData:action((state,payload)=>{
+        state.data=payload
+    }),
+    getDoctors:thunk(async(actions,payload)=>{
+        const {data}=await axios.get('http://localhost:3000/doctors')
+        actions.addData(data)
+    })
+}
+const patientModel={
+    patient:null,
+    delteState:null,
+    addPatient:action((state,payload)=>{
+        state.patient=payload
+    }),
+    getPatient:thunk(async(actions,payload)=>{
+        const {data}=await axios.get(`http://localhost:3000/patient/${payload}`)
+        actions.addPatient(data)
+    }),
+
+    addDelteState:action((state,payload)=>{
+        state.delteState=payload
+    }),
+    deletePatientAppointment:thunk(async(actions,payload)=>{
+        const {patientID,appointmentID,doctorID}=payload
+        const {data}=await axios.patch(`http://localhost:3000/patientAppointment/${patientID}`,{
+            appointmentID,
+            doctorID
+        })
+        actions.addDelteState(data)
+    })
+
+}
+const testRecommendationModel={
+    data:[],
+    updatedData:null,
+    addUpdatedData:action((state,payload)=>{
+        state.updatedData=payload
+    }),
+    uploadTestResult:thunk(async(actions,{id,formData})=>{
+        const {data}=await axios.patch(`http://localhost:3000/testRecommendations/${id}`,formData,{
+            headers:{'Content-Type':'multipart/form-data'},
+        })
+        actions.addUpdatedData(data)
+    })
+
+}
+const prescriptionModel={
+    data:null,
+    deletedMedicin:null,
+    addDeletedMedicin:action((state,payload)=>{
+        state.deletedMedicin=payload
+    }),
+    medicinDelete:thunk(async(actions,payload)=>{
+        const {data}=await axios.delete(`http://localhost:3000/medicinInstructions/${payload}`)
+        actions.addDeletedMedicin(data)
+    })
+}
 
 const store=createStore({
-    user:userModel
+    user:userModel,
+    doctor:doctorModel,
+    patient:patientModel,
+    testRecommendation:testRecommendationModel,
+    prescription:prescriptionModel
 })
 
 export default store;
