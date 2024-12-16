@@ -16,15 +16,26 @@ import Grid from '@mui/material/Grid2';
 import TestRecommendation from '../../components/shared/TestRecommendation/TestRecommendation';
 import TestResult from '../../components/shared/TestResult/TestResult';
 import Prescription from '../../components/shared/Prescription/Prescription';
+import { usePDF } from 'react-to-pdf';
+import TestRecommendationModal from '../../components/shared/TestRecommendationmodal/TestRecommendationModal';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const AppointmentDetails=({item,open,handleClose})=>{
+  const [openTest, setOpenTest] = React.useState(false);
+      
+        const handleClickOpenTest = () => {
+          setOpenTest(true);
+        };
+      
+        const handleCloseTest = () => {
+          setOpenTest(false);
+        };
+  const {toPDF,targetRef}=usePDF({filename:'prescription.pdf'})
   const {firstName,lastName}=item.doctor.profile
   const {date,time,googleMeetLink,testRecommendation}=item
-  console.log(item)
   return (
     <React.Fragment>
       <Dialog
@@ -46,7 +57,7 @@ const AppointmentDetails=({item,open,handleClose})=>{
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Appointment Details
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            <Button autoFocus color="inherit" onClick={()=>toPDF()}>
               Download Prescription
             </Button>
           </Toolbar>
@@ -75,6 +86,7 @@ const AppointmentDetails=({item,open,handleClose})=>{
                     <Typography variant="h5" gutterBottom>
                         Test Recommendation
                     </Typography>
+                        <div>
                         <ol>
                             {
                                 testRecommendation?.map(item=>(
@@ -82,6 +94,11 @@ const AppointmentDetails=({item,open,handleClose})=>{
                                 ))
                             }
                         </ol>
+                        <div style={{display:'flex',justifyContent:'right',marginRight:'10px'}}>
+                        <button onClick={handleClickOpenTest}>download</button>
+                        </div>
+                        <TestRecommendationModal testRecommendation={testRecommendation} openTest={openTest} handleCloseTest={handleCloseTest}></TestRecommendationModal>
+                        </div>
                     </Box>
                     
                     <Box>
@@ -100,7 +117,7 @@ const AppointmentDetails=({item,open,handleClose})=>{
 
                 </Grid>
                 <Grid sx={{border:'1px solid red'}} size={6}>
-                    <Prescription item={item}></Prescription>
+                    <Prescription targetRef={targetRef} item={item}></Prescription>
                 </Grid>
             </Grid>
         </Box>

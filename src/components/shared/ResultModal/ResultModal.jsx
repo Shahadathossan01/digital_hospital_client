@@ -3,12 +3,11 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import { CardMedia } from '@mui/material';
+import { usePDF } from 'react-to-pdf';
 
 const ResultModal=({image,open,handleClose})=>{
-  
+  const {toPDF,targetRef}=usePDF({filename:'result.pdf'})
   return (
     <React.Fragment>
       <Dialog
@@ -20,6 +19,7 @@ const ResultModal=({image,open,handleClose})=>{
         
         <DialogContent>
         <CardMedia
+        ref={targetRef}
         component="img"
         alt="green iguana"
         height="500"
@@ -28,7 +28,7 @@ const ResultModal=({image,open,handleClose})=>{
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>close</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={()=>toPDF()} autoFocus>
             download
           </Button>
         </DialogActions>

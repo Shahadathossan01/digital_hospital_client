@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import MedicinList from "../MedicinList/MedicinList";
 
-const Prescription = ({item}) => {
+const Prescription = ({item,targetRef}) => {
     const {patient,doctor,prescription}=item
     const {firstName,lastName,age,gender,blood,height,weight}=patient.profile
     const {diagnosis}=prescription
@@ -10,6 +10,7 @@ const Prescription = ({item}) => {
     const formattedDate=format(date, 'd/M/yyyy')
     return (
         <>
+            <div ref={targetRef}>
             <div style={{display:'flex',justifyContent:'space-between',padding:'10px'}}>
                 <div>
                     <h3>Date: {formattedDate}</h3>
@@ -39,6 +40,7 @@ const Prescription = ({item}) => {
             <div style={{padding:'10px'}}>
                 <h1>Additional Instructions:</h1>
                 <p>{prescription?.instruction}</p>
+            </div>
             </div>
         </>
     );
