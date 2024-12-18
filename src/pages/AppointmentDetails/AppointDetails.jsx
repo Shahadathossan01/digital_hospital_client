@@ -1,10 +1,7 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
+
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -23,19 +20,21 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AppointmentDetails=({item,open,handleClose})=>{
+const AppointmentDetails = ({ item, open, handleClose }) => {
   const [openTest, setOpenTest] = React.useState(false);
-      
-        const handleClickOpenTest = () => {
-          setOpenTest(true);
-        };
-      
-        const handleCloseTest = () => {
-          setOpenTest(false);
-        };
-  const {toPDF,targetRef}=usePDF({filename:'prescription.pdf'})
-  const {firstName,lastName}=item.doctor.profile
-  const {date,time,googleMeetLink,testRecommendation}=item
+
+  const handleClickOpenTest = () => {
+    setOpenTest(true);
+  };
+
+  const handleCloseTest = () => {
+    setOpenTest(false);
+  };
+
+  const { toPDF, targetRef } = usePDF({ filename: 'prescription.pdf' });
+  const { firstName, lastName } = item.doctor.profile;
+  const { date, time, googleMeetLink, testRecommendation } = item;
+
   return (
     <React.Fragment>
       <Dialog
@@ -57,73 +56,75 @@ const AppointmentDetails=({item,open,handleClose})=>{
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Appointment Details
             </Typography>
-            <Button autoFocus color="inherit" onClick={()=>toPDF()}>
+            <Button autoFocus color="inherit" onClick={() => toPDF()}>
               Download Prescription
             </Button>
           </Toolbar>
         </AppBar>
-        <Box sx={{flexGrow:1}}> 
-            <Grid container spacing={2}>
-                <Grid sx={{border:'1px solid red'}} size={6}>
-                    <Typography>
-                        Doctor Name: {firstName} {lastName}
-                    </Typography>
+        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid container spacing={2}>
+            <Grid sx={{ border: '1px solid #e0e0e0', padding: 2 }} xs={12} sm={6}>
+              <Typography variant="h6">
+                Doctor Name: {firstName} {lastName}
+              </Typography>
+              <Typography variant="subtitle1">Date: {date}</Typography>
+              <Typography variant="subtitle1">Time: {time}</Typography>
+              <Typography
+                component="a"
+                href={googleMeetLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+              >
+                Google Meet Link
+              </Typography>
+              <hr />
 
-                    <Typography>
-                        Date: {date}
-                    </Typography>
+              <Box>
+                <Typography variant="h5" gutterBottom>
+                  Test Recommendation
+                </Typography>
+                <div>
+                  <ol>
+                    {testRecommendation?.map(item => (
+                      <TestRecommendation key={item._id} item={item} />
+                    ))}
+                  </ol>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button variant="contained" onClick={handleClickOpenTest}>
+                      Download Recommendations
+                    </Button>
+                  </div>
+                  <TestRecommendationModal
+                    testRecommendation={testRecommendation}
+                    openTest={openTest}
+                    handleCloseTest={handleCloseTest}
+                  />
+                </div>
+              </Box>
 
-                    <Typography>
-                        Time: {time}
-                    </Typography>
-
-                    <Typography component="a" href="https://meet.google.com/your-meet-link" target="_blank" rel="noopener noreferrer" sx={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
-                    Google Meet Link
-                    </Typography>
-                    <hr />
-
-                    <Box>
-                    <Typography variant="h5" gutterBottom>
-                        Test Recommendation
-                    </Typography>
-                        <div>
-                        <ol>
-                            {
-                                testRecommendation?.map(item=>(
-                                    <TestRecommendation key={item._id} item={item}></TestRecommendation>
-                                ))
-                            }
-                        </ol>
-                        <div style={{display:'flex',justifyContent:'right',marginRight:'10px'}}>
-                        <button onClick={handleClickOpenTest}>download</button>
-                        </div>
-                        <TestRecommendationModal testRecommendation={testRecommendation} openTest={openTest} handleCloseTest={handleCloseTest}></TestRecommendationModal>
-                        </div>
-                    </Box>
-                    
-                    <Box>
-                        <Typography variant='h5' gutterBottom>
-                            Test Result
-                        </Typography>
-                        <ol>
-                          {
-                            testRecommendation?.map(item=>(
-                              <TestResult key={item._id} item={item}></TestResult>
-                            ))
-                          }
-                        </ol>
-                    </Box>
-
-
-                </Grid>
-                <Grid sx={{border:'1px solid red'}} size={6}>
-                    <Prescription targetRef={targetRef} item={item}></Prescription>
-                </Grid>
+              <Box>
+                <Typography variant='h5' gutterBottom>
+                  Test Result
+                </Typography>
+                <ol>
+                  {testRecommendation?.map(item => (
+                    <TestResult key={item._id} item={item} />
+                  ))}
+                </ol>
+              </Box>
             </Grid>
+            <Grid sx={{ border: '1px solid #e0e0e0', padding: 2 }} xs={12} sm={6}>
+              <Typography variant='h5'  sx={{ textAlign: 'center' }}>
+                  Prescription
+              </Typography>
+              <Prescription targetRef={targetRef} item={item} />
+            </Grid>
+          </Grid>
         </Box>
-      
       </Dialog>
     </React.Fragment>
   );
-}
+};
+
 export default AppointmentDetails;

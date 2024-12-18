@@ -68,6 +68,7 @@ const doctorModel={
 const patientModel={
     patient:null,
     delteState:null,
+    updatedData:null,
     addPatient:action((state,payload)=>{
         state.patient=payload
     }),
@@ -86,6 +87,15 @@ const patientModel={
             doctorID
         })
         actions.addDelteState(data)
+    }),
+    addUpdatedData:action((state,payload)=>{
+        state.updatedData=payload
+    }),
+    updateProfile:thunk(async(actions,payload)=>{
+        const id=payload.userID
+        const formData=payload.updatedFormData
+        const {data}=await axios.patch(`http://localhost:3000/patient/${id}`,formData)
+        actions.addUpdatedData(data)
     })
 
 }
@@ -114,13 +124,35 @@ const prescriptionModel={
         actions.addDeletedMedicin(data)
     })
 }
+const medicalRecordModel={
+    data:[],
+    addData:action((state,payload)=>{
+        state.data=payload
+    }),
+    getMedicalRecord:thunk(async(actions,payload)=>{
+        const {data}=await axios.get('http://localhost:3000/medicalRecord')
+        actions.addData(data)
+    })
+}
+const sslCommerzModel={
+    url:null,
+    addUrl:action((state,payload)=>{
+        state.url=payload
+    }),
+    getUrl:thunk(async(actions,payload)=>{
+        const {data}=await axios.post('http://localhost:3000/initApplyForPayment',payload)
+        window.location.href=data
+    })
+}
 
 const store=createStore({
     user:userModel,
     doctor:doctorModel,
     patient:patientModel,
     testRecommendation:testRecommendationModel,
-    prescription:prescriptionModel
+    prescription:prescriptionModel,
+    medicalRecord:medicalRecordModel,
+    sslCommerz:sslCommerzModel
 })
 
 export default store;

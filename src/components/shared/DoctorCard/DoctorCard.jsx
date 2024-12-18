@@ -1,87 +1,89 @@
+import React, { useState, useEffect } from "react";
+import { Box, Card, CardContent, CardMedia, Typography, Button } from "@mui/material";
+import DoctorProfileModal from "../DoctorProfileModal/DoctorProfileModal";
+import { useStoreActions, useStoreState } from "easy-peasy";
 
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { Button } from '@mui/material';
-import DoctorProfileModal from '../DoctorProfileModal/DoctorProfileModal';
+const DoctorCard = ({ item }) => {
+  const { getUrl } = useStoreActions((action) => action.sslCommerz);
+  const { getPatient } = useStoreActions((action) => action.patient);
+  const { patient } = useStoreState((state) => state.patient);
+  const { user } = useStoreState((state) => state.user);
+  const [open, setOpen] = useState(false);
 
-const DoctorCard=({item})=>{
-    const [open, setOpen] = React.useState(false);
-    
-      const handleClickOpen = () => {
-        setOpen(true);
-      };
-    
-      const handleClose = () => {
-        setOpen(false);
-      };
+  useEffect(() => {
+    if (user?.id) {
+      getPatient(user.id);
+    }
+  }, [getPatient, user]);
 
-      if(!item.profile) return
-    const {firstName,lastName,specialization,designation}=item?.profile
+  if (!item?.profile) return null;
+
+  const { firstName, lastName, specialization, designation } = item.profile;
+
+  const handleApply = () => {
+    const payload = {
+      patientID: patient?._id,
+      doctorID: item?._id,
+      patientName: `${patient?.profile?.firstName} ${patient?.profile?.lastName}`,
+      fee: item?.fee,
+    };
+    getUrl(payload);
+  };
+
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const isBusy = item?.appointmentLimit <= item?.appointments?.length;
 
   return (
-    <Card sx={{ display: 'flex'}}>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography 
-            variant="subtitle1"
-            component="div"
-            sx={{ color: 'text.secondary' }}
-          >
-            Name: {firstName} {lastName}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            component="div"
-            sx={{ color: 'text.secondary' }}
-          >
-            Specialization: {specialization}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            component="div"
-            sx={{ color: 'text.secondary' }}
-          >
-            Designation: {designation}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            component="div"
-            sx={{ color: 'text.secondary' }}
-          >
-            Fee: {item.fee}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            component="div"
-            sx={{ color: 'text.black' }}
-          >
-            Status: {item?.appointmentLimit<item.appointments.length?'Busy':'Abaliable'}
-          </Typography>
-
-          <Button disabled={item?.appointmentLimit < item?.appointments.length}  variant="contained" size="small" sx={{marginRight:'20px',backgroundColor: item?.appointmentLimit < item?.appointments.length ? '#f44336' : '#76ff03'}}>
-          Apply For Appointment
-        </Button>
-
-        <Button onClick={handleClickOpen} variant="contained" size="small">
-          Profile
-        </Button>
-
-        <DoctorProfileModal item={item}  open={open} handleClose={handleClose}></DoctorProfileModal>
-
-        </CardContent>
-      </Box>
+    <Card sx={{ display: "flex", flexDirection: "row", mb: 3, p: 2, alignItems: "center" }}>
       <CardMedia
         component="img"
-        sx={{ width: 151 }}
+        sx={{
+          width: 120,
+          height: 120,
+          borderRadius: "50%",
+          objectFit: "cover",
+        }}
         image="https://t4.ftcdn.net/jpg/02/60/04/09/360_F_260040900_oO6YW1sHTnKxby4GcjCvtypUCWjnQRg5.jpg"
-        alt="Live from space album cover"
+        alt="Doctor Profile"
       />
+      <Box sx={{ display: "flex", flexDirection: "column", ml: 3, flex: 1 }}>
+        <CardContent>
+          <Typography variant="h6" sx={{ fontWeight: "bold", color: "text.primary" }}>
+            Dr. {firstName} {lastName}
+          </Typography>
+          <Typography variant="body1" sx={{ color: "text.secondary" }}>
+            Specialization: {specialization}
+          </Typography>
+          <Typography variant="body1" sx={{ color: "text.secondary" }}>
+            Designation: {designation}
+          </Typography>
+          <Typography variant="body1" sx={{ color: "text.secondary" }}>
+            Fee: ${item.fee}
+          </Typography>
+          <Typography variant="body1" sx={{ color: isBusy ? "error.main" : "success.main" }}>
+            Status: {isBusy ? "Busy" : "Available"}
+          </Typography>
+          <Box sx={{ mt: 2, display: "flex", gap: 2 }}>
+            <Button
+              onClick={handleApply}
+              disabled={isBusy}
+              variant="contained"
+              color={isBusy ? "error" : "success"}
+              sx={{ textTransform: "none" }}
+            >
+              Apply For Appointment
+            </Button>
+            <Button onClick={handleClickOpen} variant="contained" color="primary" sx={{ textTransform: "none" }}>
+              View Profile
+            </Button>
+          </Box>
+        </CardContent>
+      </Box>
+      <DoctorProfileModal item={item} open={open} handleClose={handleClose} />
     </Card>
   );
-}
+};
 
-export default DoctorCard
+export default DoctorCard;

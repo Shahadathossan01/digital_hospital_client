@@ -1,62 +1,86 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { Grid, Box, Typography, TextField, Button } from '@mui/material';
 
 const Register = () => {
-    const {register,handleSubmit,watch,formState:{errors}}=useForm()
-    const {registerUser}=useStoreActions(action=>action.user)
-    const {registerError}=useStoreState(state=>state.user)
-    const navigate=useNavigate()
-    const onSubmit=(data)=>{
-        const {username,email,confirmPassword}=data
-       registerUser({username,email,password:confirmPassword,navigate})
-    }
-    const password=watch("password")
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { registerUser } = useStoreActions(action => action.user);
+    const { registerError } = useStoreState(state => state.user);
+    const navigate = useNavigate();
+    const onSubmit = (data) => {
+        const { username, email, confirmPassword } = data;
+        registerUser({ username, email, password: confirmPassword, navigate });
+    };
+    const password = watch("password");
+
     return (
-        <>
-            <div style={{display:'flex',gap:'40px'}}>
-                <div>
-                <h1>Create an Account</h1>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                        <div style={{display:'flex',gap:'20px',marginBottom:'30px'}}>
-                            <div>
-                                <label htmlFor="username">Username:</label><br />
-                                <input required {...register("username")} type="text" name="username" id="username" />
-                            </div>
-                            <div>
-                                <label htmlFor="email">Email:</label><br />
-                                <input required {...register("email")} type="email" name="email" id="email" />
-                                {
-                                    registerError&& (
-                                        <p style={{ color: 'red' }}>{registerError}</p>
-                                    )
-                                }
-                            </div>
-                        </div>
-                        <div style={{display:'flex',gap:'20px',marginBottom:'20px'}}>
-                            <div>
-                                <label htmlFor="password">Password</label><br />
-                                <input required {...register("password")} type="password" name="password" id="password" />
-                            </div>
-                            <div>
-                                <label htmlFor="confirmPassword">Confirm password</label><br />
-                                <input required {...register("confirmPassword",{
-                                    validate:value=>value===password || "Password not match!"
-                                })} type="password" name="confirmPassword" id="confirmPassword" />
-                                {errors.confirmPassword && (
-                                    <p style={{ color: 'red' }}>{errors.confirmPassword.message}</p>
-                                )}
-                            </div>
-                        </div>
-                        <button type="submit">Register</button>
-                        <p>Already have an account? Please <Link style={{textDecoration:'none'}} to="/login">Login</Link></p>
-                </form>
-                </div>
-            <div>
-                <h1>image</h1>
-            </div>
-            </div>
-        </>
+        <Grid container spacing={4} justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
+            <Grid item xs={12} sm={8} md={6} lg={4}>
+                <Box padding={3} border={1} borderRadius={1} boxShadow={2}>
+                    <Typography variant="h4" gutterBottom>
+                        Create an Account
+                    </Typography>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <Box display="flex" flexDirection="column" gap={2} marginBottom={3}>
+                            <TextField
+                                required
+                                label="Username"
+                                {...register("username")}
+                                fullWidth
+                            />
+                            <TextField
+                                required
+                                label="Email"
+                                {...register("email")}
+                                type="email"
+                                fullWidth
+                            />
+                            {registerError && (
+                                <Typography variant="body2" color="error">
+                                    {registerError}
+                                </Typography>
+                            )}
+                        </Box>
+                        <Box display="flex" flexDirection="column" gap={2} marginBottom={3}>
+                            <TextField
+                                required
+                                label="Password"
+                                {...register("password")}
+                                type="password"
+                                fullWidth
+                            />
+                            <TextField
+                                required
+                                label="Confirm password"
+                                {...register("confirmPassword", {
+                                    validate: value => value === password || "Password not match!"
+                                })}
+                                type="password"
+                                fullWidth
+                            />
+                            {errors.confirmPassword && (
+                                <Typography variant="body2" color="error">
+                                    {errors.confirmPassword.message}
+                                </Typography>
+                            )}
+                        </Box>
+                        <Button type="submit" variant="contained" color="primary" fullWidth>
+                            Register
+                        </Button>
+                        <Typography variant="body1" align="center" marginTop={2}>
+                            Already have an account? Please <Link style={{ textDecoration: 'none' }} to="/login">Login</Link>
+                        </Typography>
+                    </form>
+                </Box>
+            </Grid>
+            <Grid item xs={0} sm={0} md={6} lg={4}>
+                {/* Optional image section */}
+                <Box>
+                    <Typography variant="h6" align="center">Image Placeholder</Typography>
+                </Box>
+            </Grid>
+        </Grid>
     );
 };
 

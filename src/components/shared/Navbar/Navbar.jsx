@@ -49,6 +49,7 @@ const Navbar=()=>{
     <AppBar>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          
           <Typography
             variant="h6"
             noWrap
@@ -65,7 +66,7 @@ const Navbar=()=>{
               flexGrow:4
             }}
           >
-            Digital Hospital
+            <Link style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
           </Typography>
 
           <Typography
@@ -84,7 +85,7 @@ const Navbar=()=>{
               textDecoration: 'none',
             }}
           >
-            Digital Hospital
+            <Link style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
           </Typography>
           <Box sx={{ flexGrow:0, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -145,6 +146,16 @@ const Navbar=()=>{
                 </MenuItem>
               </Link>
 
+              {
+                user?
+                <Link style={{textDecoration:'none',color:'black'}}>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>
+                  Logout
+                  </Typography>
+                </MenuItem>
+                </Link>
+                :
               <Link to="/login" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
@@ -152,19 +163,14 @@ const Navbar=()=>{
                   </Typography>
                 </MenuItem>
                 </Link>
+              }
 
-                {/* <Link style={{textDecoration:'none',color:'black'}}>
+
+
+                <Link to="/profile" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
-                  Logout
-                  </Typography>
-                </MenuItem>
-                </Link> */}
-
-                <Link to="/dashboard" style={{textDecoration:'none',color:'black'}}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                  Dashboard
+                  Profile
                   </Typography>
                 </MenuItem>
                 </Link>
@@ -187,10 +193,10 @@ const Navbar=()=>{
               <Link to="/login" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
             }
 
-            <Link to="/dashboard" style={{textDecoration:'none'}}>
-              <Badge anchorOrigin={{vertical: 'top',horizontal: 'right',}} sx={{'.MuiBadge-badge': {transform: 'scale(1) translate(-7%, -0%)'},pt: -3}} badgeContent={username}  color="secondary">
-              <Button sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button>
-              </Badge>
+            <Link to="/profile" style={{textDecoration:'none'}}>
+              {/* <Badge anchorOrigin={{vertical: 'top',horizontal: 'right',}} sx={{'.MuiBadge-badge': {transform: 'scale(1) translate(-7%, -0%)'},pt: -3}} badgeContent={username}  color="secondary">
+              </Badge> */}
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>Profile</Button>
             </Link>
 
           </Box>
