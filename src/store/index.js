@@ -127,8 +127,9 @@ const patientModel={
 
 }
 const testRecommendationModel={
-    data:[],
+    createTestData:null,
     updatedData:null,
+    deletedData:null,
     addUpdatedData:action((state,payload)=>{
         state.updatedData=payload
     }),
@@ -137,18 +138,53 @@ const testRecommendationModel={
             headers:{'Content-Type':'multipart/form-data'},
         })
         actions.addUpdatedData(data)
+    }),
+    addCreateTestData:action((state,payload)=>{
+        state.createTestData=payload
+    }),
+    createTest:thunk(async(actions,payload)=>{
+        const {testName}=payload.data
+        const {apppintmentID}=payload
+        const {data}=await axios.post('http://localhost:3000/testRecommendations',{
+            testName,
+            apppintmentID
+        })
+        actions.addCreateTestData(data)
+    }),
+    addDeletedData:action((state,payload)=>{
+        state.deletedData=payload
+    }),
+    deleteTest:thunk(async(actions,payload)=>{
+        const {data}=await axios.delete(`http://localhost:3000/testRecommendations/${payload}`)
+        actions.addDeletedData(data)
     })
+
+
+
 
 }
 const prescriptionModel={
     data:null,
     deletedMedicin:null,
+    createPresData:null,
     addDeletedMedicin:action((state,payload)=>{
         state.deletedMedicin=payload
     }),
     medicinDelete:thunk(async(actions,payload)=>{
         const {data}=await axios.delete(`http://localhost:3000/medicinInstructions/${payload}`)
         actions.addDeletedMedicin(data)
+    }),
+    addCreatePress:action((state,payload)=>{
+        state.createPresData=payload
+    }),
+    createPrescription:thunk(async(actions,payload)=>{
+        const {diagnosis}=payload.data
+        const {appointmentID}=payload
+        const {data}=await axios.post('http://localhost:3000/prescriptions',{
+            diagnosis,
+            appointmentID
+        })
+        actions.addCreatePress(data)
     })
 }
 const medicalRecordModel={

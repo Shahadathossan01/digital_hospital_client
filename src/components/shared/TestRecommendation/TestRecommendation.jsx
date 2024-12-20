@@ -1,11 +1,11 @@
-import { Button, Typography, TextField } from "@mui/material";
+import { Button, Typography, TextField, Box, Tooltip, IconButton } from "@mui/material";
 import { useStoreActions, useStoreState } from "easy-peasy";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const TestRecommendation = ({ item, pdf }) => {
+const TestRecommendation = ({ item, pdf ,isDoctor,index}) => {
     const { register, handleSubmit, reset } = useForm();
-    const { uploadTestResult } = useStoreActions((action) => action.testRecommendation);
+    const { uploadTestResult,deleteTest } = useStoreActions((action) => action.testRecommendation);
     const id = item._id;
 
     const onSubmit = (data) => {
@@ -16,7 +16,46 @@ const TestRecommendation = ({ item, pdf }) => {
     };
 
     return (
-        <div style={{ marginBottom: '10px' }}>
+        <>
+        {
+            isDoctor ?
+            <Box
+  sx={{
+    display: "flex",
+    flexDirection: { xs: "column", sm: "row" },
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 2,
+    padding: 2,
+    border: "1px solid #e0e0e0",
+    borderRadius: "8px",
+    backgroundColor: "#f9f9f9",
+    marginBottom: 2,
+  }}
+>
+  <Typography variant="body1" sx={{ fontWeight: "bold", flex: 1 }}>
+    {index + 1}. {item.testName}
+  </Typography>
+  <Tooltip title="Delete Appointment" arrow>
+    <IconButton
+      onClick={()=>deleteTest(id)}
+      sx={{
+        color: "error.main",
+        border: "1px solid",
+        borderColor: "error.main",
+        "&:hover": {
+          backgroundColor: "error.light",
+        },
+      }}
+      aria-label="delete"
+    >
+      <DeleteIcon />
+    </IconButton>
+  </Tooltip>
+</Box>
+
+            :
+        <Box style={{ marginBottom: '10px' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Typography variant="body1">
                     {item.testName} 
@@ -24,7 +63,7 @@ const TestRecommendation = ({ item, pdf }) => {
                 </Typography>
                 {
                     !pdf && (
-                        <div>
+                        <Box>
                             <TextField 
                                 {...register('image', { required: 'Please choose a file' })}
                                 type="file" 
@@ -37,11 +76,14 @@ const TestRecommendation = ({ item, pdf }) => {
                                 Upload
                             </Button>
                             <hr />
-                        </div>
+                        </Box>
                     )
                 }
             </form>
-        </div>
+        </Box>
+
+        }
+        </>
     );
 };
 

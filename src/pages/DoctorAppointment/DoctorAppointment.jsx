@@ -6,13 +6,14 @@ import { Box, Typography, CircularProgress } from "@mui/material";
 const DoctorAppointment = () => {
     const {getDoctorById}=useStoreActions(action=>action.doctor)
     const {doctor,updatedAppointmentData}=useStoreState(state=>state.doctor)
+    const {createTestData,deletedData}=useStoreState(state=>state.testRecommendation)
     const {user}=useStoreState(state=>state.user)
-    console.log(doctor)
+    const {createPresData}=useStoreState(state=>state.prescription)
     const userID=user?.id
 
     useEffect(()=>{
         getDoctorById(userID)
-    },[userID,getDoctorById,updatedAppointmentData])
+    },[userID,getDoctorById,updatedAppointmentData,createTestData,deletedData,createPresData])
 
   if (!user || !doctor) {
     return (
