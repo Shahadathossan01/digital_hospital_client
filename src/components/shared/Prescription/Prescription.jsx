@@ -3,11 +3,10 @@ import MedicinList from "../MedicinList/MedicinList";
 import { Typography, Box, Divider } from "@mui/material";
 
 const Prescription = ({ item, targetRef }) => {
+    if(!item) return 
     const { patient, doctor, prescription } = item;
     const { firstName, lastName, age, gender, blood, height, weight } = patient.profile;
-    const { diagnosis, date } = prescription;
-    const { specialization, designation } = doctor.profile;
-    const formattedDate = format(date, 'd/M/yyyy');
+    const formattedDate = format(prescription.date, 'd/M/yyyy');
 
     return (
         <Box ref={targetRef} sx={{ padding: '20px' }}>
@@ -15,12 +14,12 @@ const Prescription = ({ item, targetRef }) => {
                 <Box>
                     <Typography variant="h6">Date: {formattedDate}</Typography>
                     <Typography variant="h6">Patient Name: {firstName} {lastName}</Typography>
-                    <Typography variant="h6">Diagnosis: {diagnosis}</Typography>
+                    <Typography variant="h6">Diagnosis: {prescription.diagnosis}</Typography>
                 </Box>
                 <Box>
-                    <Typography variant="h6">Dr. {doctor.profile.firstName} {doctor.profile.lastName}</Typography>
-                    <Typography variant="h6">{specialization}</Typography>
-                    <Typography variant="h6">{designation}</Typography>
+                    <Typography variant="h6">Dr. {doctor?.profile.firstName} {doctor?.profile?.lastName}</Typography>
+                    <Typography variant="h6">{doctor?.profile.specialization}</Typography>
+                    <Typography variant="h6">{doctor?.profile.designation}</Typography>
                 </Box>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>

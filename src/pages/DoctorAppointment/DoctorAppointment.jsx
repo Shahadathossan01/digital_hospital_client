@@ -3,21 +3,18 @@ import { useEffect } from "react";
 import AppointCard from "../../components/shared/AppointCard/AppointCard";
 import { Box, Typography, CircularProgress } from "@mui/material";
 
-const Appointment = () => {
-  const { user } = useStoreState((state) => state.user);
-  const { getPatient } = useStoreActions((action) => action.patient);
-  const { patient, delteState } = useStoreState((state) => state.patient);
-  const { updatedData } = useStoreState((state) => state.testRecommendation);
-  const { deletedMedicin } = useStoreState((state) => state.prescription);
-  const userID = user?.id;
+const DoctorAppointment = () => {
+    const {getDoctorById}=useStoreActions(action=>action.doctor)
+    const {doctor,updatedAppointmentData}=useStoreState(state=>state.doctor)
+    const {user}=useStoreState(state=>state.user)
+    console.log(doctor)
+    const userID=user?.id
 
-  useEffect(() => {
-    if (userID) {
-      getPatient(userID);
-    }
-  }, [getPatient, userID, delteState, updatedData, deletedMedicin]);
+    useEffect(()=>{
+        getDoctorById(userID)
+    },[userID,getDoctorById,updatedAppointmentData])
 
-  if (!user || !patient) {
+  if (!user || !doctor) {
     return (
       <Box
         sx={{
@@ -48,7 +45,7 @@ const Appointment = () => {
       >
         Appointments
       </Typography>
-      {patient?.appointments?.length > 0 ? (
+      {doctor?.appointments?.length > 0 ? (
         <Box
           sx={{
             display: "flex",
@@ -57,8 +54,8 @@ const Appointment = () => {
             justifyContent: "center",
           }}
         >
-          {patient.appointments.map((item) => (
-            <AppointCard key={item._id} item={item} />
+          {doctor.appointments.map((item) => (
+            <AppointCard isDoctor key={item._id} item={item} />
           ))}
         </Box>
       ) : (
@@ -77,4 +74,4 @@ const Appointment = () => {
   );
 };
 
-export default Appointment;
+export default DoctorAppointment;

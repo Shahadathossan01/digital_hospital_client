@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Box, Card, CardContent, CardMedia, Typography, Button } from "@mui/material";
 import DoctorProfileModal from "../DoctorProfileModal/DoctorProfileModal";
 import { useStoreActions, useStoreState } from "easy-peasy";
-
+import { useNavigate } from "react-router-dom";
 const DoctorCard = ({ item }) => {
+  const navigate=useNavigate()
   const { getUrl } = useStoreActions((action) => action.sslCommerz);
   const { getPatient } = useStoreActions((action) => action.patient);
   const { patient } = useStoreState((state) => state.patient);
@@ -12,7 +13,7 @@ const DoctorCard = ({ item }) => {
 
   useEffect(() => {
     if (user?.id) {
-      getPatient(user.id);
+      getPatient(user?.id);
     }
   }, [getPatient, user]);
 
@@ -21,6 +22,7 @@ const DoctorCard = ({ item }) => {
   const { firstName, lastName, specialization, designation } = item.profile;
 
   const handleApply = () => {
+    if(!patient) return navigate('/login')
     const payload = {
       patientID: patient?._id,
       doctorID: item?._id,

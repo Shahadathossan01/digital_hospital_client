@@ -15,14 +15,15 @@ import TestResult from '../../components/shared/TestResult/TestResult';
 import Prescription from '../../components/shared/Prescription/Prescription';
 import { usePDF } from 'react-to-pdf';
 import TestRecommendationModal from '../../components/shared/TestRecommendationmodal/TestRecommendationModal';
+import { format } from 'date-fns';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AppointmentDetails = ({ item, open, handleClose }) => {
+const AppointmentDetails = ({ item, open, handleClose,isDoctor}) => {
   const [openTest, setOpenTest] = React.useState(false);
-
+  console.log(item)
   const handleClickOpenTest = () => {
     setOpenTest(true);
   };
@@ -32,8 +33,7 @@ const AppointmentDetails = ({ item, open, handleClose }) => {
   };
 
   const { toPDF, targetRef } = usePDF({ filename: 'prescription.pdf' });
-  const { firstName, lastName } = item.doctor.profile;
-  const { date, time, googleMeetLink, testRecommendation } = item;
+  const {time, googleMeetLink, testRecommendation } = item;
 
   return (
     <React.Fragment>
@@ -61,13 +61,21 @@ const AppointmentDetails = ({ item, open, handleClose }) => {
             </Button>
           </Toolbar>
         </AppBar>
-        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Grid container spacing={2}>
-            <Grid sx={{ border: '1px solid #e0e0e0', padding: 2 }} xs={12} sm={6}>
+        <Box sx={{padding:'20px'}}>
+              {
+                !isDoctor &&
               <Typography variant="h6">
-                Doctor Name: {firstName} {lastName}
+                Doctor: {item?.doctor?.profile.firstName} {item?.doctor?.profile.lastName}
               </Typography>
-              <Typography variant="subtitle1">Date: {date}</Typography>
+              }
+              {
+                isDoctor &&
+              <Typography variant="h6">
+                Patient: {item?.patient?.profile.firstName} {item?.patient?.profile.lastName}
+              </Typography>
+              }
+
+              <Typography variant="subtitle1">Date: {format(item?.date,'yyyy-MM-dd')}</Typography>
               <Typography variant="subtitle1">Time: {time}</Typography>
               <Typography
                 component="a"
@@ -79,7 +87,10 @@ const AppointmentDetails = ({ item, open, handleClose }) => {
                 Google Meet Link
               </Typography>
               <hr />
-
+          </Box>
+        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid container spacing={2}>
+            <Grid sx={{ border: '1px solid #e0e0e0', padding: 2 }} xs={12} sm={6} md={6}>
               <Box>
                 <Typography variant="h5" gutterBottom>
                   Test Recommendation
@@ -102,8 +113,9 @@ const AppointmentDetails = ({ item, open, handleClose }) => {
                   />
                 </div>
               </Box>
-
-              <Box>
+            </Grid>
+            <Grid sx={{ border: '1px solid #e0e0e0', padding: 2 }} xs={12} sm={6} md={6}>
+            <Box>
                 <Typography variant='h5' gutterBottom>
                   Test Result
                 </Typography>
@@ -114,13 +126,19 @@ const AppointmentDetails = ({ item, open, handleClose }) => {
                 </ol>
               </Box>
             </Grid>
-            <Grid sx={{ border: '1px solid #e0e0e0', padding: 2 }} xs={12} sm={6}>
-              <Typography variant='h5'  sx={{ textAlign: 'center' }}>
+          </Grid>
+        </Box>
+        <Box sx={{display:'flex',justifyContent:'center'}}>
+        <Box>
+        <Typography variant='h5'  sx={{ textAlign: 'center' }}>
                   Prescription
               </Typography>
-              <Prescription targetRef={targetRef} item={item} />
-            </Grid>
-          </Grid>
+              {
+                item.prescription && 
+                <Prescription targetRef={targetRef} item={item} />
+
+              }
+        </Box>
         </Box>
       </Dialog>
     </React.Fragment>
