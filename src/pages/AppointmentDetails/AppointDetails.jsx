@@ -19,7 +19,7 @@ import Prescription from '../../components/shared/Prescription/Prescription';
 import { usePDF } from 'react-to-pdf';
 import TestRecommendationModal from '../../components/shared/TestRecommendationmodal/TestRecommendationModal';
 import { useForm } from 'react-hook-form';
-import { action, useStoreActions } from 'easy-peasy';
+import { action, useStoreActions, useStoreState } from 'easy-peasy';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -27,7 +27,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
   if(!item) return
-  console.log(item)
+  const {user}=useStoreState(state=>state.user)
   const {register,handleSubmit,reset}=useForm()
   const [openTest, setOpenTest] = React.useState(false);
   const { toPDF, targetRef } = usePDF({ filename: 'prescription.pdf' });
@@ -48,11 +48,6 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
     setOpenTest(false);
   };
 
-  const createPrescription=(data)=>{
-    console.log(data)
-
-  }
-
   return (
     <Dialog
       fullScreen
@@ -68,9 +63,13 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
             Appointment Details
           </Typography>
+          {
+            !isDoctor &&
           <Button autoFocus color="inherit" onClick={toPDF}>
             Download Prescription
           </Button>
+
+          }
         </Toolbar>
       </AppBar>
       <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
@@ -79,17 +78,17 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
             ? `Patient: ${item?.patient?.profile.firstName} ${item?.patient?.profile.lastName}`
             : `Doctor: ${item?.doctor?.profile.firstName} ${item?.doctor?.profile.lastName}`}
         </Typography>
-        <Typography variant="subtitle1">Date: {format(item?.date, 'yyyy-MM-dd')}</Typography>
+        <Typography variant="subtitle1">Date: {item?.date?format(item?.date, 'yyyy-MM-dd'):''}</Typography>
         <Typography variant="subtitle1">Time: {time}</Typography>
         <Typography
-          component="a"
-          href={googleMeetLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
-        >
-          Google Meet Link
-        </Typography>
+  component="a"
+  href={googleMeetLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  sx={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+>
+  Google Meet Link
+</Typography>
         <hr />
       </Box>
       <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, backgroundColor: '#f9f9f9' }}>
@@ -99,8 +98,10 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
               <Typography variant="h5" gutterBottom>
                 Test Recommendation
               </Typography>
-              <Box
-      sx={{
+              {
+                isDoctor &&
+                <Box
+        sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -140,16 +141,46 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
           Add Test
         </Button>
       </form>
-              </Box>
-              <ol>
+                </Box>
+              }
+              {
+                testRecommendation.length=='0'?
+                <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 2,
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: '#555',
+                    fontWeight: 'bold',
+                    '@media (max-width: 600px)': {
+                      fontSize: '1rem',
+                    },
+                  }}
+                >
+                  There is no test recommendation here!
+                </Typography>
+                </Box>
+                :
+                <ol>
                 {testRecommendation?.map((rec,index) => (
-                  <TestRecommendation isDoctor key={rec._id} item={rec} index={index} />
+                  <TestRecommendation isDoctor={user.role=='patient'?false:true} key={rec._id} item={rec} index={index} />
                 ))}
               </ol>
+              }
               <Box sx={{ textAlign: 'right', mt: 2 }}>
+                {
+                  testRecommendation.length !='0' &&
                 <Button variant="contained" onClick={handleClickOpenTest}>
                   Download Recommendations
                 </Button>
+
+                }
               </Box>
               <TestRecommendationModal
                 testRecommendation={testRecommendation}
@@ -163,21 +194,44 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
               <Typography variant="h5" gutterBottom>
                 Test Results
               </Typography>
-              <ol>
+              {
+                testRecommendation.length=='0'?
+                <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 2,
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: '#555',
+                    fontWeight: 'bold',
+                    '@media (max-width: 600px)': {
+                      fontSize: '1rem',
+                    },
+                  }}
+                >
+                  There is no test results here!
+                </Typography>
+                </Box>
+                :
+                <ol>
                 {testRecommendation?.map((result,index) => (
                   <TestResult index={index} key={result._id} item={result} />
                 ))}
               </ol>
+              }
+              
             </Box>
           </Grid>
         </Grid>
       </Box>
       <Box sx={{ textAlign: 'center', mt: 4, p: { xs: 2, sm: 3 } }}>
         <Typography sx={{textAlign:'start'}} variant="h5">Prescription</Typography>
-        {
-          item?.prescription && 
-            <Prescription isDoctor={true} targetRef={targetRef} item={item} />
-        }
+            <Prescription isDoctor={user.role=='patient'?false:true} targetRef={targetRef} item={item} />
       </Box>
     </Dialog>
   );

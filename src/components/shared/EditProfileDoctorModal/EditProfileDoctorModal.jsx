@@ -5,17 +5,19 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import checkUpdatedData from '../../../utils';
 import { Grid } from '@mui/material';
 
-const EditProfilePatientModal=({open,handleClose,userID})=>{
-    const {updateProfile}=useStoreActions(action=>action.patient)
+const EditProfileDoctorModal=({open,handleClose,userID})=>{
+  const {updateProfile}=useStoreActions(action=>action.doctor)
+  const {doctor}=useStoreState(state=>state.doctor)
+  console.log(doctor)
   const {register,handleSubmit,reset}=useForm()
   
   const onSubmit=(data)=>{
     const updatedFormData=checkUpdatedData(data)
-    updateProfile({updatedFormData,userID})
+    updateProfile({userID,updatedFormData})
     reset()
     handleClose()
   }
@@ -43,6 +45,15 @@ const EditProfilePatientModal=({open,handleClose,userID})=>{
          </Grid>
          <Grid item xs={12} sm={6}>
            <TextField
+             label="Email"
+             {...register("email")}
+             type="email"
+             fullWidth
+             variant="outlined"
+           />
+         </Grid>
+         <Grid item xs={12} sm={6}>
+           <TextField
              label="Phone"
              {...register("phone")}
              type="number"
@@ -60,53 +71,42 @@ const EditProfilePatientModal=({open,handleClose,userID})=>{
          </Grid>
          <Grid item xs={12} sm={6}>
            <TextField
-             label="Date of Birth"
-             {...register("dateOfBirth")}
-             type="date"
-             fullWidth
-             InputLabelProps={{ shrink: true }}
-             variant="outlined"
-           />
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             label="Gender"
-             {...register("gender")}
+             label="Specialization"
+             {...register("specialization")}
              fullWidth
              variant="outlined"
            />
          </Grid>
          <Grid item xs={12} sm={6}>
            <TextField
-             label="Blood Type"
-             {...register("blood")}
+             label="Designation"
+             {...register("designation")}
              fullWidth
              variant="outlined"
            />
          </Grid>
          <Grid item xs={12} sm={6}>
            <TextField
-             label="Age"
-             {...register("age")}
-             type="number"
-             fullWidth
-             variant="outlined"
-           />
-         </Grid>
-         <Grid item xs={12} sm={6}>
-         <TextField
-             label="Height (fit)"
-             {...register("height")}
-             type="number"
+             label="Offline Chammber"
+             {...register("offlineChamber")}
              fullWidth
              variant="outlined"
            />
          </Grid>
          <Grid item xs={12} sm={6}>
            <TextField
-             label="Weight (kg)"
-             {...register("weight")}
-             type="number"
+            type="number"
+             label="appointmentLimits"
+             {...register("appointmentLimit")}
+             fullWidth
+             variant="outlined"
+           />
+         </Grid>
+         <Grid item xs={12} sm={6}>
+           <TextField
+             required={!doctor?.fee}
+             label="fee"
+             {...register("fee")}
              fullWidth
              variant="outlined"
            />
@@ -130,4 +130,4 @@ const EditProfilePatientModal=({open,handleClose,userID})=>{
   );
 }
 
-export default EditProfilePatientModal
+export default EditProfileDoctorModal

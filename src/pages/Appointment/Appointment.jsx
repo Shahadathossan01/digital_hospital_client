@@ -58,7 +58,7 @@ const Appointment = () => {
           }}
         >
           {patient.appointments.map((item) => (
-            <AppointCard key={item._id} item={item} />
+            <AppointCard isDoctor={false} key={item._id} item={item} />
           ))}
         </Box>
       ) : (

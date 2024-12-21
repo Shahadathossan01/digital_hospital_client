@@ -208,13 +208,21 @@ const Navbar=()=>{
 
             {
               user?
-              <Link onClick={handleLogout} style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Logout</Button></Link>
+              <Link onClick={()=>handleLogout({navigate})} style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Logout</Button></Link>
               :
               <Link to="/login" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
             }
             {
-              (user?.role=="patient" || user?.role=="doctor") &&
-              <Link to="/profile" style={{textDecoration:'none'}}>
+              user?.role=="patient" &&
+              <Link to="/PatientProfile" style={{textDecoration:'none'}}>
+              {/* <Badge anchorOrigin={{vertical: 'top',horizontal: 'right',}} sx={{'.MuiBadge-badge': {transform: 'scale(1) translate(-7%, -0%)'},pt: -3}} badgeContent={username}  color="secondary">
+              </Badge> */}
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>Profile</Button>
+              </Link>
+            }
+            {
+              user?.role=="doctor" &&
+              <Link to="/doctorProfile" style={{textDecoration:'none'}}>
               {/* <Badge anchorOrigin={{vertical: 'top',horizontal: 'right',}} sx={{'.MuiBadge-badge': {transform: 'scale(1) translate(-7%, -0%)'},pt: -3}} badgeContent={username}  color="secondary">
               </Badge> */}
               <Button sx={{ my: 2, color: 'white', display: 'block' }}>Profile</Button>

@@ -8,12 +8,12 @@ const DoctorAppointment = () => {
     const {doctor,updatedAppointmentData}=useStoreState(state=>state.doctor)
     const {createTestData,deletedData}=useStoreState(state=>state.testRecommendation)
     const {user}=useStoreState(state=>state.user)
-    const {createPresData}=useStoreState(state=>state.prescription)
+    const {createPresData,updatedDiag,medicineData,deletedMedicin,instructionData}=useStoreState(state=>state.prescription)
     const userID=user?.id
 
     useEffect(()=>{
         getDoctorById(userID)
-    },[userID,getDoctorById,updatedAppointmentData,createTestData,deletedData,createPresData])
+    },[userID,getDoctorById,updatedAppointmentData,createTestData,deletedData,createPresData,updatedDiag,medicineData,deletedMedicin,instructionData])
 
   if (!user || !doctor) {
     return (
@@ -29,7 +29,6 @@ const DoctorAppointment = () => {
       </Box>
     );
   }
-
   return (
     <Box
       sx={{
@@ -56,7 +55,7 @@ const DoctorAppointment = () => {
           }}
         >
           {doctor.appointments.map((item) => (
-            <AppointCard isDoctor key={item._id} item={item} />
+            <AppointCard isDoctor={user?.role=='doctor'?'true':'false'} key={item._id} item={item} />
           ))}
         </Box>
       ) : (

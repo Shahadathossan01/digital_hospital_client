@@ -128,11 +128,11 @@ const AppointCard = ({ item ,isDoctor}) => {
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Button
               onClick={handleClickOpen}
-              disabled={status === 'Pending'}
+              disabled={status === 'Panding'}
               variant="contained"
               size="small"
               sx={{
-                backgroundColor: status === 'Pending' ? 'error.main' : 'success.main',
+                backgroundColor: status === 'Panding' ? 'error.main' : 'success.main',
               }}
             >
               Details
@@ -171,7 +171,7 @@ const AppointCard = ({ item ,isDoctor}) => {
           </Box>
         </CardContent>
       </Box>
-      <AppointmentDetails isDoctor={user?.role=='doctor'?'true':'false'} item={item} open={open} handleClose={handleClose} />
+      <AppointmentDetails isDoctor={user.role=='patient'?false:true} item={item} open={open} handleClose={handleClose} />
     </Card>
   );
 };

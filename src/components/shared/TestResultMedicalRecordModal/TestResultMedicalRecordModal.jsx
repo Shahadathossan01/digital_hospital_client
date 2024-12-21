@@ -26,8 +26,8 @@ const TestResultMedicalRecordModal=({open,handleClose,testRecommendation})=>{
               :
               <ol>
                   {
-                    testRecommendation?.map(item=>(
-                        <TestResult key={item._id} item={item}></TestResult>
+                    testRecommendation?.map((item,index)=>(
+                        <TestResult index={index} key={item._id} item={item}></TestResult>
                     ))
                   }
               </ol>

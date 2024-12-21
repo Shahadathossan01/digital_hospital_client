@@ -10,7 +10,6 @@ const Home = () => {
   useEffect(() => {
     getDoctors();
   }, [getDoctors]);
-
   if (!data) {
     return (
       <Box
@@ -26,7 +25,7 @@ const Home = () => {
     );
   }
 
-  if (data.length === 0) {
+  if (data.length =='0') {
     return (
       <Box
         sx={{

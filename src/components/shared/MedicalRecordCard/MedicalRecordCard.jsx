@@ -8,69 +8,97 @@ import Typography from '@mui/material/Typography';
 import TestRecommendationModal from '../TestRecommendationmodal/TestRecommendationModal';
 import TestResultMedicalRecordModal from '../TestResultMedicalRecordModal/TestResultMedicalRecordModal';
 import PrescriptionMRecordModal from '../PrescriptionMRecordModal/PrescriptionMRecordModal';
-import { Box, Divider } from '@mui/material';
+import { Box, Divider, IconButton, Stack } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 export default function MedicalRecordCard({ item }) {
     const { patient, doctor, testRecommendation, prescription } = item?.medicalRecord;
     const [openTestRe, setOpenTestRe] = React.useState(false);
-
-    const handleClickOpenTestRe = () => {
-        setOpenTestRe(true);
-    };
-
-    const handleCloseTestRe = () => {
-        setOpenTestRe(false);
-    };
-
     const [openTestResult, setOpenTestResult] = React.useState(false);
-
-    const handleClickOpenTestResult = () => {
-        setOpenTestResult(true);
-    };
-
-    const handleCloseTestResult = () => {
-        setOpenTestResult(false);
-    };
-
     const [openPres, setOpenPres] = React.useState(false);
 
-    const handleClickOpenPres = () => {
-        setOpenPres(true);
-    };
+    const handleClickOpenTestRe = () => setOpenTestRe(true);
+    const handleCloseTestRe = () => setOpenTestRe(false);
 
-    const handleClosePres = () => {
-        setOpenPres(false);
-    };
+    const handleClickOpenTestResult = () => setOpenTestResult(true);
+    const handleCloseTestResult = () => setOpenTestResult(false);
+
+    const handleClickOpenPres = () => setOpenPres(true);
+    const handleClosePres = () => setOpenPres(false);
 
     return (
-        <Card sx={{ width:500,maxWidth: 400, margin: 2 ,border:'1px solid black'}}>
+        <Card 
+            sx={{ 
+                width: 400, 
+                margin: 2, 
+                border: '1px solid #ddd', 
+                borderRadius: 2, 
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                overflow: 'hidden'
+            }}
+        >
             <CardContent>
-                <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+                {/* Patient and Doctor Information */}
+                <Typography variant="h6" color="text.secondary" gutterBottom>
                     Patient Name: {patient?.profile.firstName} {patient?.profile.lastName}
                 </Typography>
-                <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+                <Typography variant="h6" color="text.secondary" gutterBottom>
                     Doctor Name: {doctor?.profile.firstName} {doctor?.profile.lastName}
                 </Typography>
-                <Typography variant="h6" sx={{ color: 'text.secondary' }}>
-                    Diagnosis: {prescription?.diagnosis}
+                <Typography variant="h6" color="text.secondary" gutterBottom>
+                    Diagnosis: {prescription?.diagnosis || "Not Available"}
                 </Typography>
-                <Typography gutterBottom variant="h5" component="div">
-                    Test Recommendation
-                    <Button size="small" onClick={handleClickOpenTestRe}>view</Button>
-                    <TestRecommendationModal openTest={openTestRe} handleCloseTest={handleCloseTestRe} testRecommendation={testRecommendation} />
-                </Typography>
-                <Divider />
-                <Typography gutterBottom variant="h5" component="div">
-                    Test Result
-                    <Button size="small" onClick={handleClickOpenTestResult}>view</Button>
-                    <TestResultMedicalRecordModal open={openTestResult} handleClose={handleCloseTestResult} testRecommendation={testRecommendation} />
-                </Typography>
-                <Divider />
-                <Typography gutterBottom variant="h5" component="div">
-                    Prescription
-                    <Button size="small" onClick={handleClickOpenPres}>view</Button>
-                    <PrescriptionMRecordModal open={openPres} handleClose={handleClosePres} doctor={doctor} patient={patient} prescription={prescription} />
-                </Typography>
+
+                {/* Test Recommendation Section */}
+                <Box mt={2}>
+                    <Stack direction="row" alignItems="center" justifyContent="space-between">
+                        <Typography variant="h6">Test Recommendation</Typography>
+                        <IconButton onClick={handleClickOpenTestRe} color="primary">
+                            <VisibilityIcon />
+                        </IconButton>
+                    </Stack>
+                    <TestRecommendationModal 
+                        openTest={openTestRe} 
+                        handleCloseTest={handleCloseTestRe} 
+                        testRecommendation={testRecommendation} 
+                    />
+                </Box>
+
+                <Divider sx={{ my: 2 }} />
+
+                {/* Test Result Section */}
+                <Box mt={2}>
+                    <Stack direction="row" alignItems="center" justifyContent="space-between">
+                        <Typography variant="h6">Test Result</Typography>
+                        <IconButton onClick={handleClickOpenTestResult} color="primary">
+                            <VisibilityIcon />
+                        </IconButton>
+                    </Stack>
+                    <TestResultMedicalRecordModal 
+                        open={openTestResult} 
+                        handleClose={handleCloseTestResult} 
+                        testRecommendation={testRecommendation} 
+                    />
+                </Box>
+
+                <Divider sx={{ my: 2 }} />
+
+                {/* Prescription Section */}
+                <Box mt={2}>
+                    <Stack direction="row" alignItems="center" justifyContent="space-between">
+                        <Typography variant="h6">Prescription</Typography>
+                        <IconButton onClick={handleClickOpenPres} color="primary">
+                            <VisibilityIcon />
+                        </IconButton>
+                    </Stack>
+                    <PrescriptionMRecordModal 
+                        open={openPres} 
+                        handleClose={handleClosePres} 
+                        doctor={doctor} 
+                        patient={patient} 
+                        prescription={prescription} 
+                    />
+                </Box>
             </CardContent>
         </Card>
     );

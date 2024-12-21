@@ -1,7 +1,7 @@
 import { useStoreActions } from "easy-peasy";
 import { Button, Typography, Box } from "@mui/material";
 
-const MedicinList = ({ item, number }) => {
+const MedicinList = ({ item, number ,isDoctor}) => {
   const { medicinDelete } = useStoreActions((actions) => actions.prescription);
   const id = item._id;
   const { medicinName, dosage, frequency, duration } = item;
@@ -22,9 +22,11 @@ const MedicinList = ({ item, number }) => {
       }}
     >
       <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-        {number}. {medicinName} ({dosage}) - {frequency} for {duration} month{duration > 1 ? "s" : ""}
+        {number}. {medicinName} ({dosage}) - {frequency} for {duration} {duration > 1 ? "s" : ""}
       </Typography>
-      <Button
+      {
+        isDoctor &&
+        <Button
         variant="contained"
         color="error"
         onClick={() => medicinDelete(id)}
@@ -33,6 +35,7 @@ const MedicinList = ({ item, number }) => {
       >
         Delete
       </Button>
+      }
     </Box>
   );
 };

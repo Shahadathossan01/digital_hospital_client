@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const TestRecommendation = ({ item, pdf ,isDoctor,index}) => {
+  console.log(isDoctor)
     const { register, handleSubmit, reset } = useForm();
     const { uploadTestResult,deleteTest } = useStoreActions((action) => action.testRecommendation);
     const id = item._id;

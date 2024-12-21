@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { useStoreActions } from "easy-peasy";
 
-const AddMedicineForm = () => {
-    const { control, handleSubmit, setValue } = useForm({
+const AddMedicineForm = ({prescriptionID}) => {
+    console.log(prescriptionID)
+    const {createMedicine}=useStoreActions(action=>action.prescription)
+    const { control, handleSubmit, setValue ,reset} = useForm({
         defaultValues: {
-            medicineName: "",
+            medicinName: "",
             dosage: "",
             frequency: "",
             duration: ""
@@ -13,8 +16,8 @@ const AddMedicineForm = () => {
     });
 
     const onSubmit = (data) => {
-        console.log("Form Data Submitted:", data);
-        // Handle form submission logic here
+        createMedicine({data,prescriptionID})
+        reset()
     };
 
     return (
@@ -39,12 +42,12 @@ const AddMedicineForm = () => {
             </Typography>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
                 <Controller
-                    name="medicineName"
+                    name="medicinName"
                     control={control}
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            id="medicineName"
+                            id="medicinName"
                             label="Medicine Name"
                             variant="outlined"
                             fullWidth
@@ -59,7 +62,7 @@ const AddMedicineForm = () => {
                         <TextField
                             {...field}
                             id="dosage"
-                            label="Dosage"
+                            label="Dosage - e.g. 50-mg"
                             variant="outlined"
                             fullWidth
                             sx={{ marginBottom: 2 }}
@@ -73,7 +76,7 @@ const AddMedicineForm = () => {
                         <TextField
                             {...field}
                             id="frequency"
-                            label="Frequency"
+                            label="Frequency -e.g. (1-0-1)"
                             variant="outlined"
                             fullWidth
                             sx={{ marginBottom: 2 }}
@@ -87,7 +90,7 @@ const AddMedicineForm = () => {
                         <TextField
                             {...field}
                             id="duration"
-                            label="Duration (months)"
+                            label="Duration -e.g(10 days or 2 months)"
                             variant="outlined"
                             fullWidth
                             sx={{ marginBottom: 2 }}

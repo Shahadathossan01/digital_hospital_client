@@ -17,17 +17,13 @@ const DoctorCard = ({ item }) => {
     }
   }, [getPatient, user]);
 
-  if (!item?.profile) return null;
-
-  const { firstName, lastName, specialization, designation } = item.profile;
-
   const handleApply = () => {
     if(!patient) return navigate('/login')
     const payload = {
       patientID: patient?._id,
       doctorID: item?._id,
       patientName: `${patient?.profile?.firstName} ${patient?.profile?.lastName}`,
-      fee: item?.fee,
+      fee: (item?.fee)
     };
     getUrl(payload);
   };
@@ -38,6 +34,27 @@ const DoctorCard = ({ item }) => {
   const isBusy = item?.appointmentLimit <= item?.appointments?.length;
 
   return (
+    <>
+      {
+        !item.profile ?
+        <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        p: 4,
+        border: "1px dashed",
+        borderColor: "grey.400",
+        borderRadius: 2,
+        backgroundColor: "grey.100",
+        textAlign: "center",
+      }}
+    >
+      <Typography variant="h6" color="text.secondary">
+        Doctor Profile Not Created
+      </Typography>
+    </Box>
+        :
     <Card sx={{ display: "flex", flexDirection: "row", mb: 3, p: 2, alignItems: "center" }}>
       <CardMedia
         component="img"
@@ -53,16 +70,16 @@ const DoctorCard = ({ item }) => {
       <Box sx={{ display: "flex", flexDirection: "column", ml: 3, flex: 1 }}>
         <CardContent>
           <Typography variant="h6" sx={{ fontWeight: "bold", color: "text.primary" }}>
-            Dr. {firstName} {lastName}
+            Dr. {item?.profile?.firstName} {item?.profile?.lastName}
           </Typography>
           <Typography variant="body1" sx={{ color: "text.secondary" }}>
-            Specialization: {specialization}
+            Specialization: {item?.profile?.specialization}
           </Typography>
           <Typography variant="body1" sx={{ color: "text.secondary" }}>
-            Designation: {designation}
+            Designation: {item?.profile?.designation}
           </Typography>
           <Typography variant="body1" sx={{ color: "text.secondary" }}>
-            Fee: ${item.fee}
+            Fee: ${item?.fee}
           </Typography>
           <Typography variant="body1" sx={{ color: isBusy ? "error.main" : "success.main" }}>
             Status: {isBusy ? "Busy" : "Available"}
@@ -85,6 +102,9 @@ const DoctorCard = ({ item }) => {
       </Box>
       <DoctorProfileModal item={item} open={open} handleClose={handleClose} />
     </Card>
+
+      }
+    </>
   );
 };
 

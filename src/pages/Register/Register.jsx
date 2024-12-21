@@ -76,9 +76,28 @@ const Register = () => {
             </Grid>
             <Grid item xs={0} sm={0} md={6} lg={4}>
                 {/* Optional image section */}
-                <Box>
-                    <Typography variant="h6" align="center">Image Placeholder</Typography>
-                </Box>
+                <Box 
+        sx={{
+            width: "100%",
+            height: "auto",
+            maxWidth: { xs: "300px", sm: "400px", md: "500px" },
+            margin: "0 auto",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }}
+    >
+        <img 
+            src="https://res.cloudinary.com/dmel68anu/image/upload/v1734792690/ix0y25brqa0mtstdb4di.png" 
+            alt="Registration Illustration" 
+            style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "8px",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
+            }}
+        />
+    </Box>
             </Grid>
         </Grid>
     );

@@ -48,8 +48,8 @@ const userModel={
         localStorage.setItem("token",data.token)
         localStorage.setItem("user",JSON.stringify(data.payload))
         toast.success('Login Successfully!',{position:'top-right'})
-        if(data.payload.role=='patient') return navigate('/home')
-        if(data.payload.role=='doctor') return navigate('/reqAppointment')
+        if(data.payload.role=='patient') return navigate('/')
+        if(data.payload.role=='doctor') return navigate('/docAppointment')
         
     }),
     logoutUser:action((state,payload)=>{
@@ -63,9 +63,11 @@ const userModel={
     })
 }
 const doctorModel={
-    data:[],
+    data:null,
     doctor:null,
     updatedAppointmentData:null,
+    updatedProfileData:null,
+    imageData:null,
     addData:action((state,payload)=>{
         state.data=payload
     }),
@@ -90,12 +92,33 @@ const doctorModel={
             patientID
         })
         actions.addUpdatedAppointmentData(data)
+    }),
+    addUpdatedProrileData:action((state,payload)=>{
+        state.updatedProfileData=payload
+    }),
+    updateProfile:thunk(async(actions,payload)=>{
+        const {userID,updatedFormData}=payload
+        console.log(payload)
+        const {data}=await axios.patch(`http://localhost:3000/doctor/${userID}`,updatedFormData)
+        actions.addUpdatedProrileData(data)
+    }),
+    addImageData:action((state,payload)=>{
+        state.imageData=payload
+    }),
+    updateDoctorImage:thunk(async(actions,payload)=>{
+        const {userID,formData}=payload
+        console.log(userID)
+        const {data}=await axios.patch(`http://localhost:3000/doctorImage/${userID}`,formData,{
+            headers:{'Content-Type':'multipart/form-data'}
+        })
+        actions.addImageData(data)
     })
 }
 const patientModel={
     patient:null,
     delteState:null,
     updatedData:null,
+    patientImageData:null,
     addPatient:action((state,payload)=>{
         state.patient=payload
     }),
@@ -123,6 +146,17 @@ const patientModel={
         const formData=payload.updatedFormData
         const {data}=await axios.patch(`http://localhost:3000/patient/${id}`,formData)
         actions.addUpdatedData(data)
+    }),
+    addPatientImageData:action((state,payload)=>{
+        state.patientImageData=payload
+    }),
+    updatePatientImage:thunk(async(actions,payload)=>{
+        const {userID,formData}=payload
+        console.log(userID)
+        const {data}=await axios.patch(`http://localhost:3000/patientImage/${userID}`,formData,{
+            headers:{'Content-Type':'multipart/form-data'}
+        })
+        actions.addPatientImageData(data)
     })
 
 }
@@ -167,6 +201,9 @@ const prescriptionModel={
     data:null,
     deletedMedicin:null,
     createPresData:null,
+    updatedDiag:null,
+    medicineData:null,
+    instructionData:null,
     addDeletedMedicin:action((state,payload)=>{
         state.deletedMedicin=payload
     }),
@@ -185,7 +222,44 @@ const prescriptionModel={
             appointmentID
         })
         actions.addCreatePress(data)
-    })
+    }),
+    addUpdatedDiag:action((state,payload)=>{
+        state.updatedDiag=payload
+    }),
+    updateDiagnosis:thunk(async(actions,payload)=>{
+        const {id}=payload
+        const {diagnosis}=payload.data
+        const {data}=await axios.patch(`http://localhost:3000/prescriptions/${id}`,{
+            diagnosis
+        })
+        actions.addUpdatedDiag(data)
+    }),
+    addMedicineData:action((state,payload)=>{
+        state.medicineData=payload
+    }),
+    createMedicine:thunk(async(actions,payload)=>{
+        const {medicinName,dosage,frequency,duration}=payload.data
+        const {prescriptionID}=payload
+        const {data}=await axios.post('http://localhost:3000/medicinInstructions',{
+            medicinName,
+            dosage,
+            frequency,
+            duration,
+            prescriptionID
+        })
+        actions.addMedicineData(data)
+    }),
+    addAdditionalInstruction:action((state,payload)=>{
+        state.instructionData=payload
+    }),
+    updateAdditionalInstruction:thunk(async(actions,payload)=>{
+        const {prescriptionID}=payload
+        const {instruction}=payload.data
+        const {data}=await axios.patch(`http://localhost:3000/prescriptions/${prescriptionID}`,{
+            instruction
+        })
+        actions.addAdditionalInstruction(data)
+    }),
 }
 const medicalRecordModel={
     data:[],
