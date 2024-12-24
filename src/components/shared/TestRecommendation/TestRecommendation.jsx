@@ -1,7 +1,8 @@
-import { Button, Typography, TextField, Box, Tooltip, IconButton } from "@mui/material";
+import { Button, Typography, TextField, Box, Tooltip, IconButton, Chip } from "@mui/material";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useForm } from "react-hook-form";
 import DeleteIcon from '@mui/icons-material/Delete';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const TestRecommendation = ({ item, pdf ,isDoctor,index}) => {
   console.log(isDoctor)
@@ -58,10 +59,24 @@ const TestRecommendation = ({ item, pdf ,isDoctor,index}) => {
             :
         <Box style={{ marginBottom: '10px' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Typography variant="body1">
-                    {item.testName} 
-                    {item.image && !pdf && <span style={{ color: 'green' }}>uploaded</span>}
-                </Typography>
+            <Box display="flex" alignItems="center" mb={1}>
+      <Typography variant="h6" sx={{ mr: 1 }}>
+       {index+1} {'.'} {item.testName}
+      </Typography>
+      {item.image && !pdf && (
+        <Chip
+          label="Uploaded"
+          color="success"
+          size="small"
+          icon={<CheckCircleIcon />}
+          sx={{
+            height: 24,
+            fontSize: '0.75rem',
+            fontWeight: 'bold',
+          }}
+        />
+      )}
+    </Box>
                 {
                     !pdf && (
                         <Box>

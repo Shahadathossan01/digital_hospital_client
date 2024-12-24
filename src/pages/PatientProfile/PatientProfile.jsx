@@ -45,7 +45,7 @@ const PatientProfile = () => {
         <Grid item xs={12} sm={10} md={8} lg={6}>
             <Card sx={{ boxShadow: 3, padding: 2 }}>
                 <CardContent>
-                    <Typography variant="h4" gutterBottom>
+                    <Typography sx={{textAlign:'center'}} variant="h4" gutterBottom>
                         Profile Details
                     </Typography>
                     <Divider />

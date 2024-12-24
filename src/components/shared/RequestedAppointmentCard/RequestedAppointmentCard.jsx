@@ -12,7 +12,8 @@ import AcceptAppointment from '../AcceptAppointmentModal/AcceptAppointmentModal'
 import AcceptAppointmentModal from '../AcceptAppointmentModal/AcceptAppointmentModal';
 
 const RequestedAppointmentCard = ({ item }) => {
-    const {date,patientName,status,appointmentID}=item
+  console.log(item)
+    const {date,patientName,status,appointmentID,time}=item
     const {deleteApplyedData}=useStoreActions(action=>action.applyedAppointment)
     
   const [open, setOpen] = React.useState(false);
@@ -47,6 +48,9 @@ const RequestedAppointmentCard = ({ item }) => {
           </Typography>
           </Box>
           <Typography variant="h6" component="div">
+            Time: {time}
+          </Typography>
+          <Typography variant="h6" component="div">
             Patient Name: {patientName}
           </Typography>
           <Typography
@@ -67,7 +71,7 @@ const RequestedAppointmentCard = ({ item }) => {
             >
               Accept
             </Button>
-            <AcceptAppointmentModal appointmentID={appointmentID} open={open} handleClose={handleClose} reqApplyedID={item?._id}></AcceptAppointmentModal>
+            <AcceptAppointmentModal date={date} time={time} appointmentID={appointmentID} open={open} handleClose={handleClose} reqApplyedID={item?._id}></AcceptAppointmentModal>
             <Tooltip title="Delete Appointment">
               <IconButton
                 onClick={()=>deleteApplyedData(id)}

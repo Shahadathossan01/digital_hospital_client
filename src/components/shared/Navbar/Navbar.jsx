@@ -68,7 +68,7 @@ const Navbar=()=>{
               flexGrow:4
             }}
           >
-            <Link to={user?.role=='patient'&&'/home' || user?.role=='doctor'&&'/reqAppointment'} style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
+            <Link to={user?.role=='patient'&&'/' || user?.role=='doctor'&&'/docAppointment'} style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
           </Typography>
 
           <Typography
@@ -87,7 +87,7 @@ const Navbar=()=>{
               textDecoration: 'none',
             }}
           >
-            <Link to="/home" style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
+            <Link to={user?.role=='patient'&&'/' || user?.role=='doctor'&&'/docAppointment'} style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
           </Typography>
           <Box sx={{ flexGrow:0, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -182,7 +182,11 @@ const Navbar=()=>{
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {
               user?.role=="patient" &&
-              <Link to="/home" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button></Link>
+              <Link to="/" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button></Link>
+            }
+            {
+              user?.role=="patient" &&
+              <Link to="/availableDoctors" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Doctors</Button></Link>
             }
             {
               user?.role=="patient" &&
@@ -190,7 +194,7 @@ const Navbar=()=>{
             }
             {
               user?.role=="patient" &&
-              <Link to="/medicalRecord" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Medical Record</Button></Link>
+              <Link to="/record" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Records</Button></Link>
             }
             {
               user?.role=="doctor" &&
@@ -203,6 +207,11 @@ const Navbar=()=>{
             {
               (!user || user?.role=="patient") &&
               <Link to="/register" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Register</Button></Link>
+
+            }
+            {
+              (!user || user?.role=="patient") &&
+              <Link to="/adminDashboard" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button></Link>
 
             }
 

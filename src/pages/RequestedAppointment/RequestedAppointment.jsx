@@ -14,7 +14,7 @@ const RequestedAppointment = () => {
     useEffect(()=>{
         getDoctorById(userID)
     },[getDoctorById,userID,updatedData,deleteData])
-    
+
     return (
         <div>
             <h1 style={{textAlign:'center'}}>Requested Appointments</h1>

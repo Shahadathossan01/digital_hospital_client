@@ -43,8 +43,11 @@ const DoctorProfile = () => {
             <Grid item xs={12} sm={10} md={8} lg={6}>
                 <Card sx={{ boxShadow: 3, padding: 2 }}>
                     <CardContent>
-                        <Typography variant="h4" gutterBottom>
+                        <Typography sx={{textAlign:'center'}} variant="h4" gutterBottom>
                             Profile Details
+                        </Typography>
+                        <Typography variant="h4" gutterBottom>
+                            Specialization: {doctor?.category}
                         </Typography>
                         <Divider />
                         <Box mt={2} sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center' }}>
@@ -54,9 +57,10 @@ const DoctorProfile = () => {
                                 <Typography variant="h6">Email: {doctor?.profile?.email}</Typography>
                                 <Typography variant="h6">Phone: {doctor?.profile?.phone}</Typography>
                                 <Typography variant="h6">Address: {doctor?.profile?.address}</Typography>
-                                <Typography variant="h6">Specialization: {doctor?.profile?.specialization}</Typography>
                                 <Typography variant="h6">Designation: {doctor?.profile?.designation}</Typography>
                                 <Typography variant="h6">Offline Chamber: {doctor?.profile?.offlineChamber}</Typography>
+
+                                <Typography variant="h6"> Fee: <span style={{ color: "green", fontWeight: "bold" }}>$ {doctor?.fee?doctor.fee:0}</span></Typography>
                             </Box>
                             <Box mt={{ xs: 2, sm: 0 }} ml={{ sm: 4 }}>
                                 <ProfileAvatorCard item={doctor} />

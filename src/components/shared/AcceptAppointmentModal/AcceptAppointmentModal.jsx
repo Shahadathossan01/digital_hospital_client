@@ -6,6 +6,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
 import { useForm } from 'react-hook-form';
 import { useStoreActions } from 'easy-peasy';
 
@@ -13,45 +15,53 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AcceptAppointmentModal({open,handleClose,appointmentID,reqApplyedID}){
-  const {register,handleSubmit,reset}=useForm()
-  const {updateAppointment}=useStoreActions(action=>action.appointment)
-  const onSubmit=(data)=>{
-    updateAppointment({data,appointmentID,reqApplyedID})
-    reset()
-    // console.log(data)
-  }
+export default function AcceptAppointmentModal({ open, handleClose, appointmentID, reqApplyedID ,date,time}) {
+  const { register, handleSubmit, reset } = useForm();
+  const { updateAppointment } = useStoreActions((action) => action.appointment);
+
+  const onSubmit = (data) => {
+    updateAppointment({ data, appointmentID, reqApplyedID,date,time});
+    reset();
+    handleClose();
+  };
 
   return (
-    <React.Fragment>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <label htmlFor="date">Date:</label><br />
-              <input required {...register("date")} type="date" name="date" id="date" />
-            </div>
-            <div>
-              <label htmlFor="time">Time</label><br />
-              <input required {...register("time")} type="time" name="time" id="time" />
-            </div>
-            <div>
-              <label htmlFor="link">Google Meet Link:</label><br />
-              <input required {...register("googleMeetLink")} type="text" name="googleMeetLink" id="link" />
-            </div>
-          <Button type='submit' onClick={handleClose}>comfirm</Button>
-          </form>
-        </DialogContent>
-        <DialogActions>
-          <Button sx={{color:'red'}} onClick={handleClose}>cancel</Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+    <Dialog
+      open={open}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleClose}
+      aria-labelledby="accept-appointment-dialog-title"
+      aria-describedby="accept-appointment-dialog-description"
+    >
+      <DialogTitle id="accept-appointment-dialog-title">Accept Appointment</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="accept-appointment-dialog-description" sx={{ marginBottom: 2 }}>
+          Create A Google Meet Link And Fils This Input Field.
+        </DialogContentText>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                {...register('googleMeetLink')}
+                required
+                label="Google Meet Link"
+                type="url"
+                placeholder="https://meet.google.com/abc-defg-hij"
+                fullWidth
+              />
+            </Grid>
+          </Grid>
+          <DialogActions sx={{ paddingTop: 2 }}>
+            <Button type="button" sx={{ color: 'red' }} onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained" color="primary">
+              Confirm
+            </Button>
+          </DialogActions>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }

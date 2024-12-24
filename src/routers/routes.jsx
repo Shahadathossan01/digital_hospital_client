@@ -13,6 +13,10 @@ import Success from "../pages/Success/Success";
 import DoctorAppointment from "../pages/DoctorAppointment/DoctorAppointment";
 import DoctorProfile from "../pages/DoctorProfile/DoctorProfile";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import AvailableDoctors from "../pages/AvailableDoctors/AvailableDoctors";
+import AdminDashboard from "../pages/AdminDashboard/AdminDashboard";
+import AdminCreateUser from "../pages/AdminCreateUser/AdminCreateUser";
+import PaymentPage from "../pages/PaymentPage/PaymentPage";
 
  const  routes=[
       {
@@ -26,8 +30,8 @@ import PrivateRoute from "../PrivateRoute/PrivateRoute";
                   </PrivateRoute>
               },
               {
-                  path:'/home',
-                  element:<Home></Home>
+                  path:'/availableDoctors',
+                  element:<AvailableDoctors></AvailableDoctors>
               },
               {
                   path:'/register',
@@ -46,7 +50,7 @@ import PrivateRoute from "../PrivateRoute/PrivateRoute";
                   element:<PatientProfile></PatientProfile>
               },
               {
-                  path:'/medicalRecord',
+                  path:'/record',
                   element:<MedicalRecord></MedicalRecord>
               },
               {
@@ -74,6 +78,18 @@ import PrivateRoute from "../PrivateRoute/PrivateRoute";
               {
                   path:'/DoctorProfile',
                   element:<DoctorProfile></DoctorProfile>
+              },
+              {
+                path:'/adminDashboard',
+                element:<AdminDashboard></AdminDashboard>
+              },
+              {
+                path:'/adminCreateUser',
+                element:<AdminCreateUser></AdminCreateUser>
+              },
+              {
+                path:'/paymentPage/:id',
+                element:<PaymentPage></PaymentPage>
               }
           ]
       }

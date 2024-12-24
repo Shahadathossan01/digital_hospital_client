@@ -65,9 +65,11 @@ const userModel={
 const doctorModel={
     data:null,
     doctor:null,
+    singleDoctor:null,
     updatedAppointmentData:null,
     updatedProfileData:null,
     imageData:null,
+    updatedScheduleData:null,
     addData:action((state,payload)=>{
         state.data=payload
     }),
@@ -112,6 +114,23 @@ const doctorModel={
             headers:{'Content-Type':'multipart/form-data'}
         })
         actions.addImageData(data)
+    }),
+    addSingleDoctor:action((state,payload)=>{
+        state.singleDoctor=payload
+    }),
+    getSingleDoctor:thunk(async(actions,payload)=>{
+        const {data}=await axios.get(`http://localhost:3000/doctor/${payload}`)
+        actions.addSingleDoctor(data)
+    }),
+    addUpdatedScheduleData:action((state,payload)=>{
+        state.updatedScheduleData=payload
+    }),
+    updateSchedule:thunk(async(actions,payload)=>{
+        const {doctorID,schedule}=payload
+        const {data}=await axios.patch(`http://localhost:3000/doctorSchedule/${doctorID}`,{
+            schedule
+        })
+        actions.addUpdatedScheduleData(data)
     })
 }
 const patientModel={
@@ -278,8 +297,8 @@ const appointmentModel={
     }),
     updateAppointment:thunk(async(actions,payload)=>{
         console.log(payload)
-        const {appointmentID,reqApplyedID}=payload
-        const {date,time,googleMeetLink}=payload.data
+        const {appointmentID,reqApplyedID,date,time}=payload
+        const {googleMeetLink}=payload.data
         const {data}=await axios.patch(`http://localhost:3000/appointments/${appointmentID}`,{
             date,
             time,
@@ -311,6 +330,31 @@ const sslCommerzModel={
         window.location.href=data
     })
 }
+const adminModel={
+    data:null,
+    addUserData:action((state,payload)=>{
+        state.data=payload
+    }),
+    addUser:thunk(async(actions,payload)=>{
+        const {username,email,password,role,category,fee}=payload.data
+        const {schedule}=payload
+        try{
+         const {data}=await axios.post('http://localhost:3000/register',{
+             username,
+             email,
+             password,
+             role,
+             category,
+             schedule,
+             fee
+            })
+            actions.addUserData(data.user)
+            toast.success("Created New User.",{position:'top-right'})
+        }catch(e){
+         console.log(e)
+        }
+     }),
+}
 
 const store=createStore({
     user:userModel,
@@ -321,7 +365,8 @@ const store=createStore({
     medicalRecord:medicalRecordModel,
     sslCommerz:sslCommerzModel,
     appointment:appointmentModel,
-    applyedAppointment:applyedAppointmentModel
+    applyedAppointment:applyedAppointmentModel,
+    admin:adminModel
 })
 
 export default store;

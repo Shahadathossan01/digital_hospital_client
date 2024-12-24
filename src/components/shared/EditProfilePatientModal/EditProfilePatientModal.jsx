@@ -6,13 +6,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
 import { useStoreActions } from 'easy-peasy';
-import checkUpdatedData from '../../../utils';
 import { Grid } from '@mui/material';
+import { checkUpdatedData } from '../../../utils';
 
 const EditProfilePatientModal=({open,handleClose,userID})=>{
     const {updateProfile}=useStoreActions(action=>action.patient)
   const {register,handleSubmit,reset}=useForm()
-  
   const onSubmit=(data)=>{
     const updatedFormData=checkUpdatedData(data)
     updateProfile({updatedFormData,userID})
@@ -96,17 +95,27 @@ const EditProfilePatientModal=({open,handleClose,userID})=>{
          <Grid item xs={12} sm={6}>
          <TextField
              label="Height (fit)"
-             {...register("height")}
-             type="number"
+             {...register("height",{
+          pattern: {
+            value: /^[0-9]+(\.[0-9]+)?$/, 
+            message: "Enter a valid number (e.g., 5 or 5.4)",
+          }
+             })}
+             type="text"
              fullWidth
              variant="outlined"
            />
          </Grid>
          <Grid item xs={12} sm={6}>
-           <TextField
-             label="Weight (kg)"
-             {...register("weight")}
-             type="number"
+         <TextField
+             label="Weight (KG)"
+             {...register("weight",{
+          pattern: {
+            value: /^[0-9]+(\.[0-9]+)?$/, 
+            message: "Enter a valid number (e.g., 5 or 5.4)",
+          }
+             })}
+             type="text"
              fullWidth
              variant="outlined"
            />

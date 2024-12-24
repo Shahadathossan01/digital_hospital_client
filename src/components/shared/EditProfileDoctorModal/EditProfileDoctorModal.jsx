@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import checkUpdatedData from '../../../utils';
+import {checkUpdatedData} from '../../../utils';
 import { Grid } from '@mui/material';
 
 const EditProfileDoctorModal=({open,handleClose,userID})=>{
@@ -71,14 +71,6 @@ const EditProfileDoctorModal=({open,handleClose,userID})=>{
          </Grid>
          <Grid item xs={12} sm={6}>
            <TextField
-             label="Specialization"
-             {...register("specialization")}
-             fullWidth
-             variant="outlined"
-           />
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
              label="Designation"
              {...register("designation")}
              fullWidth
@@ -89,15 +81,6 @@ const EditProfileDoctorModal=({open,handleClose,userID})=>{
            <TextField
              label="Offline Chammber"
              {...register("offlineChamber")}
-             fullWidth
-             variant="outlined"
-           />
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-            type="number"
-             label="appointmentLimits"
-             {...register("appointmentLimit")}
              fullWidth
              variant="outlined"
            />

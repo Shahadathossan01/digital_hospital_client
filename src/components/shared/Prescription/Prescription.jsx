@@ -54,6 +54,7 @@ const Prescription = ({ item, targetRef, isDoctor }) => {
                 variant="outlined"
                 fullWidth
                 sx={{ mb: 2 }}
+                required
               />
               <Button type="submit" variant="contained" color="primary" fullWidth>
                 Create Prescription
@@ -83,10 +84,10 @@ const Prescription = ({ item, targetRef, isDoctor }) => {
                 Dr. {doctor?.profile.firstName} {doctor?.profile.lastName}
               </Typography>
               <Typography variant="h6">
-                Specialization: {doctor?.profile.specialization || "N/A"}
+                Specialization: {doctor?.category || ""}
               </Typography>
               <Typography variant="h6">
-                Designation: {doctor?.profile.designation || "N/A"}
+                Designation: {doctor?.profile.designation || ""}
               </Typography>
               </Box>
             </Box>  

@@ -55,7 +55,7 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
       onClose={handleClose}
       TransitionComponent={Transition}
     >
-      <AppBar sx={{ position: 'relative' }}>
+      <AppBar sx={{ position: 'fixed'}}>
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
             <CloseIcon />
@@ -72,7 +72,7 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
           }
         </Toolbar>
       </AppBar>
-      <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+      <Box sx={{ p: { xs: 2, sm: 3, md: 4 } ,marginTop:'40px'}}>
         <Typography variant="h6">
           {isDoctor
             ? `Patient: ${item?.patient?.profile.firstName} ${item?.patient?.profile.lastName}`
@@ -127,6 +127,7 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
           variant="outlined"
           fullWidth
           sx={{ marginBottom: 2 }}
+          required
         />
         <Button
           type="submit"

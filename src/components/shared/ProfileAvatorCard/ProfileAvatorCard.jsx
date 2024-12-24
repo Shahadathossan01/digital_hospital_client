@@ -37,11 +37,14 @@ export default function ProfileAvatorCard({item}) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
-        component="img"
-        height="194"
-        image={item?.image}
-        alt="No image uploaded"
-      />
+  component="img"
+  height="270"
+  image={item?.image}
+  alt="No image uploaded"
+  sx={{
+    objectFit: 'cover', // Ensures the image covers the space without distortion
+  }}
+/>
        <Box style={{ marginBottom: '10px' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
                             <TextField 
