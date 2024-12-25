@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -12,7 +12,6 @@ import { Grid } from '@mui/material';
 const EditProfileDoctorModal=({open,handleClose,userID})=>{
   const {updateProfile}=useStoreActions(action=>action.doctor)
   const {doctor}=useStoreState(state=>state.doctor)
-  console.log(doctor)
   const {register,handleSubmit,reset}=useForm()
   
   const onSubmit=(data)=>{

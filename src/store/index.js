@@ -155,7 +155,18 @@ const doctorModel={
             status
         })
         actions.addStatusData(data)
+    }),
+    addNewSlot:thunk(async(actions,payload)=>{
+        const {doctorID,scheduleID}=payload
+        const {data}=await axios.patch(`http://localhost:3000/doctors/${doctorID}/schedule/${scheduleID}`)
+        actions.addStatusData(data)
+    }),
+    deleteSlot:thunk(async(actions,payload)=>{
+        const {doctorID,scheduleID,slotID}=payload
+        const {data}=await axios.delete(`http://localhost:3000/doctors/${doctorID}/schedule/${scheduleID}/slot/${slotID}`)
+        actions.addStatusData(data)
     })
+    
 }
 const patientModel={
     patient:null,

@@ -2,16 +2,16 @@ import { format } from "date-fns";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import EditProfilePatientModal from "../../components/shared/EditProfilePatientModal/EditProfilePatientModal";
 import { useEffect, useState } from "react";
-import { Grid, Box, Button, Typography, Card, CardContent, Divider, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from "@mui/material";
+import { Grid, Box, Button, Typography, Card, CardContent, Divider, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, IconButton } from "@mui/material";
 import ChangePassword from "../../components/shared/ChangePassword/ChangePassord";
 import ProfileAvatorCard from "../../components/shared/ProfileAvatorCard/ProfileAvatorCard";
 import EditProfileDoctorModal from "../../components/shared/EditProfileDoctorModal/EditProfileDoctorModal";
 import EditButton from "../../components/ui/EditButton/EditButton";
 import SlotEditButton from "../../components/ui/SlotEditButton/SlotEditButton";
-
+import DeleteIcon from "@mui/icons-material/Delete";
 const DoctorProfile = () => {
     const { user } = useStoreState((state) => state.user);
-    const { getDoctorById} = useStoreActions((action) => action.doctor);
+    const { getDoctorById,addNewSlot,deleteSlot} = useStoreActions((action) => action.doctor);
     const { doctor ,updatedProfileData,imageData,statusData} = useStoreState((state) => state.doctor);
     const [open, setOpen] = useState(false);
     const [openCP, setOpenCP] = useState(false);
@@ -41,11 +41,6 @@ const DoctorProfile = () => {
     };
 
     const doctorID=doctor._id
-
-    
-    const handleSlot=(scheduleID,slotID)=>{
-        console.log(scheduleID,slotID)
-    }
 
     return (
         <Box>
@@ -110,7 +105,11 @@ const DoctorProfile = () => {
             <TableRow>
               <TableCell><strong>Date</strong></TableCell>
               <TableCell><strong>Status</strong></TableCell>
-              <TableCell><strong>Slots</strong></TableCell>
+              <TableCell>
+                 <Box sx={{display:'flex',gap:'10px',justifyContent:'center',alignItems:'center'}}>
+                 <strong>Slots</strong>
+                 </Box>
+               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -133,7 +132,11 @@ const DoctorProfile = () => {
                       <TableRow>
                         <TableCell><strong>Time</strong></TableCell>
                         <TableCell><strong>Status</strong></TableCell>
-                        <TableCell><strong>Action</strong></TableCell>
+                        <TableCell>
+                          <Box sx={{display:'flex',justifyContent:'center'}}>
+                            <strong>Action</strong>
+                          </Box>
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -146,10 +149,26 @@ const DoctorProfile = () => {
                             <Typography>{slot.status}</Typography>
                           </TableCell>
                           <TableCell>
+                            <Box sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                             <SlotEditButton scheduleID={day._id} doctorID={doctorID} slotID={slot._id}></SlotEditButton>
+                            <IconButton
+                              onClick={()=>deleteSlot({doctorID,scheduleID:day._id,slotID:slot._id})}
+                              aria-label="delete"
+                              color="error"
+                              size="small"
+                              sx={{
+                                "&:hover": {
+                                  backgroundColor: "rgba(255, 0, 0, 0.1)",
+                                },
+                              }}
+                              >
+                                <DeleteIcon />
+                            </IconButton>
+                            </Box>
                           </TableCell>
                         </TableRow>
                       ))}
+                      <Button onClick={()=>addNewSlot({doctorID,scheduleID:day._id})} variant="contained" size="small">Add new Slot</Button>
                     </TableBody>
                   </Table>
                 </TableCell>
