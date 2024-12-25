@@ -64,10 +64,17 @@ const createSchedule=(totalDays,times)=>{
     },[])
     return schedule
 }
+const filterUser=(users,roleState)=>{
+    if(roleState=='all'){
+        return users
+    }
+    const newUser=users.filter(item=>item.role==roleState)
+    return newUser
+}
 
 const getTotalDaysInMonth=(localDate)=>{
     // const date=new Date(localDate)
     return getDaysInMonth(localDate)
 }
 
-export {checkUpdatedData,categoryName,filterDoctorByCategory,createSchedule,getTotalDaysInMonth}
+export {checkUpdatedData,categoryName,filterDoctorByCategory,createSchedule,getTotalDaysInMonth,filterUser}

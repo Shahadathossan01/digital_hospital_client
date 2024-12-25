@@ -165,7 +165,7 @@ const doctorModel={
         const {doctorID,scheduleID,slotID}=payload
         const {data}=await axios.delete(`http://localhost:3000/doctors/${doctorID}/schedule/${scheduleID}/slot/${slotID}`)
         actions.addStatusData(data)
-    })
+    }),
     
 }
 const patientModel={
@@ -367,6 +367,8 @@ const sslCommerzModel={
 }
 const adminModel={
     data:null,
+    deletedData:null,
+    allUserData:[],
     addUserData:action((state,payload)=>{
         state.data=payload
     }),
@@ -389,6 +391,20 @@ const adminModel={
          console.log(e)
         }
      }),
+     addAllUserData:action((state,payload)=>{
+        state.allUserData=payload
+     }),
+     getAllUser:thunk(async(actions,payload)=>{
+        const {data}=await axios.get('http://localhost:3000/users')
+        actions.addAllUserData(data)
+     }),
+     addDeletedData:action((state,payload)=>{
+        state.deletedData=payload
+     }),
+     deleteUser:thunk(async(actions,payload)=>{
+        const {data}=await axios.delete(`http://localhost:3000/users/${payload}`)
+        actions.addDeletedData(data)
+     })
 }
 
 const store=createStore({

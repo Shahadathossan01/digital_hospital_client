@@ -12,13 +12,11 @@ const AdminCreateUser = () => {
   const date = new Date();
   const totalMonthDays = getTotalDaysInMonth(date);
   const schedule = createSchedule(totalMonthDays, times);
-  console.log(times)
   const handleSlot = (time) => {
     setTimes((prev) => [...prev, time]);
   };
 
   const role = watch("role");
-console.log(role)
   const onSubmit = (data) => {
     addUser({ data, schedule });
     reset();
