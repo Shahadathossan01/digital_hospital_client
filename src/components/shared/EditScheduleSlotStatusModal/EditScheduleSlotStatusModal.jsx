@@ -71,7 +71,7 @@ export default function EditScheduleSlotStatusModal({
                 }}
               >
                 <MenuItem value="available">Available</MenuItem>
-                <MenuItem value="busy">Busy</MenuItem>
+                <MenuItem value="unavailable">Unavailable</MenuItem>
               </TextField>
             </Grid>
           </Grid>

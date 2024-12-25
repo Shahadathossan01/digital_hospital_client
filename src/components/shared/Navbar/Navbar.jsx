@@ -210,7 +210,7 @@ const Navbar=()=>{
 
             }
             {
-              (!user || user?.role=="patient") &&
+              (user?.role=="admin") &&
               <Link to="/adminDashboard" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button></Link>
 
             }

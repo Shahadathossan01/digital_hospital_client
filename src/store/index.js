@@ -50,6 +50,7 @@ const userModel={
         toast.success('Login Successfully!',{position:'top-right'})
         if(data.payload.role=='patient') return navigate('/')
         if(data.payload.role=='doctor') return navigate('/docAppointment')
+        if(data.payload.role=='admin') return navigate('/adminDashboard')
         
     }),
     logoutUser:action((state,payload)=>{

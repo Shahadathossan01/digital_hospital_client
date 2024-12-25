@@ -24,7 +24,7 @@ useEffect(() => {
   const [scheduleID,setScheduleID]=useState(null)
   const [slotID,setSlotID]=useState(null)
 
-  const { getSingleDoctor,updateSchedule } = useStoreActions((action) => action.doctor);
+  const { getSingleDoctor} = useStoreActions((action) => action.doctor);
   const { singleDoctor } = useStoreState((state) => state.doctor);
 
   const singleSchedule = singleDoctor?.schedule.filter(
@@ -53,36 +53,36 @@ useEffect(() => {
     setSlotID(data._id)
   };
 
-// const scheduleDate=singleDoctor?.schedule[0].date
-// const localDate = new Date();
-// const updatedDate = set(localDate, {
-//   year: 2024,
-//   month: 11, 
-//   date: 25,
-//   hours: 17,
-//   minutes: 35,
-//   seconds: 52,
-//   milliseconds: 881,
-// });
-// const isoLocalDate = format(updatedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");  
+  //Compare Month...Start.....
+const scheduleDate=singleDoctor?.schedule[0].date
+const localDate = new Date();
+const updatedDate = set(localDate, {
+  year: 2024,
+  month: 11, 
+  date: 25,
+  hours: 17,
+  minutes: 35,
+  seconds: 52,
+  milliseconds: 881,
+});
+
+const isoLocalDate = format(updatedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");  
  
-// const date1 = new Date(scheduleDate);
-// const date2 = new Date(isoLocalDate);
+const date1 = new Date(scheduleDate);
+const date2 = new Date(isoLocalDate);
 
-// const month1 = format(date1, 'MM');
-// const month2 = format(date2, 'MM');
-// const areMonthsEqual=isEqual(month1,month2)
+const month1 = format(date1, 'MM');
+const month2 = format(date2, 'MM');
+const areMonthsEqual=isEqual(month1,month2)
 
-
- 
-//   if(!areMonthsEqual){
-//     const date = new Date();
-//     const times=['10:54 AM', '02:55 AM', '02:55 AM', '02:56 AM']
+// if(!areMonthsEqual){
+//   const date = new Date();
+//   const times=['10:54 AM', '02:55 AM', '02:55 AM', '02:56 AM']
 //   const totalMonthDays = getTotalDaysInMonth(date);
 //   const schedule = createSchedule(totalMonthDays, times);
 //   updateSchedule({doctorID:id,schedule})
-//   }
-
+// }
+//Compare Month ...End.....
   
 
   const handlePayment = () => {
@@ -116,7 +116,28 @@ useEffect(() => {
         Schedule:
       </Typography>
 
-      <Grid container spacing={2} sx={{ mb: 4 }}>
+      {
+  !areMonthsEqual ? (
+    <Box
+      sx={{
+        textAlign: 'center',
+        mb: 2,
+        p: 2,
+        border: '1px solid #e0e0e0',
+        borderRadius: '8px',
+        backgroundColor: '#f9f9f9',
+        color: 'gray',
+      }}
+    >
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        🚫 <strong>Do not update yet!</strong>
+      </Typography>
+      <Typography variant="body2">
+        The new month schedule is not ready yet. Please take some time, and it will update soon. We apologize for the inconvenience.
+      </Typography>
+    </Box>
+  ) : (
+    <Grid container spacing={2} sx={{ mb: 4 }}>
         {singleDoctor?.schedule?.map((item, index) => (
           <Grid item xs={6} sm={4} md={2} key={index}>
             <Button
@@ -130,31 +151,58 @@ useEffect(() => {
           </Grid>
         ))}
       </Grid>
+  )
+}
+
 
       <Typography variant="h6" gutterBottom>
         Choose a Slot:
       </Typography>
+      {
+  (singleSchedule[0]?.status === 'busy' || singleSchedule[0].slots.length==0) ? (
+    <Box
+      sx={{
+        textAlign: 'center',
+        mb: 2,
+        p: 2,
+        border: '1px solid #e0e0e0',
+        borderRadius: '8px',
+        backgroundColor: '#f9f9f9',
+        color: 'gray',
+      }}
+    >
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        🛑 <strong>No Available Slots</strong>
+      </Typography>
+      <Typography variant="body2">
+        All time slots are currently occupied. Please check back later or try selecting a different schedule.
+      </Typography>
+    </Box>
+  ) : (
+    <Stack
+      direction="row"
+      spacing={2}
+      justifyContent="center"
+      flexWrap="wrap"
+      sx={{ mb: 4 }}
+    >
+      {singleSchedule[0]?.slots?.map((item, index) => (
+        <Button
+          disabled={item.status === 'unavailable' || item.status === 'booked'}
+          key={index}
+          variant="contained"
+          color={item.time === timeValue ? 'primary' : 'inherit'}
+          onClick={() => handleTime(item)}
+          sx={{ minWidth: 120 }}
+        >
+          {item.time}
+        </Button>
+      ))}
+    </Stack>
+  )
+}
 
-      <Stack 
-        direction="row" 
-        spacing={2} 
-        justifyContent="center" 
-        flexWrap="wrap"
-        sx={{ mb: 4 }}
-      >
-        {singleSchedule[0]?.slots?.map((item, index) => (
-          <Button
-            disabled={item.status=='booked'}
-            key={index}
-            variant="contained"
-            color={item.time === timeValue ? 'primary' : 'inherit'}
-            onClick={() => handleTime(item)}
-            sx={{ minWidth: 120 }}
-          >
-            {item.time}
-          </Button>
-        ))}
-      </Stack>
+
 
       <Button
         onClick={handlePayment}

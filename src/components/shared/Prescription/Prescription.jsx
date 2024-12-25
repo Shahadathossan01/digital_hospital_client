@@ -17,7 +17,7 @@ const Prescription = ({ item, targetRef, isDoctor }) => {
   if (!item) return null;
 
   const { patient, doctor, prescription } = item;
-  const { firstName, lastName, age, gender, blood, height, weight } = patient.profile;
+  // const { firstName, lastName, age, gender, blood, height, weight } = patient.profile;
   const appointmentID = item?._id;
   const prescriptionID = item?.prescription?._id;
 
@@ -68,7 +68,9 @@ const Prescription = ({ item, targetRef, isDoctor }) => {
           <Box sx={{display:'flex',justifyContent:'space-between',flexWrap:'wrap',gap:'20px',}}>
               <Box sx={{textAlign:'left'}}>
               <Typography variant="h6">Date: {format(item?.prescription?.date, "d/M/yyyy")}</Typography>
-              <Typography variant="h6">Patient: {firstName} {lastName}</Typography>
+
+              <Typography variant="h6">Patient: {item?.patient?.profile?.firstName?item?.patient?.profile?.firstName:''} {item?.patient?.profile?.firstName?item?.patient?.profile?.lastName:''}</Typography>
+
               <Box display="flex" alignItems="center" gap={1}>
                 <Typography variant="h6">Diagnosis: {prescription?.diagnosis || "N/A"}</Typography>
                 {isDoctor && (
@@ -99,19 +101,19 @@ const Prescription = ({ item, targetRef, isDoctor }) => {
           </Typography>
           <Grid container spacing={2} mb={2}>
             <Grid item xs={6} sm={4}>
-              <Typography>Age: {age}</Typography>
+              <Typography>Age: {item?.profile?.age?item.profile.age:''}</Typography>
             </Grid>
             <Grid item xs={6} sm={4}>
-              <Typography>Gender: {gender}</Typography>
+              <Typography>Gender: {item?.profile?.gender?item.profile.gender:''}</Typography>
             </Grid>
             <Grid item xs={6} sm={4}>
-              <Typography>Blood Group: {blood || "N/A"}</Typography>
+              <Typography>Blood Group: {item?.profile?.blood?item.profile.blood:''}</Typography>
             </Grid>
             <Grid item xs={6} sm={4}>
-              <Typography>Height: {height || "N/A"} cm</Typography>
+              <Typography>Height: {item?.profile?.height?item.profile.height:''} cm</Typography>
             </Grid>
             <Grid item xs={6} sm={4}>
-              <Typography>Weight: {weight || "N/A"} kg</Typography>
+              <Typography>Weight: {item?.profile?.weight?item.profile.weight:''} kg</Typography>
             </Grid>
           </Grid>
 

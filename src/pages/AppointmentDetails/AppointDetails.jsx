@@ -75,8 +75,8 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
       <Box sx={{ p: { xs: 2, sm: 3, md: 4 } ,marginTop:'40px'}}>
         <Typography variant="h6">
           {isDoctor
-            ? `Patient: ${item?.patient?.profile.firstName} ${item?.patient?.profile.lastName}`
-            : `Doctor: ${item?.doctor?.profile.firstName} ${item?.doctor?.profile.lastName}`}
+            ? `Patient: ${item?.patient?.profile?.firstName?item?.patient?.profile?.firstName:''} ${item?.patient?.profile?.firstName?item?.patient?.profile?.lastName:''}`
+            : `Doctor: ${item?.doctor?.profile?.firstName} ${item?.doctor?.profile?.lastName}`}
         </Typography>
         <Typography variant="subtitle1">Date: {item?.date?format(item?.date, 'yyyy-MM-dd'):''}</Typography>
         <Typography variant="subtitle1">Time: {time}</Typography>

@@ -75,7 +75,7 @@ const AppointCard = ({ item ,isDoctor}) => {
           {
             isDoctor &&
           <Typography variant="h6" component="div">
-            Patient:  {patient?.profile.firstName} {patient?.profile.lastName}
+            Patient:  {patient?.profile?.firstName} {patient?.profile?.lastName}
           </Typography>
 
           }

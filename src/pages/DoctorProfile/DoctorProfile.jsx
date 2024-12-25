@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, isEqual, set } from "date-fns";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import EditProfilePatientModal from "../../components/shared/EditProfilePatientModal/EditProfilePatientModal";
 import { useEffect, useState } from "react";
@@ -9,10 +9,14 @@ import EditProfileDoctorModal from "../../components/shared/EditProfileDoctorMod
 import EditButton from "../../components/ui/EditButton/EditButton";
 import SlotEditButton from "../../components/ui/SlotEditButton/SlotEditButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { createSchedule, getTotalDaysInMonth } from "../../utils";
 const DoctorProfile = () => {
     const { user } = useStoreState((state) => state.user);
-    const { getDoctorById,addNewSlot,deleteSlot} = useStoreActions((action) => action.doctor);
+
+    const { getDoctorById,addNewSlot,deleteSlot,updateSchedule} = useStoreActions((action) => action.doctor);
+
     const { doctor ,updatedProfileData,imageData,statusData} = useStoreState((state) => state.doctor);
+
     const [open, setOpen] = useState(false);
     const [openCP, setOpenCP] = useState(false);
 
@@ -39,8 +43,39 @@ const DoctorProfile = () => {
     const handleCloseCP = () => {
         setOpenCP(false);
     };
-
     const doctorID=doctor._id
+    
+    const scheduleDate=doctor.schedule[0].date
+    const localDate = new Date();
+    const updatedDate = set(localDate, {
+      year: 2024,
+      month: 11, 
+      date: 25,
+      hours: 17,
+      minutes: 35,
+      seconds: 52,
+      milliseconds: 881,
+    });
+    
+    const isoLocalDate = format(updatedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"); 
+     
+    const date1 = new Date(scheduleDate);
+    const date2 = new Date(isoLocalDate);
+    
+    const month1 = format(date1, 'MM');
+    const month2 = format(date2, 'MM');
+    const areMonthsEqual=isEqual(month1,month2)
+
+    if(!areMonthsEqual){
+      const date = new Date();
+      const times=[]
+      const totalMonthDays = getTotalDaysInMonth(date);
+      const schedule = createSchedule(totalMonthDays, times);
+      updateSchedule({doctorID,schedule})
+    }
+
+
+
 
     return (
         <Box>
@@ -97,6 +132,27 @@ const DoctorProfile = () => {
         </Grid>
 <Box>
     <Typography sx={{textAlign:'center'}} variant="h4">Schedule</Typography>
+    <Box
+  sx={{
+    textAlign: 'center',
+    mb: 3,
+    p: 2,
+    border: '1px solid #e0e0e0',
+    borderRadius: '8px',
+    backgroundColor: '#f9f9f9',
+    color: 'gray',
+  }}
+>
+  <Typography variant="h6" sx={{ color: 'primary.main', mb: 1 }}>
+    📅 Automatic Schedule Updates
+  </Typography>
+  <Typography variant="body2">
+    This schedule will update automatically at the start of a new month. No action is required from your side.
+  </Typography>
+  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+    Once the schedule is created, you will be able to dynamically create your slots based on your availability.
+  </Typography>
+</Box>
     <Box sx={{overflowX: "auto" }}>
       <Box sx={{ margin: "20px" }}>
       <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
