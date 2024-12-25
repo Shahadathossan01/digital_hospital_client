@@ -70,6 +70,7 @@ const doctorModel={
     updatedProfileData:null,
     imageData:null,
     updatedScheduleData:null,
+    statusData:null,
     addData:action((state,payload)=>{
         state.data=payload
     }),
@@ -131,6 +132,29 @@ const doctorModel={
             schedule
         })
         actions.addUpdatedScheduleData(data)
+    }),
+    addStatusData:action((state,payload)=>{
+        state.statusData=payload
+    }),
+    updateScheduleStatus:thunk(async(actions,payload)=>{
+        const {doctorID,scheduleID,status}=payload
+        const {data}=await axios.patch('http://localhost:3000/doctorScheduleStatus',{
+            doctorID,
+            scheduleID,
+            status
+        })
+        actions.addStatusData(data)
+    }),
+    updateScheduleSlotStatus:thunk(async(actions,payload)=>{
+        const {doctorID,scheduleID,slotID,time,status}=payload
+        const {data}=await axios.patch('http://localhost:3000/doctorScheduleSlotStatus',{
+            doctorID,
+            scheduleID,
+            slotID,
+            time,
+            status
+        })
+        actions.addStatusData(data)
     })
 }
 const patientModel={

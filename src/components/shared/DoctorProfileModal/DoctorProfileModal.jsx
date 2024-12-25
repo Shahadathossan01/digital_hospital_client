@@ -20,7 +20,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const DoctorProfileModal=({open,handleClose,item})=>{
-    const {firstName,lastName,address,phone,specialization,designation,offlineChamber,email}=item.profile
+    const {firstName,lastName,address,phone,designation,offlineChamber,email}=item.profile
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -57,7 +57,7 @@ const DoctorProfileModal=({open,handleClose,item})=>{
             Phone: {phone}
           </Typography>
           <Typography gutterBottom>
-            Specialization: {specialization}
+            Specialization: {item?.category}
           </Typography>
           <Typography gutterBottom>
             Designation: {designation}

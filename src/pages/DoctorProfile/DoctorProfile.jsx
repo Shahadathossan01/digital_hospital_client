@@ -2,15 +2,17 @@ import { format } from "date-fns";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import EditProfilePatientModal from "../../components/shared/EditProfilePatientModal/EditProfilePatientModal";
 import { useEffect, useState } from "react";
-import { Grid, Box, Button, Typography, Card, CardContent, Divider } from "@mui/material";
+import { Grid, Box, Button, Typography, Card, CardContent, Divider, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from "@mui/material";
 import ChangePassword from "../../components/shared/ChangePassword/ChangePassord";
 import ProfileAvatorCard from "../../components/shared/ProfileAvatorCard/ProfileAvatorCard";
 import EditProfileDoctorModal from "../../components/shared/EditProfileDoctorModal/EditProfileDoctorModal";
+import EditButton from "../../components/ui/EditButton/EditButton";
+import SlotEditButton from "../../components/ui/SlotEditButton/SlotEditButton";
 
 const DoctorProfile = () => {
     const { user } = useStoreState((state) => state.user);
-    const { getDoctorById } = useStoreActions((action) => action.doctor);
-    const { doctor ,updatedProfileData,imageData} = useStoreState((state) => state.doctor);
+    const { getDoctorById} = useStoreActions((action) => action.doctor);
+    const { doctor ,updatedProfileData,imageData,statusData} = useStoreState((state) => state.doctor);
     const [open, setOpen] = useState(false);
     const [openCP, setOpenCP] = useState(false);
 
@@ -18,7 +20,7 @@ const DoctorProfile = () => {
     const userEmail = user?.email;
     useEffect(() => {
         getDoctorById(userID);
-    }, [userID, getDoctorById,updatedProfileData,imageData]);
+    }, [userID, getDoctorById,updatedProfileData,imageData,statusData]);
 
     if (!doctor) return null;
 
@@ -38,8 +40,16 @@ const DoctorProfile = () => {
         setOpenCP(false);
     };
 
+    const doctorID=doctor._id
+
+    
+    const handleSlot=(scheduleID,slotID)=>{
+        console.log(scheduleID,slotID)
+    }
+
     return (
-        <Grid container spacing={4} justifyContent="center" padding="20px">
+        <Box>
+            <Grid container spacing={4} justifyContent="center" padding="20px">
             <Grid item xs={12} sm={10} md={8} lg={6}>
                 <Card sx={{ boxShadow: 3, padding: 2 }}>
                     <CardContent>
@@ -90,6 +100,70 @@ const DoctorProfile = () => {
                 </Card>
             </Grid>
         </Grid>
+<Box>
+    <Typography sx={{textAlign:'center'}} variant="h4">Schedule</Typography>
+    <Box sx={{overflowX: "auto" }}>
+      <Box sx={{ margin: "20px" }}>
+      <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell><strong>Date</strong></TableCell>
+              <TableCell><strong>Status</strong></TableCell>
+              <TableCell><strong>Slots</strong></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {doctor?.schedule.map((day) => (
+              <TableRow key={day._id.$oid}>
+                <TableCell>
+                  <Typography>
+                    {format(new Date(day.date), 'dd-MM-yyyy')}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Box sx={{display:'flex',alignItems:'center'}}>
+                  <Typography>{day.status}</Typography>
+                  <EditButton scheduleID={day._id} doctorID={doctorID}></EditButton>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell><strong>Time</strong></TableCell>
+                        <TableCell><strong>Status</strong></TableCell>
+                        <TableCell><strong>Action</strong></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {day.slots.map((slot) => (
+                        <TableRow key={slot._id.$oid}>
+                          <TableCell>
+                            <Typography>{slot.time}</Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography>{slot.status}</Typography>
+                          </TableCell>
+                          <TableCell>
+                            <SlotEditButton scheduleID={day._id} doctorID={doctorID} slotID={slot._id}></SlotEditButton>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+    </Box>
+</Box>
+    </Box>
+
+        
     );
 };
 
