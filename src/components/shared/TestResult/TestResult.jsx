@@ -8,7 +8,6 @@ import ResultModal from "../ResultModal/ResultModal";
 const TestResult = ({ item,index }) => {
   const { testName, image } = item;
   const [open, setOpen] = useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };

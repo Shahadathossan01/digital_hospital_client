@@ -1,9 +1,14 @@
+import Banner from "../../components/shared/Banner/Banner";
+import Features from "../../components/shared/Features/Features";
+import FrequentlyAsked from "../../components/shared/FrequentlyAsked/FrequentlyAsked";
 
 const Home = () => {
     return (
-        <div>
-            <h1>This is Home Route</h1>
-        </div>
+        <>
+            <Banner></Banner><br />
+            <Features></Features><br />
+            <FrequentlyAsked></FrequentlyAsked>
+        </>
     );
 };
 

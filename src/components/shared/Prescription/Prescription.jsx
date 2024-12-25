@@ -16,6 +16,7 @@ const Prescription = ({ item, targetRef, isDoctor }) => {
 
   if (!item) return null;
 
+  console.log(item.patient)
   const { patient, doctor, prescription } = item;
   // const { firstName, lastName, age, gender, blood, height, weight } = patient.profile;
   const appointmentID = item?._id;
@@ -101,19 +102,19 @@ const Prescription = ({ item, targetRef, isDoctor }) => {
           </Typography>
           <Grid container spacing={2} mb={2}>
             <Grid item xs={6} sm={4}>
-              <Typography>Age: {item?.profile?.age?item.profile.age:''}</Typography>
+              <Typography>Age: {item?.patient?.profile?.age?item.patient.profile.age:''}</Typography>
             </Grid>
             <Grid item xs={6} sm={4}>
-              <Typography>Gender: {item?.profile?.gender?item.profile.gender:''}</Typography>
+              <Typography>Gender: {item?.patient?.profile?.gender?item.patient.profile.gender:''}</Typography>
             </Grid>
             <Grid item xs={6} sm={4}>
-              <Typography>Blood Group: {item?.profile?.blood?item.profile.blood:''}</Typography>
+              <Typography>Blood Group: {item?.patient?.profile?.blood?item.patient.profile.blood:''}</Typography>
             </Grid>
             <Grid item xs={6} sm={4}>
-              <Typography>Height: {item?.profile?.height?item.profile.height:''} cm</Typography>
+              <Typography>Height: {item?.patient?.profile?.height?item.patient.profile.height:''} f.</Typography>
             </Grid>
             <Grid item xs={6} sm={4}>
-              <Typography>Weight: {item?.profile?.weight?item.profile.weight:''} kg</Typography>
+              <Typography>Weight: {item?.patient?.profile?.weight?item.patient.profile.weight:''} -kg</Typography>
             </Grid>
           </Grid>
 

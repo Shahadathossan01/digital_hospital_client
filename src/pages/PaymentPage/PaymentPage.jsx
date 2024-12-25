@@ -159,7 +159,7 @@ const areMonthsEqual=isEqual(month1,month2)
         Choose a Slot:
       </Typography>
       {
-  (singleSchedule[0]?.status === 'busy' || singleSchedule[0].slots.length==0) ? (
+  (singleSchedule[0]?.status === 'busy' || singleSchedule[0]?.slots.length==0) ? (
     <Box
       sx={{
         textAlign: 'center',
