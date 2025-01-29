@@ -1,13 +1,32 @@
+import AmbulanceService from "../../components/shared/AmbulanceService/AmbulanceService";
 import Banner from "../../components/shared/Banner/Banner";
-import Features from "../../components/shared/Features/Features";
+import BloodBankService from "../../components/shared/BloodBankService/BloodBankService";
 import FrequentlyAsked from "../../components/shared/FrequentlyAsked/FrequentlyAsked";
+import HealthConcerns from "../../components/shared/HealthConcerns/HealthConcerns";
+import HealthSpecialties from "../../components/shared/HealthSpecialties/HealthSpecialties";
+import HomeBlogs from "../../components/shared/HomeBlogs/HomeBlogs";
+import ImageCarousel from "../../components/shared/ImageCarousel/ImageCarousel";
+import InstantVideo from "../../components/shared/InstantVideo/InstantVideo";
+import SearchDoctor from "../../components/shared/SearchDoctor/SearchDoctor";
+import Services from "../../components/shared/Services/Services";
+import HowItWorks from "../../components/shared/HowItworks/HowItWorks";
+import Footer from "../../components/shared/Footer/Footer";
 
 const Home = () => {
     return (
         <>
-            <Banner></Banner><br />
-            <Features></Features><br />
+            <SearchDoctor></SearchDoctor>
+            <ImageCarousel></ImageCarousel>
+            <Services></Services>
+            <HealthConcerns></HealthConcerns>
+            <HealthSpecialties></HealthSpecialties>
+            <InstantVideo></InstantVideo>
+            <AmbulanceService></AmbulanceService>
+            <BloodBankService></BloodBankService>
+            <HomeBlogs></HomeBlogs>
+            <HowItWorks></HowItWorks>
             <FrequentlyAsked></FrequentlyAsked>
+            <Footer></Footer>
         </>
     );
 };

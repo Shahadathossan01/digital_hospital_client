@@ -13,7 +13,7 @@ const categoryName=(data)=>{
     if(!data) return
   const singleName=data.reduce((acc,cur)=>{
         const category=cur.category.trim()
-        if(!acc.includes(category) && cur.profile){
+        if(!acc.includes(category)){
             acc.push(category)
         }
         return acc

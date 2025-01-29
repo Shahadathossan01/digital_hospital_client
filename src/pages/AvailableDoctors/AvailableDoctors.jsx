@@ -20,7 +20,6 @@ const AvailableDoctors = () => {
   useEffect(() => {
     getDoctors();
   }, [getDoctors]);
-
   if (!data) {
     return (
       <Box

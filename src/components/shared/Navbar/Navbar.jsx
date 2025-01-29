@@ -186,7 +186,7 @@ const Navbar=()=>{
             }
             {
               user?.role=="patient" &&
-              <Link to="/availableDoctors" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Doctors</Button></Link>
+              <Link to="/availableDoctors" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Find Doctor</Button></Link>
             }
             {
               user?.role=="patient" &&

@@ -12,13 +12,13 @@ const PaymentPage = () => {
     const { user } = useStoreState((state) => state.user);
 
 
-
 useEffect(() => {
     if (user?.id) {
       getPatient(user?.id);
     }
   }, [getPatient,user]);
 
+  console.log(patient)
 
   const [dateValue, setDateValue] = useState(null);
   const [scheduleID,setScheduleID]=useState(null)
@@ -117,7 +117,7 @@ const areMonthsEqual=isEqual(month1,month2)
       </Typography>
 
       {
-  !areMonthsEqual ? (
+  areMonthsEqual ? (
     <Box
       sx={{
         textAlign: 'center',
