@@ -11,6 +11,7 @@ import SearchDoctor from "../../components/shared/SearchDoctor/SearchDoctor";
 import Services from "../../components/shared/Services/Services";
 import HowItWorks from "../../components/shared/HowItworks/HowItWorks";
 import Footer from "../../components/shared/Footer/Footer";
+import WhyUseThis from "../../components/shared/WhyUseThis/WhyUseThis";
 
 const Home = () => {
     return (
@@ -25,6 +26,7 @@ const Home = () => {
             <BloodBankService></BloodBankService>
             <HomeBlogs></HomeBlogs>
             <HowItWorks></HowItWorks>
+            <WhyUseThis></WhyUseThis>
             <FrequentlyAsked></FrequentlyAsked>
             <Footer></Footer>
         </>
