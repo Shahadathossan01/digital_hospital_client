@@ -76,7 +76,7 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
         <Typography variant="h6">
           {isDoctor
             ? `Patient: ${item?.patient?.profile?.firstName?item?.patient?.profile?.firstName:''} ${item?.patient?.profile?.firstName?item?.patient?.profile?.lastName:''}`
-            : `Doctor: ${item?.doctor?.profile?.firstName} ${item?.doctor?.profile?.lastName}`}
+            : `Doctor: ${item?.doctor?.firstName} ${item?.doctor?.lastName}`}
         </Typography>
         <Typography variant="subtitle1">Date: {item?.date?format(item?.date, 'yyyy-MM-dd'):''}</Typography>
         <Typography variant="subtitle1">Time: {time}</Typography>

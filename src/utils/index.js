@@ -1,3 +1,4 @@
+import { addDays, format, getDaysInMonth, getMonth, isAfter, isToday, parseISO } from "date-fns";
 const checkUpdatedData=(data)=>{
     const updateFormData = Object.keys(data).reduce((acc, key) => {
         if (data[key].length !== 0) { // Check if the value length is not 0
@@ -9,26 +10,26 @@ const checkUpdatedData=(data)=>{
     return updateFormData
 }
 
-const categoryName=(data)=>{
+const specialityName=(data)=>{
     if(!data) return
   const singleName=data.reduce((acc,cur)=>{
-        const category=cur.category.trim()
-        if(!acc.includes(category)){
-            acc.push(category)
+        const speciality=cur.speciality.trim()
+        if(!acc.includes(speciality)){
+            acc.push(speciality)
         }
         return acc
     },[])
     return singleName
 }
 
-const filterDoctorByCategory=(data,filterValue)=>{
+const filterDoctorBySpecialty=(data,filterValue)=>{
     if(!data) return
     if(filterValue=='all'){
         return data
     }
     const filterDoctor=data.reduce((acc,cur)=>{
-        const category=cur.category.trim()
-        if(category==filterValue){
+        const speciality=cur.speciality.trim()
+        if(speciality==filterValue){
             acc.push(cur)
         }
         return acc;
@@ -36,7 +37,6 @@ const filterDoctorByCategory=(data,filterValue)=>{
     return filterDoctor
 }
 
-import { addDays, format, getDaysInMonth, getMonth } from "date-fns";
 
 const createSlots = (times) => {
     return times.map((time) => ({
@@ -77,4 +77,44 @@ const getTotalDaysInMonth=(localDate)=>{
     return getDaysInMonth(localDate)
 }
 
-export {checkUpdatedData,categoryName,filterDoctorByCategory,createSchedule,getTotalDaysInMonth,filterUser}
+const filterAppointments=(appointments,filterValue)=>{
+    const filterAppointment=appointments.filter(item=>item.status==filterValue)
+    return filterAppointment
+}
+
+const getUpcommingAppointments=(appointments)=>{
+    const currentDate=new Date()
+    const upcommingAppointments=appointments.reduce((acc,cur)=>{
+        const appointmentDate=parseISO(cur.date)
+        if(isAfter(appointmentDate,currentDate)){
+            acc.push(cur)
+        }
+        return acc;
+    },[])
+
+    return upcommingAppointments
+}
+
+const filterDoctorAppointments=(appointments,filterValue)=>{
+    const currentDate=new Date()
+    const filteredAppointments=appointments.reduce((acc,cur)=>{
+
+        if(filterValue=="today"){
+            const appointmentDate=parseISO(cur.date)
+            if((isToday(appointmentDate)) && (cur.status=="confirmed")){
+                acc.push(cur)
+            }
+        }
+
+        else if(filterValue=="all"){
+            return appointments
+        }
+
+        return acc;
+    },[])
+
+    return filteredAppointments
+}
+
+
+export {checkUpdatedData,specialityName,filterDoctorBySpecialty,createSchedule,getTotalDaysInMonth,filterUser,filterAppointments,getUpcommingAppointments,filterDoctorAppointments}

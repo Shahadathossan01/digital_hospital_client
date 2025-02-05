@@ -17,21 +17,7 @@ const Navbar=()=>{
   const [anchorElNav, setAnchorElNav] =useState(null);
   const {user,isLogoutUser,isLogIn}=useStoreState(state=>state.user)
   const {logoutUser}=useStoreActions(action=>action.user)
-  const [username,setUsername]=useState(null)
   const navigate=useNavigate()
-  // useEffect(()=>{
-  //   console.log(user?.role)
-  //   if(user?.username){
-  //     setUsername(user.username)
-  //   }
-  //   else{
-  //     const user=JSON.parse(localStorage.getItem("user"))
-  //     if(user?.username){
-  //       setUsername(user.username)
-  //     }
-  //   }
-  // },[user,isLogoutUser,isLogIn])
-
   useEffect(()=>{
   
   },[user,isLogIn,isLogoutUser])
@@ -180,40 +166,30 @@ const Navbar=()=>{
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {
-              user?.role=="patient" &&
+           
               <Link to="/" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button></Link>
-            }
-            {
-              user?.role=="patient" &&
-              <Link to="/availableDoctors" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Find Doctor</Button></Link>
-            }
-            {
+         
+              <Link to="/findDoctors" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Find Doctor</Button></Link>
+        
+            {/* {
               user?.role=="patient" &&
               <Link to="/appointment" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Appointment</Button></Link>
-            }
-            {
+            } */}
+            {/* {
               user?.role=="patient" &&
               <Link to="/record" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Records</Button></Link>
-            }
-            {
-              user?.role=="doctor" &&
-              <Link to="/reqAppointment" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Requested Appointment</Button></Link>
-            }
-            {
-              user?.role=="doctor" &&
-              <Link to="/docAppointment" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Appointment</Button></Link>
-            }
-            {
-              (!user || user?.role=="patient") &&
+            } */}
+              <Link to="/becomeADoctor" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Become a Doctor</Button></Link>
+        
+              {/* <Link to="/reqAppointment" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Requested Appointment</Button></Link> */}
+       
+          
+              {/* <Link to="/docAppointment" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Appointment</Button></Link> */}
+
               <Link to="/register" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Register</Button></Link>
 
-            }
-            {
-              (user?.role=="admin") &&
-              <Link to="/adminDashboard" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button></Link>
-
-            }
+        
+              {/* <Link to="/adminDashboard" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button></Link> */}
 
             {
               user?
@@ -221,23 +197,11 @@ const Navbar=()=>{
               :
               <Link to="/login" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
             }
-            {
-              user?.role=="patient" &&
+           
               <Link to="/PatientProfile" style={{textDecoration:'none'}}>
-              {/* <Badge anchorOrigin={{vertical: 'top',horizontal: 'right',}} sx={{'.MuiBadge-badge': {transform: 'scale(1) translate(-7%, -0%)'},pt: -3}} badgeContent={username}  color="secondary">
-              </Badge> */}
               <Button sx={{ my: 2, color: 'white', display: 'block' }}>Profile</Button>
               </Link>
-            }
-            {
-              user?.role=="doctor" &&
-              <Link to="/doctorProfile" style={{textDecoration:'none'}}>
-              {/* <Badge anchorOrigin={{vertical: 'top',horizontal: 'right',}} sx={{'.MuiBadge-badge': {transform: 'scale(1) translate(-7%, -0%)'},pt: -3}} badgeContent={username}  color="secondary">
-              </Badge> */}
-              <Button sx={{ my: 2, color: 'white', display: 'block' }}>Profile</Button>
-              </Link>
-            }
-
+           
           </Box>
         </Toolbar>
       </Container>

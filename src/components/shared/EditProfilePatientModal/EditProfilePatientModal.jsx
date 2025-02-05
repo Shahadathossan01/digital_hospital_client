@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
 import { useStoreActions } from 'easy-peasy';
-import { Grid } from '@mui/material';
+import { FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import { checkUpdatedData } from '../../../utils';
 
 const EditProfilePatientModal=({open,handleClose,userID})=>{
@@ -68,12 +68,14 @@ const EditProfilePatientModal=({open,handleClose,userID})=>{
            />
          </Grid>
          <Grid item xs={12} sm={6}>
-           <TextField
-             label="Gender"
-             {...register("gender")}
-             fullWidth
-             variant="outlined"
-           />
+         <FormControl fullWidth>
+                <InputLabel>Gender</InputLabel>
+                <Select {...register("gender")} name="gender">
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="other">Other</MenuItem>
+                </Select>
+              </FormControl>
          </Grid>
          <Grid item xs={12} sm={6}>
            <TextField

@@ -17,6 +17,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box, Button, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useStoreActions, useStoreState } from 'easy-peasy';
+import { Margin, Padding } from '@mui/icons-material';
 
 export default function ProfileAvatorCard({item}) {
      const { register, handleSubmit, reset } = useForm();
@@ -33,32 +34,38 @@ export default function ProfileAvatorCard({item}) {
         {
           (user.role=='patient') && updatePatientImage({userID,formData})
         }
+        reset()
     };
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
       <CardMedia
   component="img"
-  height="270"
-  image={item?.image}
+  image={item?.profile}
   alt="No image uploaded"
   sx={{
-    objectFit: 'cover', // Ensures the image covers the space without distortion
-  }}
+    width: 120,
+    height: 120,
+    borderRadius: "50%",
+    objectFit: "cover",
+}}
 />
-       <Box style={{ marginBottom: '10px' }}>
+       <Box style={{ marginBottom: '10px',marginTop:"10px"}}>
             <form onSubmit={handleSubmit(onSubmit)}>
                             <TextField 
+                                required
                                 {...register('image', { required: 'Please choose a file' })}
                                 type="file" 
                                 name="image" 
-                                variant="outlined"
-                                margin="normal"
+                                
+                          
                                 fullWidth
                             />
+                            <Box  sx={{display:"flex",justifyContent:"center",alignItems:"center",margin:1}}>
                             <Button type="submit" variant="contained" color="primary" size="small">
-                                Upload
+                                Upload New Photo
                             </Button>
-                            <hr />
+
+                            </Box>
             </form>
         </Box>
     </Card>

@@ -41,6 +41,7 @@ const PatientProfile = () => {
     };
 
     return (
+        <>
         <Grid container spacing={4} justifyContent="center" padding="20px">
         <Grid item xs={12} sm={10} md={8} lg={6}>
             <Card sx={{ boxShadow: 3, padding: 2 }}>
@@ -101,6 +102,7 @@ const PatientProfile = () => {
             </Card>
         </Grid>
     </Grid>
+    </>
     );
 };
 

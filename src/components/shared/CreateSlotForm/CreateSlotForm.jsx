@@ -14,7 +14,7 @@ const CreateSlotForm = ({ handleSlot }) => {
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}>
-      <Typography variant="h6">Create Slot</Typography>
+      <Typography color="blue" variant="h6">Create Your Default Slots</Typography>
       
       <TextField
         required
@@ -25,7 +25,7 @@ const CreateSlotForm = ({ handleSlot }) => {
         InputLabelProps={{ shrink: true }}
       />
       
-      <Button type="submit" variant="contained" sx={{ marginTop: 2 }}>
+      <Button color="secondary" type="submit" variant="contained" sx={{ marginTop: 2 }}>
         Add Slot
       </Button>
     </Box>

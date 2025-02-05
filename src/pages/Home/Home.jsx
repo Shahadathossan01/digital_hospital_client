@@ -10,10 +10,10 @@ import InstantVideo from "../../components/shared/InstantVideo/InstantVideo";
 import SearchDoctor from "../../components/shared/SearchDoctor/SearchDoctor";
 import Services from "../../components/shared/Services/Services";
 import HowItWorks from "../../components/shared/HowItworks/HowItWorks";
-import Footer from "../../components/shared/Footer/Footer";
-import WhyUseThis from "../../components/shared/WhyUseThis/WhyUseThis";
+import WhyChooseUs from "../../components/shared/WhyChooseUs/WhyChooseUs";
 
 const Home = () => {
+    
     return (
         <>
             <SearchDoctor></SearchDoctor>
@@ -26,9 +26,8 @@ const Home = () => {
             <BloodBankService></BloodBankService>
             <HomeBlogs></HomeBlogs>
             <HowItWorks></HowItWorks>
-            <WhyUseThis></WhyUseThis>
+            <WhyChooseUs></WhyChooseUs>
             <FrequentlyAsked></FrequentlyAsked>
-            <Footer></Footer>
         </>
     );
 };

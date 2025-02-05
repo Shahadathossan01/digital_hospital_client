@@ -20,22 +20,32 @@ const userModel={
     addRegisterError:action((state,payload)=>{
         state.registerError=payload
     }),
-    registerUser:thunk(async(actions,payload)=>{
-       const {username,email,password,navigate}=payload
+    registerUser:thunk(async(actions,{formData,navigate})=>{
        try{
-        const {data}=await axios.post('http://localhost:3000/register',{
-            username,
-            email,
-            password
-           })
+        const {data}=await axios.post('http://localhost:3000/register',formData,{headers:{"Content-Type":"multipart/form-data"}})
            actions.addRegisterData(data.user)
+           toast.success("Register completed!",{position:'top-right'})
+           if(data.user.role=="doctor") return
            navigate('/login')
-           toast.success("Register completed! Please login.. ",{position:'top-right'})
        }catch(e){
         console.log(e)
-        actions.addRegisterError(e.response.data.message)
+        actions.addRegisterError(e?.response?.data.message)
        }
     }),
+    // registerDoctor:thunk(async(actions,{formData,navigate})=>{
+       
+    //    try{
+    //     const {data}=await axios.post('http://localhost:3000/registerDoctor',formData,{
+    //         headers:{"Content-Type":"multipart/form-data"}
+    //     })
+           
+    //     //    navigate('/login')
+    //     //    toast.success("Register completed! Please login.. ",{position:'top-right'})
+    //    }catch(e){
+    //     console.log(e)
+    //     actions.addRegisterError(e.response.data.message)
+    //    }
+    // }),
     loginUser:thunk(async(actions,payload)=>{
         const {email,password}=payload.data
         const {navigate}=payload
@@ -48,9 +58,7 @@ const userModel={
         localStorage.setItem("token",data.token)
         localStorage.setItem("user",JSON.stringify(data.payload))
         toast.success('Login Successfully!',{position:'top-right'})
-        if(data.payload.role=='patient') return navigate('/')
-        if(data.payload.role=='doctor') return navigate('/docAppointment')
-        if(data.payload.role=='admin') return navigate('/adminDashboard')
+        return navigate("/")
         
     }),
     logoutUser:action((state,payload)=>{
@@ -59,7 +67,7 @@ const userModel={
         localStorage.removeItem("user")
         state.user=null
         state.isLogoutUser=true
-        navigate('/login')
+        navigate('/')
         
     })
 }
@@ -111,7 +119,6 @@ const doctorModel={
     }),
     updateDoctorImage:thunk(async(actions,payload)=>{
         const {userID,formData}=payload
-        console.log(userID)
         const {data}=await axios.patch(`http://localhost:3000/doctorImage/${userID}`,formData,{
             headers:{'Content-Type':'multipart/form-data'}
         })
@@ -129,6 +136,7 @@ const doctorModel={
     }),
     updateSchedule:thunk(async(actions,payload)=>{
         const {doctorID,schedule}=payload
+        console.log("finding",schedule)
         const {data}=await axios.patch(`http://localhost:3000/doctorSchedule/${doctorID}`,{
             schedule
         })
@@ -340,7 +348,7 @@ const appointmentModel={
             time,
             googleMeetLink,
             reqApplyedID,
-            status:"Accepted"
+            status:"confirmed"
         })
         actions.addUpdatedData(data)
     })
@@ -407,6 +415,36 @@ const adminModel={
         actions.addDeletedData(data)
      })
 }
+const promoCodeModel={
+    percentage:0,
+    error:null,
+    addError:action((state,payload)=>{
+        state.error=payload
+    }),
+    addPercentage:action((state,payload)=>{
+        state.percentage=payload
+    }),
+    getPercentage:thunk(async(actions,payload)=>{
+        try{
+            const {data}=await axios.post('http://localhost:3000/promoCodeValidate',{code:payload})
+        console.log(data)
+        if(data.valid){
+            actions.addPercentage(data.percentage)
+            actions.addError(null)
+        }else{
+            actions.addPercentage(0)
+            actions.addError(data.message)
+        }
+    }catch(error){
+            actions.addPercentage(0)
+            actions.addError(error.response?.data?.message || "Something went Wrong")
+        }
+    }),
+    resetPercentage:action((state,payload)=>{
+        state.percentage=0
+        state.error=null
+    })
+}
 
 const store=createStore({
     user:userModel,
@@ -418,7 +456,8 @@ const store=createStore({
     sslCommerz:sslCommerzModel,
     appointment:appointmentModel,
     applyedAppointment:applyedAppointmentModel,
-    admin:adminModel
+    admin:adminModel,
+    promoCode:promoCodeModel
 })
 
 export default store;

@@ -15,11 +15,12 @@ const AdminCreateUser = () => {
   const handleSlot = (time) => {
     setTimes((prev) => [...prev, time]);
   };
-
+  console.log(times)
+  console.log(schedule)
   const role = watch("role");
   const onSubmit = (data) => {
-    addUser({ data, schedule });
-    reset();
+    // addUser({ data, schedule });
+    // reset();
   };
 
   return (

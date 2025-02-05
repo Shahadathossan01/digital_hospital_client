@@ -1,5 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import HealthSpecialitiesList from "../HealthSpecialitiesList/HealthSpecialitiesList";
+import { useStoreActions, useStoreState } from "easy-peasy";
+import { useEffect } from "react";
 
 const Header = () => {
     return (
@@ -30,10 +32,18 @@ const Header = () => {
   };
 
 const HealthSpecialties = () => {
+   const { getDoctors } = useStoreActions((action) => action.doctor);
+  const { data } = useStoreState((state) => state.doctor);
+    useEffect(() => {
+      getDoctors();
+    }, [getDoctors]);
+    if(!data){
+      return
+    }
     return (
         <div>
             <Header></Header>
-            <HealthSpecialitiesList></HealthSpecialitiesList>
+            <HealthSpecialitiesList filterDoctor={data} home="true"></HealthSpecialitiesList>
         </div>
     );
 };

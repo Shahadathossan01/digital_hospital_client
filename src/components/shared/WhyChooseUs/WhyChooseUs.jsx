@@ -117,7 +117,7 @@ const Content=()=>{
     )
 }
 
-const WhyUseThis = () => {
+const WhyChooseUs = () => {
     return (
         <div>
             <Header></Header>
@@ -126,4 +126,4 @@ const WhyUseThis = () => {
     );
 };
 
-export default WhyUseThis;
+export default WhyChooseUs;

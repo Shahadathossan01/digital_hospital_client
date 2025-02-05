@@ -10,7 +10,7 @@ const RequestedAppointment = () => {
     const {updatedData}=useStoreState(state=>state.appointment)
     const {deleteData}=useStoreState(state=>state.applyedAppointment)
     const userID=user?.id
-    console.log(doctor)
+
     useEffect(()=>{
         getDoctorById(userID)
     },[getDoctorById,userID,updatedData,deleteData])

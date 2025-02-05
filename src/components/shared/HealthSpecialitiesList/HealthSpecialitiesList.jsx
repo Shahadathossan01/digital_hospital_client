@@ -1,67 +1,11 @@
 import { Box, Button, Grid } from "@mui/material";
 import SpecialitiesCard from "../ServiceList/SpecialitiesCard/SpecialitiesCard";
+import { Link } from "react-router-dom";
 
 
 
-const HealthSpecialitiesList = () => {
-    const doctors=[
-        {
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwhrDVk8HhQiusHNci8NZzfB0HbXJ-SInz1A&s", // Example image URL
-            name: "Dr. John Doe",
-            designation: "B.Sc & M.Sc in Cardiologist in London.Dhaka PG Hospial.",
-            rating: 4.5,
-            reviews: 120,
-            categoryName: "Heart Specialist",
-            fee: 50,
-        },
-        {
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwhrDVk8HhQiusHNci8NZzfB0HbXJ-SInz1A&s", // Example image URL
-            name: "Dr. John Doe",
-            designation: "B.Sc & M.Sc in Cardiologist in London.Dhaka PG Hospial.",
-            rating: 4.5,
-            reviews: 120,
-            categoryName: "Heart Specialist",
-            fee: 50,
-        },
-        {
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwhrDVk8HhQiusHNci8NZzfB0HbXJ-SInz1A&s", // Example image URL
-            name: "Dr. John Doe",
-            designation: "B.Sc & M.Sc in Cardiologist in London.Dhaka PG Hospial.",
-            rating: 4.5,
-            reviews: 120,
-            categoryName: "Heart Specialist",
-            fee: 50,
-        },
-        {
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwhrDVk8HhQiusHNci8NZzfB0HbXJ-SInz1A&s", // Example image URL
-            name: "Dr. John Doe",
-            designation: "B.Sc & M.Sc in Cardiologist in London.Dhaka PG Hospial.",
-            rating: 4.5,
-            reviews: 120,
-            categoryName: "Heart Specialist",
-            fee: 50,
-        },
-        {
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwhrDVk8HhQiusHNci8NZzfB0HbXJ-SInz1A&s", // Example image URL
-            name: "Dr. John Doe",
-            designation: "B.Sc & M.Sc in Cardiologist in London.Dhaka PG Hospial.",
-            rating: 4.5,
-            reviews: 120,
-            categoryName: "Heart Specialist",
-            fee: 50,
-        },
-        {
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwhrDVk8HhQiusHNci8NZzfB0HbXJ-SInz1A&s", // Example image URL
-            name: "Dr. John Doe",
-            designation: "B.Sc & M.Sc in Cardiologist in London.Dhaka PG Hospial.",
-            rating: 4.5,
-            reviews: 120,
-            categoryName: "Heart Specialist",
-            fee: 50,
-        },
-       
-       
-    ]
+const HealthSpecialitiesList = ({home,filterDoctor}) => {
+    const cardItem=home?filterDoctor?.slice(0,8):filterDoctor
     return (
         <Box sx={{ flexGrow: 1, padding: 2 }}>
       <Grid
@@ -75,7 +19,7 @@ const HealthSpecialitiesList = () => {
           alignItems: "center", // Center vertically
         }}
       >
-        {doctors.map((item) => (
+        {cardItem.map((item) => (
           <Grid
             item
             xs={12}
@@ -92,18 +36,23 @@ const HealthSpecialitiesList = () => {
           </Grid>
         ))}
       </Grid>
-      <Box sx={{display:"flex",justifyContent:"center",marginTop:"20px"}}>
+      {
+        home &&
+        <Box sx={{display:"flex",justifyContent:"center",marginTop:"20px"}}>
+          <Link to="/findDoctors">
       <Button
           variant="contained"
           color="secondary"
           sx={{
             borderRadius: 2,
-            paddingX: 4,
           }}
         >
           View All
         </Button>
+      </Link>
       </Box>
+
+      }
     </Box>
     
       );
