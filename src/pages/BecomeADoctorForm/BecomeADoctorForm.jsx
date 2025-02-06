@@ -195,6 +195,7 @@ const BecomeADoctorForm = () => {
       formData.append("degrees",data.degrees)
       formData.append("speciality",data.speciality)
       formData.append("yearOfExperience",data.yearOfExperience)
+      formData.append("username",data.username)
       formData.append("email",data.email)
       formData.append("password",data.password)
       formData.append("document",documentImage)
@@ -358,6 +359,9 @@ const BecomeADoctorForm = () => {
               <input type="file" name="file" onChange={(e)=>setDocumentImage(e.target.files[0])} id="profileImage" />
             </Grid>
             
+            <Grid size={{xs:12,sm:6,md:4,lg:3}}>
+              <TextField {...register("username")} type="text" label="Username" name="username" fullWidth />
+            </Grid>
             <Grid size={{xs:12,sm:6,md:4,lg:3}}>
               <TextField {...register("email")} type="email" label="Email" name="email" fullWidth />
             </Grid>

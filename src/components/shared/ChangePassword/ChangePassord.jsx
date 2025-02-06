@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import { useStoreState } from 'easy-peasy';
 
-const ChangePassword = () => {
+const ChangePassword = ({handleClose}) => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useStoreState((state) => state.user);
 
@@ -12,11 +12,12 @@ const ChangePassword = () => {
     console.log(data);
     // Add logic to handle password change here
     reset(); // Clear the form after submission
+    handleClose()
   };
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',p: 2 }}>
-      <Card sx={{ width: 400, boxShadow: 3, borderRadius: 2 }}>
+      <Box sx={{ width: 400}}>
         <CardContent>
           <Typography variant="h5" textAlign="center" fontWeight="bold" mb={3}>
             Change Password
@@ -56,7 +57,7 @@ const ChangePassword = () => {
             </Button>
           </form>
         </CardContent>
-      </Card>
+      </Box>
     </Box>
   );
 }

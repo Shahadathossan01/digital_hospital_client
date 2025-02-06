@@ -3,9 +3,11 @@ import Grid from '@mui/material/Grid2';
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useEffect, useState } from "react";
 import ProfileAvatorCard from "../../components/shared/ProfileAvatorCard/ProfileAvatorCard";
-import EditProfilePatientModal from "../../components/shared/EditProfilePatientModal/EditProfilePatientModal";
+import EditProfilePatientModal from "../../components/shared/EditPatientProfile/EditPatientProfile";
 import ChangePassword from "../../components/shared/ChangePassword/ChangePassord";
 import { format } from "date-fns";
+import OpenModal from "../../modal/OpenModal";
+import EditPatientProfile from "../../components/shared/EditPatientProfile/EditPatientProfile";
 
 const ProfileDetails=({patient})=>{
     const { user } = useStoreState((state) => state.user);
@@ -162,8 +164,13 @@ const MyProfile = () => {
                         >
                             Change Password
                         </Button>
-                        <EditProfilePatientModal userID={userID} open={open} handleClose={handleClose} />
-                        <ChangePassword userEmail={userEmail} userID={userID} openCP={openCP} handleCloseCP={handleCloseCP} />
+                        <OpenModal open={open} handleClose={handleClose}>
+                            <EditPatientProfile handleClose={handleClose} userID={userID}></EditPatientProfile>
+                        </OpenModal>
+                        {/* <EditProfilePatientModal userID={userID} open={open} handleClose={handleClose} /> */}
+                        <OpenModal handleClose={handleCloseCP} open={openCP}>
+                            <ChangePassword handleClose={handleCloseCP} userEmail={userEmail} userID={userID} />
+                        </OpenModal>
                         </Box>
                     </Grid>
                     <Grid size={{xs:12,sm:8,md:8}}>

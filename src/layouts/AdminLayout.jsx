@@ -47,40 +47,39 @@ const HeaderCard = ({ logo, number, title, subtitle }) => {
 };
 
 const Header=()=>{
-    const {getDoctorById}=useStoreActions(action=>action.doctor)
-    const {doctor}=useStoreState(state=>state.doctor)
-    const {user}=useStoreState(state=>state.user)
-    const {updatedData}=useStoreState(state=>state.appointment)
-    const {deleteData}=useStoreState(state=>state.applyedAppointment)
-    const userID=user?.id
-    useEffect(()=>{
-        getDoctorById(userID)
-    },[getDoctorById,userID,updatedData,deleteData])
+  const { getAllUser } = useStoreActions((action) => action.admin);
+  const { getAppointments } = useStoreActions((action) => action.appointment);
+  const { allUserData } = useStoreState((state) => state.admin);
+  const { appointments } = useStoreState((state) => state.appointment);
 
-    if(!doctor){
-       return null
-    }
+  useEffect(() => {
+    getAllUser();
+  }, [getAllUser]);
 
-    const totalRequested=doctor.applyForAppointments.length
-    const appointments=doctor?.appointments
-    const upcommingAppointments=getUpcommingAppointments(appointments)
-    const completedAppointment=doctor.appointments.filter(item=>item.status=="completed")
-    const cancelledAppointment=doctor.appointments.filter(item=>item.status=="cancelled")
+  useEffect(()=>{
+    getAppointments()
+  },[getAppointments])
+
+  if (!allUserData) return null;
+  const totalDoctors=allUserData.filter((item)=>item.role=="doctor")
+  const totalPatients=allUserData.filter((item)=>item.role=="patient")
+
+   
 
     return(
         <Box flexGrow={1}>
             <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:6,md:3}}>
-                    <HeaderCard number={totalRequested} title={"Requested"} subtitle={"appointments"} />
+                    <HeaderCard number={appointments.length} title={"Total"} subtitle={"Appointments"} />
                 </Grid>
                 <Grid size={{xs:12,sm:6,md:3}}>
-                    <HeaderCard number={upcommingAppointments?.length} title={"Upcomming"} subtitle={"appointments"} />
+                    <HeaderCard number={totalDoctors.length} title={"Total"} subtitle={"Doctors"}/>
                 </Grid>
                 <Grid size={{xs:12,sm:6,md:3}}>
-                    <HeaderCard number={completedAppointment.length} title={"Completed"} subtitle={"appointments"} />
+                    <HeaderCard number={totalPatients.length} title={"Total"} subtitle={"Patients"} />
                 </Grid>
                 <Grid size={{xs:12,sm:6,md:3}}>
-                    <HeaderCard number={cancelledAppointment.length} title={"Cancelled"} subtitle={"appointments"} />
+                    <HeaderCard number={0} title={"Cancelled"}/>
                 </Grid>
             </Grid>
         </Box>
@@ -98,11 +97,10 @@ const SideBarItem = () => {
           {/** Sidebar Items */}
           {[
             { text: "Dashboard", path: "/" },
-            { text: "Appointments", path: "/doctorAppointments" },
-            { text: "My Schedule", path: "/mySchedule" },
-            { text: "Profile", path: "/profile" },
-            { text: "Change Password", path: "/changePassword" },
-            { text: "Create New Account", path: "/createNewAccount" },
+            { text: "All Users", path: "/allUsers" },
+            { text: "Promo Code", path: "/promoCode" },
+            { text: "Add Doctor", path: "/addDoctor" },
+            { text: "Add Admin or Patient", path: "/addAdminOrPatient" }
           ].map(({ text, path }) => (
             <ListItem
               key={text}
@@ -141,7 +139,7 @@ const SideBarItem = () => {
       </Box>
     );
   };
-const DoctorLayout = () => {
+const AdminLayout = () => {
     return (
         <>
         <Box sx={{paddingTop:"10px",marginBottom:"10px"}} flexGrow={1}>
@@ -159,7 +157,7 @@ const DoctorLayout = () => {
                     <Header></Header>
                 </Box>
                     <hr />
-                    <Box sx={{bgcolor:"#40c4ff",padding:"10px"}}>
+                    <Box sx={{padding:"10px"}}>
                         <Outlet /> {/* Will display nested components */}
                     </Box>
             </Box>
@@ -170,4 +168,4 @@ const DoctorLayout = () => {
     );
 };
 
-export default DoctorLayout;
+export default AdminLayout;

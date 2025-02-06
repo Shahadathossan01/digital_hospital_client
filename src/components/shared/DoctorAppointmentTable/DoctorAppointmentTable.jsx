@@ -81,10 +81,8 @@ const AppointmentTableRow=({item,index,dashboard})=>{
     )
 }
 
-const AppointmentTableBody=({dashboard,appointments})=>{
-     const [filterValue,setFilterValue]=useState(dashboard?"today":"all")
-
-     const filteredDoctorAppointment=filterDoctorAppointments(appointments,filterValue)
+const AppointmentTableBody=({dashboard,filteredDoctorAppointment})=>{
+     
 
       if(filteredDoctorAppointment?.length==0){
         return (
@@ -115,9 +113,32 @@ const AppointmentTableBody=({dashboard,appointments})=>{
 }
 
 export default function DoctorAppointmentTable({dashboard,appointments}) {
+
+
+  const [filterValue,setFilterValue]=useState(dashboard?"today":"all")
+
+     const handleFilterValue=(data)=>{
+      setFilterValue(data)
+     }
+     console.log(filterValue)
+     const filteredDoctorAppointment=filterDoctorAppointments(appointments,filterValue)
+
   const columns = ["No","Docto Name","Created","Schedule Start","Status","Action"]
 
   return (
+    <>
+    <Box sx={{display:"flex",alignItems:"center",gap:1}}>
+      <Typography>Filter By:</Typography>
+      <form>
+         <select onChange={(e)=>{handleFilterValue(e.target.value)}}>
+           <option value="all">All</option>
+           <option value="panding">Panding</option>
+           <option value="confirmed">Confirmed</option>
+           <option value="completed">Completed</option>
+           <option value="cancelled">Cancelled</option>
+         </select>
+      </form>
+    </Box>
     <Box sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 400}}>
         <Table stickyHeader aria-label="sticky table">
@@ -134,9 +155,10 @@ export default function DoctorAppointmentTable({dashboard,appointments}) {
               ))}
             </TableRow>
           </TableHead>
-          <AppointmentTableBody appointments={appointments} dashboard={dashboard}></AppointmentTableBody>
+          <AppointmentTableBody filteredDoctorAppointment={filteredDoctorAppointment} dashboard={dashboard}></AppointmentTableBody>
         </Table>
       </TableContainer>
     </Box>
+    </>
   );
 }

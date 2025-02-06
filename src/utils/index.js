@@ -109,6 +109,9 @@ const filterDoctorAppointments=(appointments,filterValue)=>{
         else if(filterValue=="all"){
             return appointments
         }
+        else if(cur.status==filterValue){
+            acc.push(cur)
+        }
 
         return acc;
     },[])

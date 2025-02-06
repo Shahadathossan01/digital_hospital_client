@@ -6,10 +6,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { useForm } from 'react-hook-form';
 import { useStoreActions } from 'easy-peasy';
-import { FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { checkUpdatedData } from '../../../utils';
 
-const EditProfilePatientModal=({open,handleClose,userID})=>{
+const EditPatientProfile=({userID,handleClose})=>{
     const {updateProfile}=useStoreActions(action=>action.patient)
   const {register,handleSubmit,reset}=useForm()
   const onSubmit=(data)=>{
@@ -20,9 +20,9 @@ const EditProfilePatientModal=({open,handleClose,userID})=>{
   }
 
   return (
-   <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-   <DialogContent>
-     <form onSubmit={handleSubmit(onSubmit)}>
+    <Box>
+      <Typography sx={{textAlign:"center",paddingBottom:"20px"}} variant='h6' color='info'>Edit Your Profile</Typography>
+      <form onSubmit={handleSubmit(onSubmit)}>
        <Grid container spacing={2}>
          <Grid item xs={12} sm={6}>
            <TextField
@@ -123,22 +123,15 @@ const EditProfilePatientModal=({open,handleClose,userID})=>{
            />
          </Grid>
        </Grid>
-       <Grid container justifyContent="flex-end" spacing={2} mt={3}>
-         <Grid item>
-           <Button type="submit" variant="contained" color="primary">
-             Save
+         <Box sx={{marginTop:"20px",display:"flex",justifyContent:"center"}}>
+           <Button sx={{width:"100%"}} type="submit" variant="contained" color="primary">
+             Edit
            </Button>
-         </Grid>
-       </Grid>
+         </Box>
+       
      </form>
-   </DialogContent>
-   <DialogActions>
-     <Button onClick={handleClose} variant="outlined" color="secondary">
-       Cancel
-     </Button>
-   </DialogActions>
- </Dialog>
+    </Box>
   );
 }
 
-export default EditProfilePatientModal
+export default EditPatientProfile

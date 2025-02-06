@@ -40,7 +40,7 @@ export default function ProfileAvatorCard({item}) {
     <Card sx={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
       <CardMedia
   component="img"
-  image={item?.profile}
+  image={user.role=="doctor"?item?.profile:item?.image}
   alt="No image uploaded"
   sx={{
     width: 120,

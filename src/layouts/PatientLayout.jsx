@@ -39,7 +39,7 @@ const PatientLayout = () => {
                 <Grid size={{xs:12,sm:12,md:8}} sx={{bgcolor:"white"}}>
             <Box  px={3} sx={{marginTop:{xs:"-10px",sm:"-10px",md:0},padding:2, borderRadius: 2,
                 p: 2,
-                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",height:"500px"}}>
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",minHeight:"500px"}}>
                 <Outlet /> {/* Will display nested components */}
             </Box>
                 </Grid>

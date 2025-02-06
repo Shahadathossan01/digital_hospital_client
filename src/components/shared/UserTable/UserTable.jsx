@@ -28,8 +28,8 @@ const UserTable = ({ users }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Number</TableCell>
-            <TableCell>Username</TableCell>
+            <TableCell>No.</TableCell>
+            <TableCell>Name</TableCell>
             <TableCell>Role</TableCell>
             <TableCell>Email</TableCell>
             <TableCell>Password</TableCell>
@@ -51,7 +51,7 @@ const UserTable = ({ users }) => {
           >
             <PersonOffIcon sx={{ fontSize: 50, color: "gray" }} />
             <Typography variant="h6" color="textSecondary">
-              No users found
+              No users f
             </Typography>
             </Box>
             :
@@ -59,7 +59,7 @@ const UserTable = ({ users }) => {
           {users.map((user, index) => (
             <TableRow key={user.id}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{user.username}</TableCell>
+              <TableCell>{user?.username?user.username:user.firstName}</TableCell>
               <TableCell>{user.role}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>

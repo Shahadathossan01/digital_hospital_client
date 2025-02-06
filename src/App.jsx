@@ -22,7 +22,7 @@ import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import AdminCreateUser from "./pages/AdminCreateUser/AdminCreateUser";
 import BookAppointment from "./pages/BookAppointment/BookAppointment";
 import PaymentPage from "./pages/PaymentPage/PaymentPage";
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Cancel from "./pages/Cancel/Cancel";
@@ -32,10 +32,18 @@ import DoctorAppointments from "./pages/DoctorAppointments/DoctorAppointments";
 import MySchedule from "./pages/MySchedule/MySchedule";
 import ChangePassword from "./components/shared/ChangePassword/ChangePassord";
 import CreateNewAccount from "./components/shared/CreateNewAccount/CreateNewAccount";
+import Users from "./pages/Users/Users";
+import AdminLayout from "./layouts/AdminLayout";
+import AllUsers from "./pages/Users/Users";
+import PromoCode from "./pages/PromoCode/PromoCode";
+import AddDoctor from "./pages/AddDoctor/AddDoctor";
+import AddAdminOrPatient from "./pages/AddAdminOrPatient/AddAdminOrPatient";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
-  console.log(user)
+
+
+
 //   const  routes=createBrowserRouter([
 //     {
 //         path:'/',
@@ -192,7 +200,11 @@ function App() {
         {
           user?.role=="admin" &&
           <>
-            <Route path="/" element={<h1 style={{height:"500px",backgroundColor:"green"}}></h1>}>
+            <Route path="" element={<AdminLayout></AdminLayout>}> 
+              <Route path="allUsers" element={<AllUsers></AllUsers>}/>
+              <Route path="promoCode" element={<PromoCode></PromoCode>}/>
+              <Route path="addDoctor" element={<AddDoctor></AddDoctor>}/>
+              <Route path="addAdminOrPatient" element={<AddAdminOrPatient></AddAdminOrPatient>}/>
 
             </Route>
           </>

@@ -16,7 +16,6 @@ const Prescription = ({ item, targetRef, isDoctor }) => {
 
   if (!item) return null;
 
-  console.log(item.patient)
   const { patient, doctor, prescription } = item;
   // const { firstName, lastName, age, gender, blood, height, weight } = patient.profile;
   const appointmentID = item?._id;

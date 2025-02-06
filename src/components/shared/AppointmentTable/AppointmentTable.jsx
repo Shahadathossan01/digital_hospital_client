@@ -117,10 +117,9 @@ const AppointmentTableBody=({filterValue})=>{
           sx={{
             textAlign: "center",
             color: "text.secondary",
-            mt: 5,
           }}
         >
-          No appointments found.
+          No Data
         </Typography>
         )
       }

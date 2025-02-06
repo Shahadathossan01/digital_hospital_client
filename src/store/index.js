@@ -3,6 +3,7 @@ import { action, createStore, thunk } from "easy-peasy"
 import { toast } from "react-toastify"
 
 const userModel={
+    allUsers:[],
     registerData:null,
     registerError:null,
     isLogoutUser:false,
@@ -69,6 +70,13 @@ const userModel={
         state.isLogoutUser=true
         navigate('/')
         
+    }),
+    addAllUsers:action((state,payload)=>{
+        state.allUsers=payload
+    }),
+    getAllUsers:thunk(async(actions,payload)=>{
+        const {data}=await axios.get("http://localhost:3000/users")
+        actions.addAllUsers(data)
     })
 }
 const doctorModel={
@@ -335,12 +343,15 @@ const medicalRecordModel={
     })
 }
 const appointmentModel={
+    appointments:[],
+    addAppointments:action((state,payload)=>{
+        state.appointments=payload
+    }),
     updatedData:null,
     addUpdatedData:action((state,payload)=>{
         state.updatedData=payload
     }),
     updateAppointment:thunk(async(actions,payload)=>{
-        console.log(payload)
         const {appointmentID,reqApplyedID,date,time}=payload
         const {googleMeetLink}=payload.data
         const {data}=await axios.patch(`http://localhost:3000/appointments/${appointmentID}`,{
@@ -351,7 +362,12 @@ const appointmentModel={
             status:"confirmed"
         })
         actions.addUpdatedData(data)
+    }),
+    getAppointments:thunk(async(actions,payload)=>{
+        const {data}=await axios.get("http://localhost:3000/appointments")
+        actions.addAppointments(data)
     })
+
 }
 const applyedAppointmentModel={
     deleteData:null,
@@ -382,17 +398,13 @@ const adminModel={
         state.data=payload
     }),
     addUser:thunk(async(actions,payload)=>{
-        const {username,email,password,role,category,fee}=payload.data
-        const {schedule}=payload
+        const {username,email,password,role}=payload.data
         try{
          const {data}=await axios.post('http://localhost:3000/register',{
              username,
              email,
              password,
              role,
-             category,
-             schedule,
-             fee
             })
             actions.addUserData(data.user)
             toast.success("Created New User.",{position:'top-right'})
@@ -416,13 +428,38 @@ const adminModel={
      })
 }
 const promoCodeModel={
+    createdPromoData:null,
+    allPromoData:[],
     percentage:0,
     error:null,
+    deletedData:null,
+    updatedData:null,
     addError:action((state,payload)=>{
         state.error=payload
     }),
     addPercentage:action((state,payload)=>{
         state.percentage=payload
+    }),
+    addPromoData:action((state,payload)=>{
+        state.createdPromoData=payload
+    }),
+    createPromoCode:thunk(async(actions,{data:createData})=>{
+        try{
+            const {data}=await axios.post(`http://localhost:3000/promoCode`,createData)
+            console.log(data)
+            actions.addPromoData(data)
+            actions.addError(null)
+            toast.success("Created a New Promo Code",{position:'top-right'})
+        }catch(e){
+            actions.addError(e?.response?.data?.message)
+        }
+    }),
+    addAllPromoData:action((state,payload)=>{
+        state.allPromoData=payload
+    }),
+    getAllPromoCode:thunk(async(actions,payload)=>{
+        const {data}=await axios.get('http://localhost:3000/promoCodes')
+        actions.addAllPromoData(data)
     }),
     getPercentage:thunk(async(actions,payload)=>{
         try{
@@ -440,10 +477,52 @@ const promoCodeModel={
             actions.addError(error.response?.data?.message || "Something went Wrong")
         }
     }),
+    addDeletedData:action((state,payload)=>{
+        state.deletedData=payload
+    }),
+    deletePromoCode:thunk(async(actions,{id})=>{
+        try{
+            const {data}=await axios.delete(`http://localhost:3000/promoCodes/${id}`)
+            console.log(data)
+            actions.addDeletedData(data)
+            actions.addError(null)
+            toast.success("Deleted Successfully",{position:'top-right'})
+        }catch(e){
+            actions.addError(e?.response?.data?.message)
+        }
+
+    }),
+    addUpdatedData:action((state,payload)=>{
+        state.updatedData=payload
+    }),
+    updatePromoCode:thunk(async(actions,{id,data:updateData})=>{
+        try{
+            const {data}=await axios.patch(`http://localhost:3000/promoCodes/${id}`,updateData)
+            actions.addUpdatedData(data)
+        }catch(e){
+            console.log(e)
+        }
+    }),
+
     resetPercentage:action((state,payload)=>{
         state.percentage=0
         state.error=null
     })
+}
+const superAdminModel={
+    createdData:null,
+    addCreatedAdmin:action((state,payload)=>{
+        state.createdData=payload
+    }),
+    createSuperAdmin:thunk(async(actions,payload)=>{
+        const {data}=await axios.post(`http://localhost:3000/register`,{
+            username:"Super Admin",
+            email:"super_admin@gmail.com",
+            password:"super_admin@1",
+            role:"super_admin"
+        })
+        actions.addCreatedAdmin(data)
+    }),
 }
 
 const store=createStore({
@@ -457,7 +536,8 @@ const store=createStore({
     appointment:appointmentModel,
     applyedAppointment:applyedAppointmentModel,
     admin:adminModel,
-    promoCode:promoCodeModel
+    promoCode:promoCodeModel,
+    superAdmin:superAdminModel
 })
 
 export default store;

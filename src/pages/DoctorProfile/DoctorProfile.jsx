@@ -1,6 +1,6 @@
 import { format, isEqual, set } from "date-fns";
 import { useStoreActions, useStoreState } from "easy-peasy";
-import EditProfilePatientModal from "../../components/shared/EditProfilePatientModal/EditProfilePatientModal";
+import EditProfilePatientModal from "../../components/shared/EditPatientProfile/EditPatientProfile";
 import { useEffect, useState } from "react";
 import { Box, Button, Typography, Card, CardContent, Divider, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, IconButton } from "@mui/material";
 import ChangePassword from "../../components/shared/ChangePassword/ChangePassord";
