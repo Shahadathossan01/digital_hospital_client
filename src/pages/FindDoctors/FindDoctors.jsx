@@ -50,11 +50,10 @@ const FilterSection = ({specialty,handleFilterValue}) => {
 const FindDoctors = () => {
   const { getDoctors } = useStoreActions((action) => action.doctor);
   const { data } = useStoreState((state) => state.doctor);
-  const specialty = specialityName(data);
+  
   const [filterValue, setFilterValue] = useState("all");
 
-  const filterDoctor = filterDoctorBySpecialty(data, filterValue);
-
+  
   const handleFilterValue=(value)=>{
     setFilterValue(value)
   }
@@ -64,28 +63,28 @@ const FindDoctors = () => {
   if (!data) {
     return (
       <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-        }}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
       >
         <CircularProgress />
       </Box>
     );
   }
-
+  
   if (data.length === 0) {
     return (
       <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-          textAlign: "center",
-        }}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        textAlign: "center",
+      }}
       >
         <Typography variant="h4" color="textSecondary">
           There is no doctor available
@@ -93,7 +92,11 @@ const FindDoctors = () => {
       </Box>
     );
   }
+  
+  const filterValidDoctor=data.filter((item)=>item.isValid===true)
+  const specialty = specialityName(filterValidDoctor);
 
+  const filterDoctor = filterDoctorBySpecialty(filterValidDoctor, filterValue);
   return (
     <Box sx={{paddingTop:"50px"}}>
       <Typography>Select Doctor</Typography>

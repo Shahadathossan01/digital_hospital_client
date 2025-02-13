@@ -5,7 +5,7 @@ const Header = () => {
     return (
       <Box sx={{ textAlign: 'center', marginBottom: 3 ,marginTop:3}}>
         <Typography 
-          variant="h4" 
+          variant="h7" 
           sx={{ 
             fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem', lg: '3rem' }, 
             fontWeight: 'bold', 
@@ -93,16 +93,13 @@ const HowItWorkCard = ({ item, iconColor = "#ff9800" }) => {
         }
     ]
     return (
-        <Box sx={{ flexGrow: 1}}>
+        <Box sx={{display:"flexs",justifyContent:"center",alignItems:"center"}}>
               <Grid
                 container
                 spacing={2}
                 sx={{
-                  justifyContent: {
-                    xs: "center", // Center horizontally on small screens
-                    sm: "flex-start", // Default alignment on larger screens
-                  },
-                  alignItems: "center", // Center vertically
+                  justifyContent:"center"
+                 
                 }}
               >
                 {steps.map((item) => (
@@ -128,10 +125,10 @@ const HowItWorkCard = ({ item, iconColor = "#ff9800" }) => {
 
 const HowItWorks = () => {
     return (
-        <>
+        <Box sx={{marginTop:"70px"}}>
             <Header></Header>
             <HowItWorksList></HowItWorksList>
-        </>
+        </Box>
     );
 };
 

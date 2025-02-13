@@ -5,7 +5,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const TestRecommendation = ({ item, pdf ,isDoctor,index}) => {
-  console.log(isDoctor)
     const { register, handleSubmit, reset } = useForm();
     const { uploadTestResult,deleteTest } = useStoreActions((action) => action.testRecommendation);
     const id = item._id;

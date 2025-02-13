@@ -49,20 +49,30 @@ const HeaderCard = ({ logo, number, title, subtitle }) => {
 const Header=()=>{
   const { getAllUser } = useStoreActions((action) => action.admin);
   const { getAppointments } = useStoreActions((action) => action.appointment);
+  const {registerData}=useStoreState(state=>state.user)
   const { allUserData } = useStoreState((state) => state.admin);
   const { appointments } = useStoreState((state) => state.appointment);
 
-  useEffect(() => {
-    getAllUser();
-  }, [getAllUser]);
+  const {getDoctors}=useStoreActions(actions=>actions.doctor)
+    const {data,deleteDoctorData,updatedProfileData}=useStoreState(state=>state.doctor)
 
-  useEffect(()=>{
-    getAppointments()
-  },[getAppointments])
+    useEffect(()=>{
+        getDoctors()
+    },[getDoctors,deleteDoctorData,updatedProfileData,registerData])
 
-  if (!allUserData) return null;
-  const totalDoctors=allUserData.filter((item)=>item.role=="doctor")
-  const totalPatients=allUserData.filter((item)=>item.role=="patient")
+    
+    useEffect(() => {
+      getAllUser();
+    }, [getAllUser,deleteDoctorData,registerData]);
+    
+    useEffect(()=>{
+      getAppointments()
+    },[getAppointments])
+    
+    if (allUserData.length==0 || data.length==0) return null;
+    const totalAdmins=allUserData.filter((item)=>item.role=="admin")
+    const totalPatients=allUserData.filter((item)=>item.role=="patient")
+    const filterRequestedDoctor=data?.filter(item=>item.isValid===false)
 
    
 
@@ -70,16 +80,16 @@ const Header=()=>{
         <Box flexGrow={1}>
             <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:6,md:3}}>
-                    <HeaderCard number={appointments.length} title={"Total"} subtitle={"Appointments"} />
+                    <HeaderCard number={filterRequestedDoctor?.length} title={"Total Requested"} subtitle={"Doctors"}/>
                 </Grid>
                 <Grid size={{xs:12,sm:6,md:3}}>
-                    <HeaderCard number={totalDoctors.length} title={"Total"} subtitle={"Doctors"}/>
+                    <HeaderCard number={appointments.length} title={"Total"} subtitle={"Appointments"} />
                 </Grid>
                 <Grid size={{xs:12,sm:6,md:3}}>
                     <HeaderCard number={totalPatients.length} title={"Total"} subtitle={"Patients"} />
                 </Grid>
                 <Grid size={{xs:12,sm:6,md:3}}>
-                    <HeaderCard number={0} title={"Cancelled"}/>
+                    <HeaderCard number={totalAdmins.length} title={"Total"} subtitle={"Admins"} />
                 </Grid>
             </Grid>
         </Box>
@@ -122,15 +132,20 @@ const SideBarItem = () => {
   
           {/** Logout Button */}
           <ListItem
-            onClick={() => logoutUser({navigate})}
+            component="button"
+            onClick={() => {
+              logoutUser()
+              navigate("/")
+            }}
             sx={{
+              border:"none",
               borderRadius: "10px",
               bgcolor: "rgba(202, 34, 4, 0.86)",
-              color: "white",
+              color:  "white",
               padding: "0px 10px",
               boxShadow: "3px 5px 20px rgba(131, 76, 4, 0.65)",
             }}
-            button
+            
           >
             <ListItemText sx={{ textAlign: "center" }} primary="Logout" />
           </ListItem>
@@ -140,8 +155,14 @@ const SideBarItem = () => {
     );
   };
 const AdminLayout = () => {
+  const {user}=useStoreState(state=>state.user)
     return (
         <>
+        <Box  sx={{fontWeight:"bold",textAlign:"center",bgcolor:"green",color:"white",p:1}}>
+          <Typography><span style={{color:"yellow"}}>Hello,</span> {user?.username} [<span style={{color:"#ffca28",fontWeight:"bold"}}>{user?.role=="doctor"?"Doctor":"Admin"}</span>]</Typography>
+          <Typography variant="h3">Welcome to Your Dashboard!</Typography>
+
+        </Box>
         <Box sx={{paddingTop:"10px",marginBottom:"10px"}} flexGrow={1}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12,md:3}}>

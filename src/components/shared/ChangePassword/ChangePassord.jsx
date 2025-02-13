@@ -16,7 +16,7 @@ const ChangePassword = ({handleClose}) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',p: 2 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',p: 2 ,bgcolor:"white"}}>
       <Box sx={{ width: 400}}>
         <CardContent>
           <Typography variant="h5" textAlign="center" fontWeight="bold" mb={3}>

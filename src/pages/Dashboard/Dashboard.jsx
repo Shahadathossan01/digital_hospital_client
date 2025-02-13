@@ -44,7 +44,7 @@ const ReqAppointmentCard = ({ item}) => {
         <Typography
           sx={{
             fontWeight: "bold",
-            color: status === "Payed" ? "green" : "gray",
+            color: item?.status === "Payed" ? "green" : "gray",
           }}
         >
          Status: {item?.status}
@@ -125,7 +125,6 @@ const Dashboard = () => {
     const localMonth=format(localDate,"M")
     // console.log("sc",scheduleMonth, "lo",localMonth)
     const areMonthsEqual=isEqual(scheduleMonth,localMonth)
-    console.log(areMonthsEqual)
 
     if(!areMonthsEqual){
       const date = new Date();

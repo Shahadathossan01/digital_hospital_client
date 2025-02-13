@@ -16,7 +16,7 @@ const Header = () => {
           color: 'primary.main',
         }}
       >
-        Frequently asked Questions?
+        Frequently Asked Questions?
       </Typography>
       <Typography
     variant="body1"
@@ -35,7 +35,7 @@ const Header = () => {
 
 const FrequentlyAskedCard=({item})=>{
   return (
-    <Accordion sx={{ backgroundColor: '#263238', color: 'white', borderRadius: 2, marginBottom: 2 }}>
+    <Accordion sx={{ backgroundColor: '#263238', color: 'white', borderRadius: 2, marginBottom: 6 }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
           aria-controls="panel1-content"
@@ -85,9 +85,9 @@ const FrequentlyAskedList=()=>{
 
 export default function FrequentlyAsked() {
   return (
-    <>
+    <Box sx={{marginTop:"80px",marginBottom:"30px"}}>
       <Header></Header>
       <FrequentlyAskedList></FrequentlyAskedList>
-    </>
+    </Box>
   );
 }

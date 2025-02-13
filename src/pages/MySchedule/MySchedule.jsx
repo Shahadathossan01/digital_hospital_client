@@ -9,7 +9,8 @@ import { useEffect } from "react";
 import { createSchedule, getTotalDaysInMonth } from "../../utils";
 
 
-const ScheduleTableRow=({day,doctorID,addNewSlot,deleteSlot})=>{
+const ScheduleTableRow=({day,doctorID,deleteSlot})=>{
+  const {addNewSlot} = useStoreActions((action) => action.doctor);
   if(!day) return null
   
   return (
@@ -39,8 +40,8 @@ const ScheduleTableRow=({day,doctorID,addNewSlot,deleteSlot})=>{
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {day.slots.map((slot) => (
-                        <TableRow key={slot._id.$oid}>
+                      {day?.slots.map((slot) => (
+                        <TableRow key={slot._id}>
                           <TableCell>
                             <Typography>{slot.time}</Typography>
                           </TableCell>

@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useForm } from 'react-hook-form';
 import { useStoreActions } from 'easy-peasy';
 import { checkUpdatedData } from '../../../utils';
+import { format, parse } from 'date-fns';
 
 export default function EditScheduleSlotStatusModal({
   open,
@@ -25,12 +26,15 @@ export default function EditScheduleSlotStatusModal({
     const updatedData = checkUpdatedData(data);
     const { time, status } = updatedData;
 
+    const formatedTime=time && format(parse(time, "HH:mm", new Date()),"h:mm a")
+    console.log(formatedTime)
+    
     if (time || status) {
       updateScheduleSlotStatus({
         doctorID,
         slotID,
         scheduleID,
-        ...(time && { time }),
+        ...(formatedTime && { formatedTime }),
         ...(status && { status }),
       });
     }

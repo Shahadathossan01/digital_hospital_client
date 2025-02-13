@@ -4,7 +4,6 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { useStoreActions } from "easy-peasy";
 
 const AddMedicineForm = ({prescriptionID}) => {
-    console.log(prescriptionID)
     const {createMedicine}=useStoreActions(action=>action.prescription)
     const { control, handleSubmit, setValue ,reset} = useForm({
         defaultValues: {

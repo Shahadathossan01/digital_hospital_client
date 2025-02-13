@@ -101,7 +101,7 @@ const filterDoctorAppointments=(appointments,filterValue)=>{
 
         if(filterValue=="today"){
             const appointmentDate=parseISO(cur.date)
-            if((isToday(appointmentDate)) && (cur.status=="confirmed")){
+            if((isToday(appointmentDate)) && (cur.status=="confirmed" || cur.status=="completed")){
                 acc.push(cur)
             }
         }

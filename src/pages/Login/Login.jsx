@@ -1,15 +1,24 @@
 import { useStoreActions } from 'easy-peasy';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Grid, Box, Typography, TextField, Button } from '@mui/material';
 
 const Login = () => {
     const { register, handleSubmit } = useForm();
-    const { loginUser } = useStoreActions(action => action.user);
-    const navigate = useNavigate();
+    const { loginUser} = useStoreActions(action => action.user);
+    // const { user} = useStoreActions(state=>state.user);
+    const navigate=useNavigate()
+    const location=useLocation()
+    const from=location.state?.from?.pathname || "/"
 
-    const onSubmit = (data) => {
-        loginUser({ data, navigate });
+    const onSubmit = async(data) => {
+       await loginUser({ data});
+       const user=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):null
+       if(user?.role=="patient"){
+          navigate(from,{replace:true})
+          return
+        }
+         navigate("/")
     };
 
     return (

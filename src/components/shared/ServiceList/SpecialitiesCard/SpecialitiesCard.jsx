@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, Typography, Button, CardMedia, Box, Rating } from "@mui/material";
 import { Link } from "react-router-dom";
+import DoctorProfileModal from "../../../../modal/DoctorProfileModal";
 
 const SpecialitiesCard = ({ item }) => {
+  const [open, setOpen] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+
+  const handleOpenModal = (doctor) => {
+    setSelectedDoctor(doctor);
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+    setSelectedDoctor(null);
+  };
+
+
+
   return (
     <Card sx={{ borderRadius: 2, boxShadow: 3 }}>
       {/* Image */}
@@ -56,11 +72,12 @@ const SpecialitiesCard = ({ item }) => {
           </Link>
 
           {/* View Profile Button */}
-          <Button variant="outlined" color="primary" sx={{ flex: 1 }}>
+          <Button  onClick={() => handleOpenModal(item)} variant="outlined" color="primary" sx={{ flex: 1 }}>
             View Profile
           </Button>
         </Box>
       </CardContent>
+      <DoctorProfileModal open={open} handleClose={handleCloseModal} item={selectedDoctor}></DoctorProfileModal>
     </Card>
   );
 };

@@ -31,7 +31,7 @@ const ImageCarousel = () => {
   };
 
   const images = [
-    "https://thumbs.dreamstime.com/b/medicine-doctor-analysis-electronic-medical-record-interface-display-dna-digital-healthcare-network-connection-hologram-162019589.jpg",
+    "https://res.cloudinary.com/dmel68anu/image/upload/v1739467963/syhrycaeg1sbkubwq8xv.jpg",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrgF4b8DkghsDsdWgHByRnYb1bWZp015F1zw&s",
   ];
 
@@ -41,6 +41,7 @@ const ImageCarousel = () => {
         width: "100%",
         overflow: "hidden", // Ensures no part of the previous/next image is visible
         position: "relative", // Needed for dots to position correctly
+        marginTop:"30px"
       }}
     >
       <Slider {...settings}>
@@ -51,7 +52,7 @@ const ImageCarousel = () => {
               alt={`Slide ${index + 1}`}
               style={{
                 width: "100%",
-                height: "300px", // Set height for images
+                height: "350px", // Set height for images
                 objectFit: "cover", // Ensures the image scales proportionally
                 borderRadius: "10px", // Optional rounded corners
               }}

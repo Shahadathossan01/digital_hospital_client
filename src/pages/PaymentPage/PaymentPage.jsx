@@ -65,6 +65,7 @@ const PromoSection=()=>{
 }
 
 const BillSection=({patientData})=>{
+    console.log(patientData)
     const {percentage,error}=useStoreState(state=>state.promoCode)
     const discountAmount=(patientData.fee*percentage)/100;
     const totalFee=patientData.fee-discountAmount

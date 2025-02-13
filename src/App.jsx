@@ -1,28 +1,22 @@
 
-import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import ScrollToTop from "./components/shared/ScrollToTop/ScrollToTop";
 import Main from "./layouts/Main";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import FindDoctors from "./pages/FindDoctors/FindDoctors";
 import Register from "./pages/Register/Register";
-import Appointment from "./pages/Appointment/Appointment";
 import BecomeADoctor from "./pages/BecomeADoctor/BecomeADoctor";
 import BecomeADoctorForm from "./pages/BecomeADoctorForm/BecomeADoctorForm";
-import PatientLayout from "./layouts/PatientLayout";
+import PatientProfileLayout from "./layouts/PatientProfileLayout";
 import MyProfile from "./pages/MyProfile/MyProfile";
 import MyAppointments from "./pages/MyAppointment/MyAppointment";
-import MyEmergencyService from "./pages/MyEmergencyService/MyEmergencyService";
-import MedicalRecord from "./pages/MedicalRecord/MedicalRecord";
 import Success from "./pages/Success/Success";
 import Fail from "./pages/Fail/Fail";
 import RequestedAppointment from "./pages/RequestedAppointment/RequestedAppointment";
-import DoctorAppointment from "./pages/DoctorAppointment/DoctorAppointment";
 import DoctorProfile from "./pages/DoctorProfile/DoctorProfile";
-import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
-import AdminCreateUser from "./pages/AdminCreateUser/AdminCreateUser";
 import BookAppointment from "./pages/BookAppointment/BookAppointment";
 import PaymentPage from "./pages/PaymentPage/PaymentPage";
-import { useStoreActions, useStoreState } from "easy-peasy";
+import { useStoreState } from "easy-peasy";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Cancel from "./pages/Cancel/Cancel";
@@ -32,12 +26,22 @@ import DoctorAppointments from "./pages/DoctorAppointments/DoctorAppointments";
 import MySchedule from "./pages/MySchedule/MySchedule";
 import ChangePassword from "./components/shared/ChangePassword/ChangePassord";
 import CreateNewAccount from "./components/shared/CreateNewAccount/CreateNewAccount";
-import Users from "./pages/Users/Users";
 import AdminLayout from "./layouts/AdminLayout";
 import AllUsers from "./pages/Users/Users";
 import PromoCode from "./pages/PromoCode/PromoCode";
 import AddDoctor from "./pages/AddDoctor/AddDoctor";
 import AddAdminOrPatient from "./pages/AddAdminOrPatient/AddAdminOrPatient";
+import AboutUs from "./pages/AboutUs/AboutUs";
+import UpdatedAdminDashboard from "./pages/UpdatedAdminDashboard/UpdatedAdminDashboard";
+import GetInstantVideo from "./pages/GetInstantVideo/GetInstantVideo";
+import HealthHub from "./pages/HealthHub/HealthHub";
+import MedicineHub from "./pages/MedicineHub/MedicineHub";
+import Blogs from "./pages/Blogs/Blogs";
+import FrequentlyAsked from "./components/shared/FrequentlyAsked/FrequentlyAsked";
+import TermsOrConditions from "./pages/TermsOrConditions/TermsOrConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
+import RefundPolicy from "./pages/RefundPolicy/RefundPolicy";
+import LeaderShipProfile from "./pages/LeadershipProfile/LeaderShipProfile";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
@@ -156,26 +160,29 @@ function App() {
           <Route path="/login" element={<Login></Login>}/>
           <Route path="/becomeADoctor" element={<BecomeADoctor></BecomeADoctor>}/>
           <Route path="/becomeADoctorForm" element={<BecomeADoctorForm></BecomeADoctorForm>}/>
+          <Route path="/instant_video" element={<PrivateRoute><GetInstantVideo /></PrivateRoute>}/>
+          <Route path="/health_hub" element={<PrivateRoute><HealthHub/></PrivateRoute>}/>
+          <Route path="/medicine_hub" element={<PrivateRoute><MedicineHub/></PrivateRoute>}/>
+          <Route path="/lab_testing" element={<PrivateRoute></PrivateRoute>}/>
           
-          <Route path="/PatientProfile" element={<><PrivateRoute><PatientLayout /></PrivateRoute></>}>
+          <Route path="/PatientProfile" element={<><PrivateRoute><PatientProfileLayout /></PrivateRoute></>}>
             <Route path="" element={<MyProfile />}/>
             <Route path="appointments" element={<MyAppointments />}/>
-            <Route path="emergency" element={<MyEmergencyService />}/>
+            {/* <Route path="emergency" element={<MyEmergencyService />}/> */}
           </Route>
           
-          <Route path="/success" element={<Success></Success>}/>
+          <Route path="/success/:transactionId" element={<Success></Success>}/>
           <Route path="/cancel" element={<Cancel></Cancel>}/>
           <Route path="/fail" element={<Fail></Fail>}/>
-          <Route path="/record" element={<MedicalRecord></MedicalRecord>}/>
-          
-          <Route path="/docAppointment" element={<><PrivateRoute>
-            <DoctorAppointment></DoctorAppointment>
-                </PrivateRoute></>}/>
-          <Route path="/DoctorProfile" element={<DoctorProfile></DoctorProfile>}/>
-          <Route path="/adminDashboard" element={<AdminDashboard></AdminDashboard>}/>
-          <Route path="/adminCreateUser" element={<AdminCreateUser></AdminCreateUser>}/>
-          <Route path="/bookAppointment/:id" element={<BookAppointment></BookAppointment>}/>
-          <Route path="/paymentPage" element={<PaymentPage></PaymentPage>}/>          
+          <Route path="/bookAppointment/:id" element={<PrivateRoute><BookAppointment/></PrivateRoute>}/>
+          <Route path="/paymentPage" element={<PrivateRoute><PaymentPage/></PrivateRoute>}/>          
+          <Route path="/about_us" element={<AboutUs></AboutUs>}/>                   
+          <Route path="/blogs" element={<Blogs></Blogs>}/>          
+          <Route path="/faq" element={<FrequentlyAsked></FrequentlyAsked>}/>                   
+          <Route path="/termsOrconditions" element={<TermsOrConditions></TermsOrConditions>}/>                   
+          <Route path="/privacy_policy" element={<PrivacyPolicy></PrivacyPolicy>}/>                   
+          <Route path="/refund_policy" element={<RefundPolicy></RefundPolicy>}/>                   
+          <Route path="/leadershipProfile" element={<LeaderShipProfile></LeaderShipProfile>}/>                   
         </Route>
 
         }
@@ -201,6 +208,7 @@ function App() {
           user?.role=="admin" &&
           <>
             <Route path="" element={<AdminLayout></AdminLayout>}> 
+              <Route path="/" element={<UpdatedAdminDashboard></UpdatedAdminDashboard>}/>
               <Route path="allUsers" element={<AllUsers></AllUsers>}/>
               <Route path="promoCode" element={<PromoCode></PromoCode>}/>
               <Route path="addDoctor" element={<AddDoctor></AddDoctor>}/>

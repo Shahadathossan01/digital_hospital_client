@@ -25,13 +25,13 @@ const TestRecommendationModal = ({ openTest, handleCloseTest, testRecommendation
                 <DialogContent>
                     <div ref={targetRef}>
                         {
-                            testRecommendation.length === 0
+                            testRecommendation?.length === 0
                                 ? <h1>No Test Recommendations Available</h1>
                                 : (
                                     <Card>
                                         <ol>
                                             {
-                                                testRecommendation.map(item => (
+                                                testRecommendation?.map(item => (
                                                     <li key={item._id}>{item.testName}</li>
                                                 ))
                                             }
@@ -49,7 +49,7 @@ const TestRecommendationModal = ({ openTest, handleCloseTest, testRecommendation
                         onClick={handleConfirm} 
                         variant="contained" 
                         color="primary" 
-                        disabled={testRecommendation.length === 0}
+                        disabled={testRecommendation?.length === 0}
                     >
                         Download
                     </Button>

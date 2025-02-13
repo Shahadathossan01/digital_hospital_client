@@ -371,7 +371,7 @@ const BecomeADoctorForm = () => {
 
           </Grid>
             </Box>
-            <Button type='submit' sx={{marginTop:"20px"}} variant="contained" color="primary" fullWidth>
+            <Button type='submit' sx={{margin:"20px 0px"}} variant="contained" color="primary" fullWidth>
                 Submit
             </Button>
         </form>

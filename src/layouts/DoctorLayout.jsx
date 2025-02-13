@@ -52,10 +52,11 @@ const Header=()=>{
     const {user}=useStoreState(state=>state.user)
     const {updatedData}=useStoreState(state=>state.appointment)
     const {deleteData}=useStoreState(state=>state.applyedAppointment)
+    const {createPresData}=useStoreState(state=>state.prescription)
     const userID=user?.id
     useEffect(()=>{
         getDoctorById(userID)
-    },[getDoctorById,userID,updatedData,deleteData])
+    },[getDoctorById,userID,updatedData,deleteData,createPresData])
 
     if(!doctor){
        return null
@@ -124,15 +125,20 @@ const SideBarItem = () => {
   
           {/** Logout Button */}
           <ListItem
-            onClick={() => logoutUser({navigate})}
+            component="button"
+            onClick={() => {
+              logoutUser()
+              navigate("/")
+            }}
             sx={{
+              border:"none",
               borderRadius: "10px",
               bgcolor: "rgba(202, 34, 4, 0.86)",
-              color: "white",
+              color:  "white",
               padding: "0px 10px",
               boxShadow: "3px 5px 20px rgba(131, 76, 4, 0.65)",
             }}
-            button
+            
           >
             <ListItemText sx={{ textAlign: "center" }} primary="Logout" />
           </ListItem>
@@ -142,8 +148,14 @@ const SideBarItem = () => {
     );
   };
 const DoctorLayout = () => {
+    const {user}=useStoreState(state=>state.user)
     return (
         <>
+        <Box  sx={{fontWeight:"bold",textAlign:"center",bgcolor:"green",color:"white",p:1}}>
+          <Typography><span style={{color:"yellow"}}>Hello,</span> {user?.username} [<span style={{color:"#ffca28",fontWeight:"bold"}}>{user?.role=="doctor"?"Doctor":"Admin"}</span>]</Typography>
+          <Typography variant="h3">Welcome to Your Dashboard!</Typography>
+
+        </Box>
         <Box sx={{paddingTop:"10px",marginBottom:"10px"}} flexGrow={1}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12,md:3}}>

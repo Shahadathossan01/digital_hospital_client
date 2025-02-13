@@ -13,7 +13,7 @@ export default function DiagnosisUpdateModal({open,handleClose,item}) {
     const {updateDiagnosis}=useStoreActions(action=>action.prescription)
 
   if(!item) return;
-  const id=item?.prescription._id
+  const id=item?.prescription?._id
   const {register,handleSubmit,reset}=useForm()
   const onSubmit=(data)=>{
     updateDiagnosis({data,id})

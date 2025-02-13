@@ -4,7 +4,7 @@ const Header = () => {
     return (
       <Box sx={{ textAlign: 'center', marginBottom: 3 ,marginTop:3}}>
         <Typography 
-          variant="h4" 
+          variant="h7" 
           sx={{ 
             fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem', lg: '3rem' }, 
             fontWeight: 'bold', 
@@ -18,7 +18,7 @@ const Header = () => {
   };
 const BloodBankService = () => {
     return (
-        <div>
+        <Box sx={{marginTop:"70px"}}>
             <Header></Header>
             <Grid container spacing={0}>
       {/* Left side: Image */}
@@ -68,7 +68,7 @@ const BloodBankService = () => {
         </Button>
       </Grid>
     </Grid>
-        </div>
+        </Box>
     );
 };
 

@@ -6,7 +6,7 @@ const Header = () => {
     return (
       <Box sx={{ textAlign: 'center', marginBottom: 3 ,marginTop:3}}>
         <Typography 
-          variant="h4" 
+          variant="h7" 
           sx={{ 
             fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem', lg: '3rem' }, 
             fontWeight: 'bold', 
@@ -81,10 +81,10 @@ const Header = () => {
 const Content=()=>{
     return (
         <Box>
-            <Grid container spacing={0}>
+            <Grid  container spacing={0}>
       {/* Left side: Image */}
       <Grid
-        size={{xs:12,sm:6,md:4}}
+        size={{xs:12,sm:6,md:6}}
         sx={{
           display: "flex",
           justifyContent: "center",
@@ -102,7 +102,7 @@ const Content=()=>{
 
       {/* Right side: Text and Button */}
       <Grid
-        size={{xs:12,sm:6,md:8}}
+        size={{xs:12,sm:6,md:6}}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -119,10 +119,10 @@ const Content=()=>{
 
 const WhyChooseUs = () => {
     return (
-        <div>
+        <Box sx={{marginTop:"80px"}}>
             <Header></Header>
             <Content></Content>
-        </div>
+        </Box>
     );
 };
 

@@ -26,9 +26,7 @@ const AllUsers = () => {
 
   return (
     <Box >
-      <Grid container spacing={3} alignItems="center" justifyContent="space-between">
-        <Grid item xs={12} sm={6} md={8}>
-          <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: "center", gap: 2 }}>
+      <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: "center", gap: 2 }}>
             <Typography variant="h6">Filter Users:</Typography>
             <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex", gap: "10px", alignItems: "center" }}>
               <FormControl sx={{ minWidth: 120 }}>
@@ -51,32 +49,8 @@ const AllUsers = () => {
                 Filter
               </Button>
             </form>
-          </Box>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4} sx={{ textAlign: { xs: "center", sm: "right" } }}>
-          <Link to="/adminCreateUser" style={{ textDecoration: "none" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{
-                padding: "10px 20px",
-                fontSize: "14px",
-                borderRadius: 2,
-                "&:hover": {
-                  backgroundColor: "#1565c0",
-                },
-              }}
-            >
-              Add User
-            </Button>
-          </Link>
-        </Grid>
-      </Grid>
-
-      <Box>
-        <UserTable users={roleBasedUser}></UserTable>
       </Box>
+      <UserTable users={roleBasedUser}></UserTable>
     </Box>
   );
 };

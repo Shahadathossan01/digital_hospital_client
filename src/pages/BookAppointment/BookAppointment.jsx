@@ -7,6 +7,24 @@ import Grid from '@mui/material/Grid2';
 import { createSchedule, getTotalDaysInMonth } from '../../utils';
 import { useForm } from 'react-hook-form';
 
+import * as React from 'react';
+import { pink } from '@mui/material/colors';
+import Checkbox from '@mui/material/Checkbox';
+import { CheckBox } from '@mui/icons-material';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
+ function BookAppointmentCheckBox() {
+  
+  return (
+    <div>
+      <Checkbox {...label} />
+    </div>
+  );
+}
+
+
+
 const BookAppointment = () => {
   const {register,handleSubmit,formState: { errors, isValid}}=useForm()
   const { getUrl } = useStoreActions((action) => action.sslCommerz);
@@ -37,7 +55,6 @@ useEffect(() => {
   const [timeValue, setTimeValue] = useState(null);
 
   const { id } = useParams();
-  console.log(id)
   useEffect(() => {
     getSingleDoctor(id);
   }, [getSingleDoctor, id]);
@@ -78,46 +95,6 @@ const date2 = new Date(isoLocalDate);
 const month1 = format(date1, 'MM');
 const month2 = format(date2, 'MM');
 const areMonthsEqual=isEqual(month1,month2)
-
-// if(!areMonthsEqual){
-//   const date = new Date();
-//   const times=['10:54 AM', '02:55 AM', '02:55 AM', '02:56 AM']
-//   const totalMonthDays = getTotalDaysInMonth(date);
-//   const schedule = createSchedule(totalMonthDays, times);
-//   updateSchedule({doctorID:id,schedule})
-// }
-//Compare Month ...End.....
-  
-
-  const handlePayment = () => {
-    const payload = {
-      patientID: patient?._id,
-      doctorID: singleDoctor?._id,
-      patientName: patient?.profile?(patient?.profile.firstName +" "+ patient?.profile.lastName):(user.username),
-      fee: singleDoctor?.fee,
-      scheduleID,
-      slotID,
-      dateValue,
-      timeValue
-    };
-    getUrl(payload);
-  };
-
-  // const payload = {
-  //   patientID: patient?._id,
-  //   doctorID: singleDoctor?._id,
-  //   fee: singleDoctor?.fee,
-  //   scheduleID,
-  //   slotID,
-  //   dateValue,
-  //   timeValue,
-  //   fullName:watch("fullName"),
-  //   dateOfBirth:watch("dateOfBirth"),
-  //   gender:watch("gender"),
-  //   age:watch("age"),
-  //   height:watch("height"),
-  //   weight:watch("weight")
-  // };
 
   const onSubmit=(data)=>{
     const payload = {
@@ -239,6 +216,7 @@ const areMonthsEqual=isEqual(month1,month2)
         {singleDoctor?.schedule?.map((item, index) => (
           <Grid item size={{xs:6, sm:4, md:2}} key={index}>
             <Button
+              disabled={item?.status=="busy"}
               variant="contained"
               color={item.date === dateValue ? 'primary' : 'inherit'}
               onClick={() => handleDate(item)}
@@ -365,8 +343,15 @@ const areMonthsEqual=isEqual(month1,month2)
                 </Grid>
               </Grid>
             </Box>
+            <Box sx={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"20px"}}>
+              <BookAppointmentCheckBox></BookAppointmentCheckBox>
+              <Typography variant='body'>
+                I aggre to the <span style={{color:"blue"}}>Treams & Conditions</span>?
+              </Typography>
+            </Box>
+            
             <Button
-            sx={{marginTop:"20px"}}
+            sx={{marginTop:"5px"}}
             type='submit'
         variant="contained"
         color="success"

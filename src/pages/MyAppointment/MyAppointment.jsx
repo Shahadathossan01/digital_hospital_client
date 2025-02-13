@@ -13,7 +13,7 @@ const FilterValue=({handleFilterValue,activeFilter })=>{
                 <Button 
                 variant={activeFilter === "confirmed" ? "contained" : "outlined"}
                 color={activeFilter === "confirmed"? "info" : "inherit"}
-                size="small" onClick={()=>handleFilterValue("confirmed")}>Confirmed</Button>
+                size="small" onClick={()=>handleFilterValue("confirmed")}>Accepted</Button>
 
                 <Button 
                  variant={activeFilter === "completed" ? "contained" : "outlined"}

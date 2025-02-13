@@ -17,12 +17,8 @@ import { Dashboard } from '@mui/icons-material';
 const columns = ["No","Docto Name","Created","Schedule Start","Status","Action"];
 
 const TableRowAction=({item})=>{
-    const { deletePatientAppointment } = useStoreActions((action) => action.patient);
     const { user } = useStoreState((state) => state.user);
     const [open, setOpen] = useState(false);
-    const userID = user.id;
-    const appointmentID = item._id;
-    const doctorID = item?.doctor?._id;
       const handleClickOpen = () => {
         setOpen(true);
       };
@@ -38,10 +34,10 @@ const TableRowAction=({item})=>{
               variant="contained"
               size="small"
               sx={{
-                backgroundColor: item?.status === 'panding' ? 'error.main' : 'success.main',
+                backgroundColor: item?.status === 'panding' ? 'error.main' : 'info.main',
               }}
             >
-              view
+              details
             </Button>
             {/* <Tooltip title="Delete Appointment">
               <IconButton
@@ -64,16 +60,24 @@ const TableRowAction=({item})=>{
     )
 }
 const AppointmentTableRow=({item,index,dashboard})=>{
+  console.log(item)
     if(!item){
         return
     }
     return(
         <TableRow>
             <TableCell>{index+1}</TableCell>
-            <TableCell>{item?.doctor?.firstName} {item?.doctor?.lastName}</TableCell>
+            <TableCell>{item?.patientDetails.fullName}</TableCell>
             <TableCell>{format(new Date(item?.createdAt), "M/d/yyyy")}</TableCell>
             <TableCell>{format(new Date(item?.date),"M/d/yyyy")}  {item?.time}</TableCell>
-            <TableCell>{item?.status}</TableCell>
+            <TableCell sx={{
+    color:
+      item?.status === "completed"
+        ? "success.main"
+        : item?.status === "confirmed"
+        ? "primary.main"
+        : "error.main", // For "cancelled"
+  fontWeight:"bold"}}>{item?.status=="confirmed"?"Accepted please wait.":item?.status}</TableCell>
             <TableCell>
                 <TableRowAction item={item}></TableRowAction>
             </TableCell>
@@ -120,25 +124,28 @@ export default function DoctorAppointmentTable({dashboard,appointments}) {
      const handleFilterValue=(data)=>{
       setFilterValue(data)
      }
-     console.log(filterValue)
      const filteredDoctorAppointment=filterDoctorAppointments(appointments,filterValue)
 
-  const columns = ["No","Docto Name","Created","Schedule Start","Status","Action"]
+  const columns = ["No","Patient Name","Created","Schedule Start","Status","Action"]
 
   return (
     <>
-    <Box sx={{display:"flex",alignItems:"center",gap:1}}>
+    {
+      !dashboard &&
+      <Box sx={{display:"flex",alignItems:"center",gap:1}}>
       <Typography>Filter By:</Typography>
       <form>
          <select onChange={(e)=>{handleFilterValue(e.target.value)}}>
            <option value="all">All</option>
-           <option value="panding">Panding</option>
-           <option value="confirmed">Confirmed</option>
+           {/* <option value="panding">Panding</option> */}
+           <option value="confirmed">Accepted</option>
            <option value="completed">Completed</option>
            <option value="cancelled">Cancelled</option>
          </select>
       </form>
     </Box>
+    }
+    
     <Box sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 400}}>
         <Table stickyHeader aria-label="sticky table">

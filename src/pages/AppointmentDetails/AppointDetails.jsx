@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import {
   AppBar,
   Toolbar,
@@ -18,28 +18,47 @@ import TestResult from '../../components/shared/TestResult/TestResult';
 import Prescription from '../../components/shared/Prescription/Prescription';
 import { usePDF } from 'react-to-pdf';
 import TestRecommendationModal from '../../components/shared/TestRecommendationmodal/TestRecommendationModal';
-import { useForm } from 'react-hook-form';
+import { get, useForm } from 'react-hook-form';
 import { action, useStoreActions, useStoreState } from 'easy-peasy';
+import { forwardRef, useEffect, useState } from 'react';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
-  if(!item) return
-  const {user}=useStoreState(state=>state.user)
-  const {register,handleSubmit,reset}=useForm()
-  const [openTest, setOpenTest] = React.useState(false);
-  const { toPDF, targetRef } = usePDF({ filename: 'prescription.pdf' });
-  const { time, googleMeetLink, testRecommendation } = item;
-  const {createTest}=useStoreActions(action=>action.testRecommendation)
-  const apppintmentID=item?._id
-  
-  const onSubmit=(data)=>{
-    createTest({data,apppintmentID})
-    reset()
-  }
 
+/**Header */
+const Header=({item,isDoctor})=>{
+  if(!item){
+    return null
+  }
+  return(
+    <Box sx={{ p: { xs: 2, sm: 3, md: 4 } ,marginTop:'40px'}}>
+    <Typography variant="h6">
+      {isDoctor
+        ? `Patient: ${item?.patientDetails?.fullName?item?.patientDetails?.fullName:'N/A'}`
+        : `${item?.doctor?.title} ${item?.doctor?.firstName} ${item?.doctor?.lastName}`}
+    </Typography>
+    <Typography variant="subtitle1">Schedule Date: {item?.date?format(item?.date, 'yyyy-MM-dd'):''}</Typography>
+    <Typography variant="subtitle1">Schedule Slot: {item?.time}</Typography>
+    <Typography
+component="a"
+href={item?.googleMeetLink}
+target="_blank"
+rel="noopener noreferrer"
+sx={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+>
+Google Meet Link
+</Typography>
+    <hr />
+  </Box>
+  )
+}
+
+/**Test Recommendation List */
+const TestRecommendationList=({item})=>{
+  const {user}=useStoreState(state=>state.user)
+  const [openTest, setOpenTest] = useState(false);
   const handleClickOpenTest = () => {
     setOpenTest(true);
   };
@@ -47,51 +66,87 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
   const handleCloseTest = () => {
     setOpenTest(false);
   };
+  return(
+    <Box>
 
-  return (
-    <Dialog
-      fullScreen
-      open={open}
-      onClose={handleClose}
-      TransitionComponent={Transition}
-    >
-      <AppBar sx={{ position: 'fixed'}}>
-        <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-            <CloseIcon />
-          </IconButton>
-          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            Appointment Details
-          </Typography>
-          {
-            !isDoctor &&
-          <Button autoFocus color="inherit" onClick={toPDF}>
-            Download Prescription
-          </Button>
+{
+                item?.testRecommendation?.length=='0'?
+                <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 2,
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: '#555',
+                    fontWeight: 'bold',
+                    '@media (max-width: 600px)': {
+                      fontSize: '1rem',
+                    },
+                  }}
+                >
+                  There is no test recommendation here!
+                </Typography>
+                </Box>
+                :
+                <ol>
+                {item?.testRecommendation?.map((rec,index) => (
+                  <TestRecommendation isDoctor={user.role=='patient'?false:true} key={rec._id} item={rec} index={index} />
+                ))}
+              </ol>
+              }
+              <Box sx={{ textAlign: 'right', mt: 2 }}>
+                {
+                  item?.testRecommendation?.length !='0' &&
+                <Button variant="contained" onClick={handleClickOpenTest}>
+                  Download Recommendations
+                </Button>
 
-          }
-        </Toolbar>
-      </AppBar>
-      <Box sx={{ p: { xs: 2, sm: 3, md: 4 } ,marginTop:'40px'}}>
-        <Typography variant="h6">
-          {isDoctor
-            ? `Patient: ${item?.patient?.profile?.firstName?item?.patient?.profile?.firstName:''} ${item?.patient?.profile?.firstName?item?.patient?.profile?.lastName:''}`
-            : `Doctor: ${item?.doctor?.firstName} ${item?.doctor?.lastName}`}
-        </Typography>
-        <Typography variant="subtitle1">Date: {item?.date?format(item?.date, 'yyyy-MM-dd'):''}</Typography>
-        <Typography variant="subtitle1">Time: {time}</Typography>
-        <Typography
-  component="a"
-  href={googleMeetLink}
-  target="_blank"
-  rel="noopener noreferrer"
-  sx={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
->
-  Google Meet Link
-</Typography>
-        <hr />
-      </Box>
-      <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, backgroundColor: '#f9f9f9' }}>
+                }
+              </Box>
+              <TestRecommendationModal
+                testRecommendation={item?.testRecommendation}
+                openTest={openTest}
+                handleCloseTest={handleCloseTest}
+              />
+    </Box>
+  )
+}
+
+/**Test Recommendation and Result */
+const TestRecomAndResult=({item,isDoctor,getByIdData})=>{
+  const {register,handleSubmit,reset}=useForm()
+  const {createTest}=useStoreActions(action=>action.testRecommendation)
+  const apppintmentID=item?._id
+  const id=item?._id
+
+    const {createTestData,deletedData,updatedData}=useStoreState(state=>state.testRecommendation)
+  const {updatedDiag,medicineData,deletedMedicin,instructionData}=useStoreState(state=>state.prescription)
+  const {getAppointmentByid}=useStoreActions(actions=>actions.appointment)
+  const {appointmentByIdData}=useStoreState(state=>state.appointment)
+  
+  useEffect(()=>{
+    getAppointmentByid(id)
+
+  },[id,createTestData,getAppointmentByid,deletedData,updatedData])
+
+  if(!appointmentByIdData) return null
+  
+  const onSubmit=(data)=>{
+    createTest({data,apppintmentID})
+    reset()
+  }
+
+
+  if(!item) {
+    return null
+  }
+  return(
+    <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, backgroundColor: '#f9f9f9' }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <Box sx={{ border: '1px solid #e0e0e0', p: 2 }}>
@@ -142,52 +197,11 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
           Add Test
         </Button>
       </form>
-                </Box>
+      </Box>
               }
-              {
-                testRecommendation.length=='0'?
-                <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: 2,
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: '#555',
-                    fontWeight: 'bold',
-                    '@media (max-width: 600px)': {
-                      fontSize: '1rem',
-                    },
-                  }}
-                >
-                  There is no test recommendation here!
-                </Typography>
-                </Box>
-                :
-                <ol>
-                {testRecommendation?.map((rec,index) => (
-                  <TestRecommendation isDoctor={user.role=='patient'?false:true} key={rec._id} item={rec} index={index} />
-                ))}
-              </ol>
-              }
-              <Box sx={{ textAlign: 'right', mt: 2 }}>
-                {
-                  testRecommendation.length !='0' &&
-                <Button variant="contained" onClick={handleClickOpenTest}>
-                  Download Recommendations
-                </Button>
+              {/**Test Recom.. list */}
+              <TestRecommendationList item={appointmentByIdData}></TestRecommendationList>
 
-                }
-              </Box>
-              <TestRecommendationModal
-                testRecommendation={testRecommendation}
-                openTest={openTest}
-                handleCloseTest={handleCloseTest}
-              />
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -196,7 +210,7 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
                 Test Results
               </Typography>
               {
-                testRecommendation.length=='0'?
+                appointmentByIdData?.testRecommendation?.length=='0'?
                 <Box
                 sx={{
                   display: 'flex',
@@ -220,7 +234,7 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
                 </Box>
                 :
                 <ol>
-                {testRecommendation?.map((result,index) => (
+                {appointmentByIdData?.testRecommendation?.map((result,index) => (
                   <TestResult index={index} key={result._id} item={result} />
                 ))}
               </ol>
@@ -230,9 +244,66 @@ const AppointmentDetails = ({ item, open, handleClose, isDoctor }) => {
           </Grid>
         </Grid>
       </Box>
+  )
+}
+
+
+const AppointmentDetails = ({item, open, handleClose, isDoctor }) => { 
+  const {user}=useStoreState(state=>state.user)
+  const {register,handleSubmit,reset}=useForm()
+  const [openTest, setOpenTest] = useState(false);
+  const { toPDF, targetRef } = usePDF({ filename: 'prescription.pdf' });
+  const {createTest}=useStoreActions(action=>action.testRecommendation)
+  const {updatedData}=useStoreState(state=>state.testRecommendation)
+  const apppintmentID=item?._id
+
+  // const {createTestData,deletedData}=useStoreState(state=>state.testRecommendation)
+  // const {updatedDiag,medicineData,deletedMedicin,instructionData}=useStoreState(state=>state.prescription)
+  // const {getAppointmentByid}=useStoreActions(actions=>actions.appointment)
+  // const {appointmentByIdData}=useStoreState(state=>state.appointment)
+  
+  // useEffect(()=>{
+  //   getAppointmentByid(id)
+
+  // },[id,createTestData,getAppointmentByid,deletedData,updatedDiag,medicineData,deletedMedicin,instructionData,updatedData])
+
+  // if(!appointmentByIdData) return null
+
+  // console.log(appointmentByIdData)
+  return (
+    <Dialog
+      fullScreen
+      open={open}
+      onClose={handleClose}
+      TransitionComponent={Transition}
+    >
+      {/**Navbar */}
+      <AppBar sx={{ position: 'fixed'}}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+            <CloseIcon />
+          </IconButton>
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            Appointment Details
+          </Typography>
+          {
+            !isDoctor &&
+          <Button autoFocus color="inherit" onClick={toPDF}>
+            Download Prescription
+          </Button>
+
+          }
+        </Toolbar>
+      </AppBar>
+
+      {/**Header */}
+      <Header item={item} isDoctor={isDoctor}></Header>
+      
+      {/**Test Recommendation and result */}
+      <TestRecomAndResult item={item} isDoctor={isDoctor}></TestRecomAndResult>
       <Box sx={{ textAlign: 'center', mt: 4, p: { xs: 2, sm: 3 } }}>
         <Typography sx={{textAlign:'start'}} variant="h5">Prescription</Typography>
-            <Prescription isDoctor={user.role=='patient'?false:true} targetRef={targetRef} item={item} />
+            <Prescription  isDoctor={user.role=='patient'?false:true} targetRef={targetRef} item={item} />
       </Box>
     </Dialog>
   );

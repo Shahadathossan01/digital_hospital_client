@@ -17,7 +17,7 @@ const Main = () => {
             </Box>
 
             {/* Content should take up remaining space */}
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ flexGrow: 1}}>
                 <Outlet />
             </Box>
 

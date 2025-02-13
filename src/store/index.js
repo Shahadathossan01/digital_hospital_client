@@ -1,5 +1,7 @@
 import axios from "axios"
+import { format, parse } from "date-fns"
 import { action, createStore, thunk } from "easy-peasy"
+import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
 const userModel={
@@ -49,7 +51,6 @@ const userModel={
     // }),
     loginUser:thunk(async(actions,payload)=>{
         const {email,password}=payload.data
-        const {navigate}=payload
         const {data}=await axios.post('http://localhost:3000/login',{
             email,
             password
@@ -59,16 +60,15 @@ const userModel={
         localStorage.setItem("token",data.token)
         localStorage.setItem("user",JSON.stringify(data.payload))
         toast.success('Login Successfully!',{position:'top-right'})
-        return navigate("/")
+        
+        return
         
     }),
     logoutUser:action((state,payload)=>{
-        const {navigate}=payload
         localStorage.removeItem("token")
         localStorage.removeItem("user")
         state.user=null
         state.isLogoutUser=true
-        navigate('/')
         
     }),
     addAllUsers:action((state,payload)=>{
@@ -80,7 +80,7 @@ const userModel={
     })
 }
 const doctorModel={
-    data:null,
+    data:[],
     doctor:null,
     singleDoctor:null,
     updatedAppointmentData:null,
@@ -88,6 +88,7 @@ const doctorModel={
     imageData:null,
     updatedScheduleData:null,
     statusData:null,
+    deleteDoctorData:null,
     addData:action((state,payload)=>{
         state.data=payload
     }),
@@ -118,7 +119,7 @@ const doctorModel={
     }),
     updateProfile:thunk(async(actions,payload)=>{
         const {userID,updatedFormData}=payload
-        console.log(payload)
+        console.log(userID,updatedFormData)
         const {data}=await axios.patch(`http://localhost:3000/doctor/${userID}`,updatedFormData)
         actions.addUpdatedProrileData(data)
     }),
@@ -163,12 +164,12 @@ const doctorModel={
         actions.addStatusData(data)
     }),
     updateScheduleSlotStatus:thunk(async(actions,payload)=>{
-        const {doctorID,scheduleID,slotID,time,status}=payload
+        const {doctorID,scheduleID,slotID,formatedTime,status}=payload
         const {data}=await axios.patch('http://localhost:3000/doctorScheduleSlotStatus',{
             doctorID,
             scheduleID,
             slotID,
-            time,
+            time:formatedTime,
             status
         })
         actions.addStatusData(data)
@@ -183,6 +184,14 @@ const doctorModel={
         const {data}=await axios.delete(`http://localhost:3000/doctors/${doctorID}/schedule/${scheduleID}/slot/${slotID}`)
         actions.addStatusData(data)
     }),
+    addDeleteDoctorData:action((state,payload)=>{
+        state.deleteDoctorData=payload
+    }),
+    deleteDoctor:thunk(async(actions,payload)=>{
+        const {id}=payload
+        const {data}=await axios.delete(`http://localhost:3000/users/${id}`)
+        actions.addDeleteDoctorData(data)
+    })
     
 }
 const patientModel={
@@ -264,9 +273,6 @@ const testRecommendationModel={
         actions.addDeletedData(data)
     })
 
-
-
-
 }
 const prescriptionModel={
     data:null,
@@ -343,6 +349,7 @@ const medicalRecordModel={
     })
 }
 const appointmentModel={
+    appointmentByIdData:[],
     appointments:[],
     addAppointments:action((state,payload)=>{
         state.appointments=payload
@@ -366,6 +373,14 @@ const appointmentModel={
     getAppointments:thunk(async(actions,payload)=>{
         const {data}=await axios.get("http://localhost:3000/appointments")
         actions.addAppointments(data)
+    }),
+    addGetAppointmentById:action((state,payload)=>{
+        state.appointmentByIdData=payload
+    }),
+    getAppointmentByid:thunk(async(actions,payload)=>{
+        console.log(payload)
+        const {data}=await axios.get(`http://localhost:3000/appointments/${payload}`)
+        actions.addGetAppointmentById(data)
     })
 
 }

@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Navbar=()=>{
   const [anchorElNav, setAnchorElNav] =useState(null);
@@ -30,8 +31,20 @@ const Navbar=()=>{
   };
 
   const handleLogout=()=>{
-    logoutUser({navigate})
-    setUsername(null)
+    logoutUser()
+    handleCloseNavMenu()
+    navigate("/")
+  }
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   }
   return (
     <AppBar>
@@ -45,7 +58,7 @@ const Navbar=()=>{
             href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
+              display: { xs: 'none', md: "flex" },
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
@@ -54,7 +67,7 @@ const Navbar=()=>{
               flexGrow:4
             }}
           >
-            <Link to={user?.role=='patient'&&'/' || user?.role=='doctor'&&'/docAppointment'} style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
+            <Link to="/" style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
           </Typography>
 
           <Typography
@@ -73,8 +86,9 @@ const Navbar=()=>{
               textDecoration: 'none',
             }}
           >
-            <Link to={user?.role=='patient'&&'/' || user?.role=='doctor'&&'/docAppointment'} style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
+            <Link to="/" style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
           </Typography>
+
           <Box sx={{ flexGrow:0, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -110,18 +124,71 @@ const Navbar=()=>{
                 </MenuItem>
               </Link>
 
-              <Link to="/appointment" style={{textDecoration:'none',color:'black'}}>
+              <Link to="/findDoctors" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
-                  Appointment
+                  Find Doctor
                   </Typography>
                 </MenuItem>
               </Link>
 
-              <Link to="/medicalRecord" style={{textDecoration:'none',color:'black'}}>
+              <Link to="/becomeADoctor" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
-                  Medical Record
+                  Become a Doctor
+                  </Typography>
+                </MenuItem>
+              </Link>
+              <Link style={{textDecoration:'none',color:'black'}}>
+              
+              <MenuItem >
+                <Typography 
+                sx={{ color: 'black'}} 
+                  onClick={handleClick}
+              >
+                Emergency Service
+                </Typography>
+                <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>
+          <Link to="/instant_video" style={{ textDecoration: 'none', color: 'black' }}>
+           Instant Video Call
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/health_hub" style={{ textDecoration: 'none', color: 'black' }}>
+            Health Hub
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/medicine_hub" style={{ textDecoration: 'none', color: 'black' }}>
+            Medicine Hub
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/lab_testing" style={{ textDecoration: 'none', color: 'black' }}>
+            Lab Testing
+          </Link>
+        </MenuItem>
+                </Menu>
+              </MenuItem>
+              </Link>
+            
+              <Link to="/about_us" style={{textDecoration:'none',color:'black'}}>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>
+                    About Us
+                  </Typography>
+                </MenuItem>
+              </Link>
+
+              <Link to="/blogs" style={{textDecoration:'none',color:'black'}}>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>
+                    Blogs
                   </Typography>
                 </MenuItem>
               </Link>
@@ -133,12 +200,12 @@ const Navbar=()=>{
                   </Typography>
                 </MenuItem>
               </Link>
-
+            
               {
                 user?
                 <Link style={{textDecoration:'none',color:'black'}}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
+                <MenuItem onClick={handleLogout}>
+                  <Typography component="button" sx={{ textAlign: 'center' }}>
                   Logout
                   </Typography>
                 </MenuItem>
@@ -152,56 +219,66 @@ const Navbar=()=>{
                 </MenuItem>
                 </Link>
               }
+               
 
-
-
-                <Link to="/profile" style={{textDecoration:'none',color:'black'}}>
+                <Link to="/PatientProfile" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                  Profile
-                  </Typography>
+                  <AccountCircleIcon></AccountCircleIcon>
                 </MenuItem>
                 </Link>
                 
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-           
-              <Link to="/" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button></Link>
-         
-              <Link to="/findDoctors" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Find Doctor</Button></Link>
-        
-            {/* {
-              user?.role=="patient" &&
-              <Link to="/appointment" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Appointment</Button></Link>
-            } */}
-            {/* {
-              user?.role=="patient" &&
-              <Link to="/record" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Records</Button></Link>
-            } */}
-              <Link to="/becomeADoctor" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Become a Doctor</Button></Link>
-        
-              {/* <Link to="/reqAppointment" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Requested Appointment</Button></Link> */}
-       
-          
-              {/* <Link to="/docAppointment" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Appointment</Button></Link> */}
+              <Link to="/" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button></Link>
+              <Link to="/findDoctors" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Find Doctor</Button></Link>
 
-              <Link to="/register" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Register</Button></Link>
+              <Link to="/becomeADoctor" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Become a Doctor</Button></Link>
 
-        
-              {/* <Link to="/adminDashboard" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button></Link> */}
+              <Link  style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }} onClick={handleClick}>Others Services</Button></Link>           
+              <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>
+          <Link to="/instant_video" style={{ textDecoration: 'none', color: 'black' }}>
+            Instant Video Call
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/health_hub" style={{ textDecoration: 'none', color: 'black' }}>
+            Health Hub
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/medicine_hub" style={{ textDecoration: 'none', color: 'black' }}>
+            Medicine Hub
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/lab_testing" style={{ textDecoration: 'none', color: 'black' }}>
+            Lab Testing
+          </Link>
+        </MenuItem>
+              </Menu>
+      
+              <Link to="/about_us" style={{textDecoration:'none'}}><Button  size='small' sx={{ my: 2, color: 'white', display: 'block' }}>About Us</Button></Link>
 
+              <Link to="/blogs" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Blogs</Button></Link>
+
+              <Link to="/register" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Register</Button></Link> 
             {
               user?
-              <Link onClick={()=>handleLogout({navigate})} style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Logout</Button></Link>
+              <Link onClick={handleLogout} style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Logout</Button></Link>
               :
-              <Link to="/login" style={{textDecoration:'none'}}><Button sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
+              <Link to="/login" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
             }
-           
               <Link to="/PatientProfile" style={{textDecoration:'none'}}>
-              <Button sx={{ my: 2, color: 'white', display: 'block' }}>Profile</Button>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                <AccountCircleIcon></AccountCircleIcon>
+              </Button>
               </Link>
-           
           </Box>
         </Toolbar>
       </Container>

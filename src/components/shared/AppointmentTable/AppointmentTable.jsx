@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AppointmentDetails from '../../../pages/AppointmentDetails/AppointDetails';
 import { filterAppointments } from '../../../utils';
+import { InsertEmoticon } from '@mui/icons-material';
 
 const columns = ["No","Docto Name","Created","Schedule Start","Status","Action"];
 
@@ -33,18 +34,18 @@ const TableRowAction=({item})=>{
         <Box sx={{display:"flex",justifyContent:"space-between"}}>
             <Button
               onClick={handleClickOpen}
-            disabled={item?.status === 'panding'}
+            // disabled={item?.status === 'panding'}
               variant="contained"
               size="small"
               sx={{
                 backgroundColor: item?.status === 'panding' ? 'error.main' : 'success.main',
               }}
             >
-              view
+              details
             </Button>
-            <Tooltip title="Delete Appointment">
+            {/* <Tooltip title="Delete Appointment">
               <IconButton
-              disabled={(item?.status === 'panding') || (item.status="confirmed")}
+              // disabled={(item?.status === 'panding') || (item.status="confirmed")}
                 onClick={() =>
                   deletePatientAppointment({
                     patientID: userID,
@@ -57,26 +58,9 @@ const TableRowAction=({item})=>{
               >
                 <DeleteIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <AppointmentDetails isDoctor={user.role=='patient'?false:true} item={item} open={open} handleClose={handleClose} />
         </Box>
-    )
-}
-const AppointmentTableRow=({item,index})=>{
-    if(!item){
-        return
-    }
-    return(
-        <TableRow>
-            <TableCell>{index+1}</TableCell>
-            <TableCell>{item?.doctor?.firstName} {item?.doctor?.lastName}</TableCell>
-            <TableCell>{format(new Date(item?.createdAt), "M/d/yyyy")}</TableCell>
-            <TableCell>{format(new Date(item?.date),"M/d/yyyy")}  {item?.time}</TableCell>
-            <TableCell>{item?.status}</TableCell>
-            <TableCell>
-                <TableRowAction item={item}></TableRowAction>
-            </TableCell>
-        </TableRow>
     )
 }
 
@@ -106,10 +90,8 @@ const AppointmentTableBody=({filterValue})=>{
           </Box>
         );
       }
-      console.log(filterValue)
       const appointments=patient?.appointments
-      const filterAppointment=filterAppointments(appointments,filterValue)
-      console.log(filterAppointment)
+      const filterAppointment = [...appointments].filter((item) => item.status === filterValue);
       if(filterAppointment?.length==0){
         return (
           <Typography
@@ -129,7 +111,23 @@ const AppointmentTableBody=({filterValue})=>{
         <TableBody>
               {
                   filterAppointment?.map((item,index)=>(
-                      <AppointmentTableRow key={item._id} item={item} index={index}></AppointmentTableRow>
+                    <TableRow key={item._id}>
+                    <TableCell>{index+1}</TableCell>
+                    <TableCell>{item?.doctor?.firstName ||"N/A"} {item?.doctor?.lastName}</TableCell>
+                    <TableCell>{format(new Date(item?.createdAt), "M/d/yyyy")}</TableCell>
+                    <TableCell>{format(new Date(item?.date),"M/d/yyyy")}  {item?.time}</TableCell>
+                    <TableCell sx={{
+    color:
+      item?.status === "completed"
+        ? "success.main"
+        : item?.status === "confirmed"
+        ? "primary.main"
+        : "error.main", // For "cancelled"
+  fontWeight:"bold"}}>{item?.status=="confirmed"?"Accepted please wait.":item?.status}</TableCell>
+                    <TableCell>
+                        <TableRowAction item={item}></TableRowAction>
+                    </TableCell>
+                </TableRow>
                   ))
               }
           </TableBody>
