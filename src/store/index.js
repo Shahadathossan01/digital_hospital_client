@@ -1,9 +1,7 @@
 import axios from "axios"
-import { format, parse } from "date-fns"
 import { action, createStore, thunk } from "easy-peasy"
-import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-
+const api_base_url=import.meta.env.VITE_API_BASE_URL
 const userModel={
     allUsers:[],
     registerData:null,
@@ -25,7 +23,7 @@ const userModel={
     }),
     registerUser:thunk(async(actions,{formData,navigate})=>{
        try{
-        const {data}=await axios.post('http://localhost:3000/register',formData,{headers:{"Content-Type":"multipart/form-data"}})
+        const {data}=await axios.post(`${api_base_url}/api/register`,formData,{headers:{"Content-Type":"multipart/form-data"}})
            actions.addRegisterData(data.user)
            toast.success("Register completed!",{position:'top-right'})
            if(data.user.role=="doctor") return
@@ -35,23 +33,9 @@ const userModel={
         actions.addRegisterError(e?.response?.data.message)
        }
     }),
-    // registerDoctor:thunk(async(actions,{formData,navigate})=>{
-       
-    //    try{
-    //     const {data}=await axios.post('http://localhost:3000/registerDoctor',formData,{
-    //         headers:{"Content-Type":"multipart/form-data"}
-    //     })
-           
-    //     //    navigate('/login')
-    //     //    toast.success("Register completed! Please login.. ",{position:'top-right'})
-    //    }catch(e){
-    //     console.log(e)
-    //     actions.addRegisterError(e.response.data.message)
-    //    }
-    // }),
     loginUser:thunk(async(actions,payload)=>{
         const {email,password}=payload.data
-        const {data}=await axios.post('http://localhost:3000/login',{
+        const {data}=await axios.post(`${api_base_url}/api/login`,{
             email,
             password
         })
@@ -64,7 +48,7 @@ const userModel={
         return
         
     }),
-    logoutUser:action((state,payload)=>{
+    logoutUser:action((state)=>{
         localStorage.removeItem("token")
         localStorage.removeItem("user")
         state.user=null
@@ -74,8 +58,8 @@ const userModel={
     addAllUsers:action((state,payload)=>{
         state.allUsers=payload
     }),
-    getAllUsers:thunk(async(actions,payload)=>{
-        const {data}=await axios.get("http://localhost:3000/users")
+    getAllUsers:thunk(async(actions)=>{
+        const {data}=await axios.get(`${api_base_url}/api/users`)
         actions.addAllUsers(data)
     })
 }
@@ -92,15 +76,15 @@ const doctorModel={
     addData:action((state,payload)=>{
         state.data=payload
     }),
-    getDoctors:thunk(async(actions,payload)=>{
-        const {data}=await axios.get('http://localhost:3000/doctors')
+    getDoctors:thunk(async(actions)=>{
+        const {data}=await axios.get(`${api_base_url}/api/doctors`)
         actions.addData(data)
     }),
     addDoctor:action((state,payload)=>{
         state.doctor=payload
     }),
     getDoctorById:thunk(async(actions,payload)=>{
-        const {data}=await axios.get(`http://localhost:3000/doctor/${payload}`)
+        const {data}=await axios.get(`${api_base_url}/api/doctors/${payload}`)
         actions.addDoctor(data)
     }),
     addUpdatedAppointmentData:action((state,payload)=>{
@@ -108,7 +92,7 @@ const doctorModel={
     }),
     updatedAppointment:thunk(async(actions,payload)=>{
         const {userID,appointmentID,patientID}=payload
-        const {data}=await axios.patch(`http://localhost:3000/doctorAppointment/${userID}`,{
+        const {data}=await axios.patch(`${api_base_url}/api/doctorAppointment/${userID}`,{
             appointmentID,
             patientID
         })
@@ -120,7 +104,7 @@ const doctorModel={
     updateProfile:thunk(async(actions,payload)=>{
         const {userID,updatedFormData}=payload
         console.log(userID,updatedFormData)
-        const {data}=await axios.patch(`http://localhost:3000/doctor/${userID}`,updatedFormData)
+        const {data}=await axios.patch(`${api_base_url}/api/doctors/${userID}`,updatedFormData)
         actions.addUpdatedProrileData(data)
     }),
     addImageData:action((state,payload)=>{
@@ -128,7 +112,7 @@ const doctorModel={
     }),
     updateDoctorImage:thunk(async(actions,payload)=>{
         const {userID,formData}=payload
-        const {data}=await axios.patch(`http://localhost:3000/doctorImage/${userID}`,formData,{
+        const {data}=await axios.patch(`${api_base_url}/api/doctorImage/${userID}`,formData,{
             headers:{'Content-Type':'multipart/form-data'}
         })
         actions.addImageData(data)
@@ -137,7 +121,7 @@ const doctorModel={
         state.singleDoctor=payload
     }),
     getSingleDoctor:thunk(async(actions,payload)=>{
-        const {data}=await axios.get(`http://localhost:3000/doctor/${payload}`)
+        const {data}=await axios.get(`${api_base_url}/api/doctors/${payload}`)
         actions.addSingleDoctor(data)
     }),
     addUpdatedScheduleData:action((state,payload)=>{
@@ -146,7 +130,7 @@ const doctorModel={
     updateSchedule:thunk(async(actions,payload)=>{
         const {doctorID,schedule}=payload
         console.log("finding",schedule)
-        const {data}=await axios.patch(`http://localhost:3000/doctorSchedule/${doctorID}`,{
+        const {data}=await axios.patch(`${api_base_url}/api/doctorSchedule/${doctorID}`,{
             schedule
         })
         actions.addUpdatedScheduleData(data)
@@ -156,7 +140,7 @@ const doctorModel={
     }),
     updateScheduleStatus:thunk(async(actions,payload)=>{
         const {doctorID,scheduleID,status}=payload
-        const {data}=await axios.patch('http://localhost:3000/doctorScheduleStatus',{
+        const {data}=await axios.patch(`${api_base_url}/api/doctorScheduleStatus`,{
             doctorID,
             scheduleID,
             status
@@ -165,7 +149,7 @@ const doctorModel={
     }),
     updateScheduleSlotStatus:thunk(async(actions,payload)=>{
         const {doctorID,scheduleID,slotID,formatedTime,status}=payload
-        const {data}=await axios.patch('http://localhost:3000/doctorScheduleSlotStatus',{
+        const {data}=await axios.patch(`${api_base_url}/api/doctorScheduleSlotStatus`,{
             doctorID,
             scheduleID,
             slotID,
@@ -176,12 +160,12 @@ const doctorModel={
     }),
     addNewSlot:thunk(async(actions,payload)=>{
         const {doctorID,scheduleID}=payload
-        const {data}=await axios.patch(`http://localhost:3000/doctors/${doctorID}/schedule/${scheduleID}`)
+        const {data}=await axios.patch(`${api_base_url}/api/doctors/${doctorID}/schedule/${scheduleID}`)
         actions.addStatusData(data)
     }),
     deleteSlot:thunk(async(actions,payload)=>{
         const {doctorID,scheduleID,slotID}=payload
-        const {data}=await axios.delete(`http://localhost:3000/doctors/${doctorID}/schedule/${scheduleID}/slot/${slotID}`)
+        const {data}=await axios.delete(`${api_base_url}/api/doctors/${doctorID}/schedule/${scheduleID}/slot/${slotID}`)
         actions.addStatusData(data)
     }),
     addDeleteDoctorData:action((state,payload)=>{
@@ -189,7 +173,7 @@ const doctorModel={
     }),
     deleteDoctor:thunk(async(actions,payload)=>{
         const {id}=payload
-        const {data}=await axios.delete(`http://localhost:3000/users/${id}`)
+        const {data}=await axios.delete(`${api_base_url}/api/users/${id}`)
         actions.addDeleteDoctorData(data)
     })
     
@@ -203,7 +187,7 @@ const patientModel={
         state.patient=payload
     }),
     getPatient:thunk(async(actions,payload)=>{
-        const {data}=await axios.get(`http://localhost:3000/patient/${payload}`)
+        const {data}=await axios.get(`${api_base_url}/api/patient/${payload}`)
         actions.addPatient(data)
     }),
 
@@ -212,7 +196,7 @@ const patientModel={
     }),
     deletePatientAppointment:thunk(async(actions,payload)=>{
         const {patientID,appointmentID,doctorID}=payload
-        const {data}=await axios.patch(`http://localhost:3000/patientAppointment/${patientID}`,{
+        const {data}=await axios.patch(`${api_base_url}/api/patientAppointment/${patientID}`,{
             appointmentID,
             doctorID
         })
@@ -224,7 +208,7 @@ const patientModel={
     updateProfile:thunk(async(actions,payload)=>{
         const id=payload.userID
         const formData=payload.updatedFormData
-        const {data}=await axios.patch(`http://localhost:3000/patient/${id}`,formData)
+        const {data}=await axios.patch(`${api_base_url}/api/patient/${id}`,formData)
         actions.addUpdatedData(data)
     }),
     addPatientImageData:action((state,payload)=>{
@@ -233,7 +217,7 @@ const patientModel={
     updatePatientImage:thunk(async(actions,payload)=>{
         const {userID,formData}=payload
         console.log(userID)
-        const {data}=await axios.patch(`http://localhost:3000/patientImage/${userID}`,formData,{
+        const {data}=await axios.patch(`${api_base_url}/api/patientImage/${userID}`,formData,{
             headers:{'Content-Type':'multipart/form-data'}
         })
         actions.addPatientImageData(data)
@@ -248,7 +232,7 @@ const testRecommendationModel={
         state.updatedData=payload
     }),
     uploadTestResult:thunk(async(actions,{id,formData})=>{
-        const {data}=await axios.patch(`http://localhost:3000/testRecommendations/${id}`,formData,{
+        const {data}=await axios.patch(`${api_base_url}/api/testRecommendations/${id}`,formData,{
             headers:{'Content-Type':'multipart/form-data'},
         })
         actions.addUpdatedData(data)
@@ -259,7 +243,7 @@ const testRecommendationModel={
     createTest:thunk(async(actions,payload)=>{
         const {testName}=payload.data
         const {apppintmentID}=payload
-        const {data}=await axios.post('http://localhost:3000/testRecommendations',{
+        const {data}=await axios.post(`${api_base_url}/api/testRecommendations`,{
             testName,
             apppintmentID
         })
@@ -269,7 +253,7 @@ const testRecommendationModel={
         state.deletedData=payload
     }),
     deleteTest:thunk(async(actions,payload)=>{
-        const {data}=await axios.delete(`http://localhost:3000/testRecommendations/${payload}`)
+        const {data}=await axios.delete(`${api_base_url}/api/testRecommendations/${payload}`)
         actions.addDeletedData(data)
     })
 
@@ -285,7 +269,7 @@ const prescriptionModel={
         state.deletedMedicin=payload
     }),
     medicinDelete:thunk(async(actions,payload)=>{
-        const {data}=await axios.delete(`http://localhost:3000/medicinInstructions/${payload}`)
+        const {data}=await axios.delete(`${api_base_url}/api/medicinInstructions/${payload}`)
         actions.addDeletedMedicin(data)
     }),
     addCreatePress:action((state,payload)=>{
@@ -294,7 +278,7 @@ const prescriptionModel={
     createPrescription:thunk(async(actions,payload)=>{
         const {diagnosis}=payload.data
         const {appointmentID}=payload
-        const {data}=await axios.post('http://localhost:3000/prescriptions',{
+        const {data}=await axios.post(`${api_base_url}/api/prescriptions`,{
             diagnosis,
             appointmentID
         })
@@ -306,7 +290,7 @@ const prescriptionModel={
     updateDiagnosis:thunk(async(actions,payload)=>{
         const {id}=payload
         const {diagnosis}=payload.data
-        const {data}=await axios.patch(`http://localhost:3000/prescriptions/${id}`,{
+        const {data}=await axios.patch(`${api_base_url}/api/prescriptions/${id}`,{
             diagnosis
         })
         actions.addUpdatedDiag(data)
@@ -317,7 +301,7 @@ const prescriptionModel={
     createMedicine:thunk(async(actions,payload)=>{
         const {medicinName,dosage,frequency,duration}=payload.data
         const {prescriptionID}=payload
-        const {data}=await axios.post('http://localhost:3000/medicinInstructions',{
+        const {data}=await axios.post(`${api_base_url}/api/medicinInstructions`,{
             medicinName,
             dosage,
             frequency,
@@ -332,7 +316,7 @@ const prescriptionModel={
     updateAdditionalInstruction:thunk(async(actions,payload)=>{
         const {prescriptionID}=payload
         const {instruction}=payload.data
-        const {data}=await axios.patch(`http://localhost:3000/prescriptions/${prescriptionID}`,{
+        const {data}=await axios.patch(`${api_base_url}/api/prescriptions/${prescriptionID}`,{
             instruction
         })
         actions.addAdditionalInstruction(data)
@@ -344,7 +328,7 @@ const medicalRecordModel={
         state.data=payload
     }),
     getMedicalRecord:thunk(async(actions,payload)=>{
-        const {data}=await axios.get('http://localhost:3000/medicalRecord')
+        const {data}=await axios.get(`${api_base_url}/api/medicalRecord`)
         actions.addData(data)
     })
 }
@@ -361,7 +345,7 @@ const appointmentModel={
     updateAppointment:thunk(async(actions,payload)=>{
         const {appointmentID,reqApplyedID,date,time}=payload
         const {googleMeetLink}=payload.data
-        const {data}=await axios.patch(`http://localhost:3000/appointments/${appointmentID}`,{
+        const {data}=await axios.patch(`${api_base_url}/api/appointments/${appointmentID}`,{
             date,
             time,
             googleMeetLink,
@@ -370,8 +354,8 @@ const appointmentModel={
         })
         actions.addUpdatedData(data)
     }),
-    getAppointments:thunk(async(actions,payload)=>{
-        const {data}=await axios.get("http://localhost:3000/appointments")
+    getAppointments:thunk(async(actions)=>{
+        const {data}=await axios.get(`${api_base_url}/api/appointments`)
         actions.addAppointments(data)
     }),
     addGetAppointmentById:action((state,payload)=>{
@@ -379,7 +363,7 @@ const appointmentModel={
     }),
     getAppointmentByid:thunk(async(actions,payload)=>{
         console.log(payload)
-        const {data}=await axios.get(`http://localhost:3000/appointments/${payload}`)
+        const {data}=await axios.get(`${api_base_url}/api/appointments/${payload}`)
         actions.addGetAppointmentById(data)
     })
 
@@ -390,7 +374,7 @@ const applyedAppointmentModel={
         state.deleteData=payload
     }),
     deleteApplyedData:thunk(async(actions,payload)=>{
-        const {data}=await axios.delete(`http://localhost:3000/applyForAppointments/${payload}`)
+        const {data}=await axios.delete(`${api_base_url}/api/applyForAppointments/${payload}`)
         actions.addDeletedData(data)
     })
 
@@ -401,8 +385,20 @@ const sslCommerzModel={
         state.url=payload
     }),
     getUrl:thunk(async(actions,payload)=>{
-        const {data}=await axios.post('http://localhost:3000/initApplyForPayment',payload)
+        const {data}=await axios.post(`${api_base_url}/api/initApplyForPayment`,payload)
         window.location.href=data
+    })
+}
+const freeAppointmentModel={
+    data:null,
+    addData:action((state,payload)=>{
+        state.data=payload
+    }),
+    createFreeAppointment:thunk(async(actions,{payload,navigate})=>{
+        const {data}=await axios.post(`${api_base_url}/api/freeAppointments`,payload)
+        toast.success("Free Appointment Created!",{position:'top-right'})
+        if(!data) return null
+        navigate(`/successFreeAppointment/${data.freeAppointmentId}`)
     })
 }
 const adminModel={
@@ -415,7 +411,7 @@ const adminModel={
     addUser:thunk(async(actions,payload)=>{
         const {username,email,password,role}=payload.data
         try{
-         const {data}=await axios.post('http://localhost:3000/register',{
+         const {data}=await axios.post(`${api_base_url}/api/register`,{
              username,
              email,
              password,
@@ -430,15 +426,15 @@ const adminModel={
      addAllUserData:action((state,payload)=>{
         state.allUserData=payload
      }),
-     getAllUser:thunk(async(actions,payload)=>{
-        const {data}=await axios.get('http://localhost:3000/users')
+     getAllUser:thunk(async(actions)=>{
+        const {data}=await axios.get(`${api_base_url}/api/users`)
         actions.addAllUserData(data)
      }),
      addDeletedData:action((state,payload)=>{
         state.deletedData=payload
      }),
      deleteUser:thunk(async(actions,payload)=>{
-        const {data}=await axios.delete(`http://localhost:3000/users/${payload}`)
+        const {data}=await axios.delete(`${api_base_url}/api/users/${payload}`)
         actions.addDeletedData(data)
      })
 }
@@ -460,7 +456,7 @@ const promoCodeModel={
     }),
     createPromoCode:thunk(async(actions,{data:createData})=>{
         try{
-            const {data}=await axios.post(`http://localhost:3000/promoCode`,createData)
+            const {data}=await axios.post(`${api_base_url}/api/promoCode`,createData)
             console.log(data)
             actions.addPromoData(data)
             actions.addError(null)
@@ -472,13 +468,13 @@ const promoCodeModel={
     addAllPromoData:action((state,payload)=>{
         state.allPromoData=payload
     }),
-    getAllPromoCode:thunk(async(actions,payload)=>{
-        const {data}=await axios.get('http://localhost:3000/promoCodes')
+    getAllPromoCode:thunk(async(actions)=>{
+        const {data}=await axios.get(`${api_base_url}/api/promoCodes`)
         actions.addAllPromoData(data)
     }),
     getPercentage:thunk(async(actions,payload)=>{
         try{
-            const {data}=await axios.post('http://localhost:3000/promoCodeValidate',{code:payload})
+            const {data}=await axios.post(`${api_base_url}/api/promoCodeValidate`,{code:payload})
         console.log(data)
         if(data.valid){
             actions.addPercentage(data.percentage)
@@ -497,7 +493,7 @@ const promoCodeModel={
     }),
     deletePromoCode:thunk(async(actions,{id})=>{
         try{
-            const {data}=await axios.delete(`http://localhost:3000/promoCodes/${id}`)
+            const {data}=await axios.delete(`${api_base_url}/api/promoCodes/${id}`)
             console.log(data)
             actions.addDeletedData(data)
             actions.addError(null)
@@ -512,14 +508,14 @@ const promoCodeModel={
     }),
     updatePromoCode:thunk(async(actions,{id,data:updateData})=>{
         try{
-            const {data}=await axios.patch(`http://localhost:3000/promoCodes/${id}`,updateData)
+            const {data}=await axios.patch(`${api_base_url}/api/promoCodes/${id}`,updateData)
             actions.addUpdatedData(data)
         }catch(e){
             console.log(e)
         }
     }),
 
-    resetPercentage:action((state,payload)=>{
+    resetPercentage:action((state)=>{
         state.percentage=0
         state.error=null
     })
@@ -529,8 +525,8 @@ const superAdminModel={
     addCreatedAdmin:action((state,payload)=>{
         state.createdData=payload
     }),
-    createSuperAdmin:thunk(async(actions,payload)=>{
-        const {data}=await axios.post(`http://localhost:3000/register`,{
+    createSuperAdmin:thunk(async(actions)=>{
+        const {data}=await axios.post(`${api_base_url}/api/register`,{
             username:"Super Admin",
             email:"super_admin@gmail.com",
             password:"super_admin@1",
@@ -552,7 +548,8 @@ const store=createStore({
     applyedAppointment:applyedAppointmentModel,
     admin:adminModel,
     promoCode:promoCodeModel,
-    superAdmin:superAdminModel
+    superAdmin:superAdminModel,
+    freeAppointment:freeAppointmentModel
 })
 
 export default store;

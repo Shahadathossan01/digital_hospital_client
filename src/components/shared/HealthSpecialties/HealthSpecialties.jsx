@@ -42,7 +42,7 @@ const HealthSpecialties = () => {
     }
     const filterValidData=data.filter((item)=>item.isValid==true)
     return (
-        <Box sx={{marginTop:"50px"}}>
+        <Box sx={{marginTop:"90px"}}>
             <Header doctor={filterValidData}></Header>
             <HealthSpecialitiesList filterDoctor={filterValidData} home="true"></HealthSpecialitiesList>
         </Box>

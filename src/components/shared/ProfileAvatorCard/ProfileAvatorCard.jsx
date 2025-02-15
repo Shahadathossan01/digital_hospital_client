@@ -47,6 +47,7 @@ export default function ProfileAvatorCard({item}) {
     height: 120,
     borderRadius: "50%",
     objectFit: "cover",
+    
 }}
 />
        <Box style={{ marginBottom: '10px',marginTop:"10px"}}>

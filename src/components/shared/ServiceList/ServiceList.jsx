@@ -10,7 +10,8 @@ const ServiceList = ({ serviceItem }) => {
     sx={{
       justifyContent: {
         xs: "center", // Center horizontally on small screens
-        sm: "flex-start", // Default alignment on larger screens
+        sm: "flex-start",
+        padding:"20px"
       },
       alignItems: "center", // Center vertically
     }}

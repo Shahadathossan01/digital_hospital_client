@@ -82,7 +82,7 @@ const BlogList = () => {
       
       
       return (
-        <Box sx={{ flexGrow: 1}}>
+        <Box sx={{ flexGrow: 1,marginTop:"50px"}}>
       <Grid
         container
         spacing={2}

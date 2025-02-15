@@ -9,7 +9,7 @@ const Header = () => {
         sx={{ 
           fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem', lg: '3rem' }, 
           fontWeight: 'bold', 
-          color: 'primary.main',
+          color: 'white',
         }}
       >
         Our Services
@@ -46,7 +46,7 @@ const Services = () => {
         }
     ]
     return (
-        <Box sx={{marginTop:"50px"}}>
+        <Box sx={{marginTop:"90px",bgcolor:"#304ffe"}}>
             <Header></Header>
             <ServiceList serviceItem={serviceItem}></ServiceList>
         </Box>

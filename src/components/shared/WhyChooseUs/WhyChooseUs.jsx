@@ -62,14 +62,14 @@ const Header = () => {
       ]
       
     return (
-      <Box sx={{ width: "100%", maxWidth: 400, margin: "auto", borderRadius: 2, boxShadow: 3, }}>
+      <Box sx={{ width: "100%", maxWidth: 400, margin: "auto", borderRadius: 2, boxShadow: 3 }}>
         <List>
           {items.map((item) => (
             <ListItem key={item.id}>
               <ListItemAvatar>
-                <DoneOutlineIcon></DoneOutlineIcon>
+                <DoneOutlineIcon sx={{color:"green"}}></DoneOutlineIcon>
               </ListItemAvatar>
-              <ListItemText primary={item.title} sx={{ fontWeight: "bold" }} />
+              <ListItemText primary={item.title} sx={{ fontWeight: "bold"}} />
             </ListItem>
           ))}
         </List>
@@ -91,11 +91,12 @@ const Content=()=>{
         }}
       >
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzLrCgd8oKf2fKsE62BP1VS6nS9YRaQcuhFw&s"
+          src="https://media.istockphoto.com/id/655887334/photo/why-choose-us.jpg?s=612x612&w=0&k=20&c=TJLPS91NH3rTJhdcAgB92M984kcJ80S910X-4XnTpNE="
           style={{
             width: "100%",
             height: "auto",  // Makes the image scale proportionally
-            maxHeight: "350px",  // Set max height to maintain consistent image siz
+            maxHeight: "350px",
+            borderRadius:"10px"  // Set max height to maintain consistent image siz
           }}
         />
       </Grid>
@@ -107,7 +108,7 @@ const Content=()=>{
           display: "flex",
           flexDirection: "column",
           alignItems: "center", // Center the content horizontally
-          padding:"20px"
+          
         }}
       >
         <ListItems></ListItems>
@@ -119,7 +120,7 @@ const Content=()=>{
 
 const WhyChooseUs = () => {
     return (
-        <Box sx={{marginTop:"80px"}}>
+        <Box sx={{marginTop:"80px",bgcolor:"#ffcdd2",padding:"20px"}}>
             <Header></Header>
             <Content></Content>
         </Box>

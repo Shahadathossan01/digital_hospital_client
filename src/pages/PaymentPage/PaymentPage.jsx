@@ -1,13 +1,14 @@
 import { Box, Rating, Typography, Divider, TextField, Button } from "@mui/material";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { format } from "date-fns";
 import Grid from '@mui/material/Grid2';
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 
 
@@ -65,11 +66,12 @@ const PromoSection=()=>{
 }
 
 const BillSection=({patientData})=>{
-    console.log(patientData)
-    const {percentage,error}=useStoreState(state=>state.promoCode)
+    const {percentage}=useStoreState(state=>state.promoCode)
     const discountAmount=(patientData.fee*percentage)/100;
     const totalFee=patientData.fee-discountAmount
     const { getUrl } = useStoreActions((action) => action.sslCommerz);
+    const {createFreeAppointment}=useStoreActions(actions=>actions.freeAppointment)
+    const navigate=useNavigate()
 
     const handlePayment=()=>{
         const payload={
@@ -77,6 +79,15 @@ const BillSection=({patientData})=>{
             totalFee
         }
         getUrl(payload)
+    }
+
+    const handleFreeAppointment=()=>{
+        const payload={
+            ...patientData,
+            totalFee
+        }
+     createFreeAppointment({payload,navigate})
+
     }
 
     return(
@@ -101,6 +112,7 @@ const BillSection=({patientData})=>{
                         {
                             percentage==100?
                             <Button
+                            onClick={handleFreeAppointment}
               type="submit"
               variant="contained"
               color="primary"
@@ -130,8 +142,6 @@ const PaymentPage = () => {
     const { getDoctorById } = useStoreActions(actions => actions.doctor);
     const { doctor } = useStoreState(state => state.doctor);
     const doctorId = patientData.doctorID;
-    const {getPercentage}=useStoreActions(actions=>actions.promoCode)
-    
 
     useEffect(() => {
         getDoctorById(doctorId);

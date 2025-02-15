@@ -20,20 +20,20 @@ const SpecialitiesCard = ({ item }) => {
 
 
   return (
-    <Card sx={{ borderRadius: 2, boxShadow: 3 }}>
+    <Card sx={{ borderRadius: 2, boxShadow: 3 ,display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
       {/* Image */}
       <CardMedia
         component="img"
         image={item.profile} // Replace with the image URL
         alt={item.firstName}
-        sx={{
-          width: "100%",
-          height: 200,
-          
-          margin: "0 auto",
-          objectFit: "cover",
-          marginTop: -4, // Adjust the image to make it more prominent
-        }}
+         sx={{
+    width: 120,
+    height: 120,
+    borderRadius: "50%",
+    objectFit: "cover",
+    display:"flex",
+    justifyContent:"center"
+}}
       />
 
       {/* Card Content */}
@@ -53,12 +53,12 @@ const SpecialitiesCard = ({ item }) => {
         </Box>
 
         {/* Category Name */}
-        <Typography variant="body2" sx={{ marginBottom: 1 }}>
+        <Typography variant="body2" sx={{ marginBottom: 1}}>
           {item.speciality}
         </Typography>
 
         {/* Fee */}
-        <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 2 }}>
+        <Typography variant="body1" color="info" sx={{ marginBottom: 2,fontWeight:"bold" }}>
           Fee: {item.fee} {"taka"}
         </Typography>
 

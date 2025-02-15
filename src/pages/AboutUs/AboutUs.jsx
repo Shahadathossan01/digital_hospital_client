@@ -11,7 +11,7 @@ const AboutUs = () => {
 Our mission at Sureline is to transform the way you obtain medical care. Our goal is to make high-quality, reasonably priced, and easily accessible healthcare available to everyone, wherever they may be. You can quickly schedule a doctor's consultation if you live in a rural place. We recognize how difficult it may be to find time for doctor's appointments in the fast-paced world of today. For this reason, we make healthcare accessible so you may get the care you require without any fuss
       </Typography>
       <Typography sx={{marginTop:"50px"}} variant="h4" gutterBottom align="center">
-      SureLine Telehealth Care
+      SureLine
       </Typography><Divider></Divider>
       <Typography variant="body1" paragraph align="center">
       Sureline Telehealth Care is a modern telemedicine platform designed to provide convenient and accessible healthcare services. By connecting patients with licensed medical professionals online, SLTC offers personalized consultations, prescriptions, and follow-up care from the comfort of your home. Our mission is to simplify healthcare access, making it more efficient, affordable, and available for everyone, no matter where they are.

@@ -73,7 +73,7 @@ const HealthConcerns = () => {
     }
   ]
     return (
-        <Box sx={{marginTop:"50px"}}>
+        <Box sx={{marginTop:"90px"}}>
             <Header></Header>
             <HealthConcernCarousel healthConcerns={healthConcerns}></HealthConcernCarousel>
         </Box>

@@ -20,6 +20,10 @@ const Success = () => {
     (item) => item.transactionId === transactionId
   );
 
+  if(filteredAppointment?.length==0){
+    return null
+  }
+
   return (
     <Box
       sx={{
@@ -50,17 +54,18 @@ const Success = () => {
 
         {filteredAppointment ? (
           <>
+            <Typography variant="body1"><strong>Applyed Date:</strong> {format(new Date(filteredAppointment?.createdAt), "M/d/yyyy")}</Typography>
             <Typography variant="body1" sx={{ mb: 1 }}>
               <strong>Doctor Name:</strong> {filteredAppointment?.doctor?.title}{" "}
               {filteredAppointment?.doctor?.firstName}{" "}
               {filteredAppointment?.doctor?.lastName}
             </Typography>
             <Typography variant="body1" sx={{ mb: 1 }}>
-              <strong>Date:</strong>{" "}
+              <strong>Schedule Date:</strong>
               {format(new Date(filteredAppointment?.date), "M/d/yyyy")}
             </Typography>
             <Typography variant="body1" sx={{ mb: 1 }}>
-              <strong>Time:</strong> {filteredAppointment?.time}
+              <strong>Schedule Slot:</strong> {filteredAppointment?.time}
             </Typography>
             <Typography variant="body1" sx={{ mb: 1 }}>
               <strong>Total Fee:</strong> ${filteredAppointment?.totalFee}

@@ -32,7 +32,7 @@ const ImageCarousel = () => {
 
   const images = [
     "https://res.cloudinary.com/dmel68anu/image/upload/v1739467963/syhrycaeg1sbkubwq8xv.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrgF4b8DkghsDsdWgHByRnYb1bWZp015F1zw&s",
+    "http://res.cloudinary.com/dmel68anu/image/upload/v1739551136/vmrxrcdajyzzpdreid0p.png",
   ];
 
   return (

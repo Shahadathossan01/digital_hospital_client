@@ -103,7 +103,7 @@ const FindDoctors = () => {
       <Box sx={{marginTop:"20px"}}>
         <FilterSection handleFilterValue={handleFilterValue} specialty={specialty}></FilterSection>
       </Box>
-      <Typography sx={{marginTop:"10px"}}>20 doctors are available</Typography>
+      <Typography sx={{marginTop:"10px"}}>{filterDoctor?.length} doctors are available</Typography>
       <Box>
         <HealthSpecialitiesList filterDoctor={filterDoctor}></HealthSpecialitiesList>
       </Box>

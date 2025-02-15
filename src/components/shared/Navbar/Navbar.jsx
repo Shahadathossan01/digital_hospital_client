@@ -67,7 +67,7 @@ const Navbar=()=>{
               flexGrow:4
             }}
           >
-            <Link to="/" style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
+            <Link to="/" style={{textDecoration:'none',color:'white'}}>Sureline</Link>
           </Typography>
 
           <Typography
@@ -86,7 +86,7 @@ const Navbar=()=>{
               textDecoration: 'none',
             }}
           >
-            <Link to="/" style={{textDecoration:'none',color:'white'}}>Digital Hospital</Link>
+            <Link to="/" style={{textDecoration:'none',color:'white'}}>Sureline</Link>
           </Typography>
 
           <Box sx={{ flexGrow:0, display: { xs: 'flex', md: 'none' } }}>
@@ -235,7 +235,7 @@ const Navbar=()=>{
 
               <Link to="/becomeADoctor" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Become a Doctor</Button></Link>
 
-              <Link  style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }} onClick={handleClick}>Others Services</Button></Link>           
+              <Link  style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }} onClick={handleClick}> Emergency Service</Button></Link>           
               <Menu
         anchorEl={anchorEl}
         open={open}

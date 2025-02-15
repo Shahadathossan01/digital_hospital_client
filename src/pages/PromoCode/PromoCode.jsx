@@ -25,7 +25,6 @@ const PromoForm = ({handlePromo,update,handleClose,id}) => {
   // Handle form submission
   const onSubmit = (data) => {
     const checkEmptyData=checkUpdatedData(data)
-    console.log(checkEmptyData)
     handlePromo({data:checkEmptyData,id})
     reset()
     handleClose()

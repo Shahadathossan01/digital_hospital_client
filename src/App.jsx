@@ -42,6 +42,9 @@ import TermsOrConditions from "./pages/TermsOrConditions/TermsOrConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import RefundPolicy from "./pages/RefundPolicy/RefundPolicy";
 import LeaderShipProfile from "./pages/LeadershipProfile/LeaderShipProfile";
+import SuccessFreeAppointment from "./pages/SuccessFreeAppointment/SuccessFreeAppointment";
+import PatientInvoice from "./pages/PatientInvoice/PatientInvoice";
+import AdminInvoice from "./pages/AdminInvoice/AdminInvoice";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
@@ -168,6 +171,7 @@ function App() {
           <Route path="/PatientProfile" element={<><PrivateRoute><PatientProfileLayout /></PrivateRoute></>}>
             <Route path="" element={<MyProfile />}/>
             <Route path="appointments" element={<MyAppointments />}/>
+            <Route path="patientInvoice" element={<PatientInvoice />}/>
             {/* <Route path="emergency" element={<MyEmergencyService />}/> */}
           </Route>
           
@@ -183,6 +187,7 @@ function App() {
           <Route path="/privacy_policy" element={<PrivacyPolicy></PrivacyPolicy>}/>                   
           <Route path="/refund_policy" element={<RefundPolicy></RefundPolicy>}/>                   
           <Route path="/leadershipProfile" element={<LeaderShipProfile></LeaderShipProfile>}/>                   
+          <Route path="/successFreeAppointment/:freeAppointmentId" element={<SuccessFreeAppointment></SuccessFreeAppointment>}/>                   
         </Route>
 
         }
@@ -212,7 +217,9 @@ function App() {
               <Route path="allUsers" element={<AllUsers></AllUsers>}/>
               <Route path="promoCode" element={<PromoCode></PromoCode>}/>
               <Route path="addDoctor" element={<AddDoctor></AddDoctor>}/>
+              <Route path="changePassword" element={<ChangePassword />}/>
               <Route path="addAdminOrPatient" element={<AddAdminOrPatient></AddAdminOrPatient>}/>
+              <Route path="adminInvoice" element={<AdminInvoice></AdminInvoice>}/>
 
             </Route>
           </>

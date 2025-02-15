@@ -35,7 +35,8 @@ const SideBarItem = () => {
           {/** Sidebar Items */}
           {[
             { text: "My Profile", path: "/PatientProfile" },
-            { text: "Appointments", path: "/PatientProfile/appointments" }
+            { text: "Appointments", path: "/PatientProfile/appointments" },
+            { text: "Invoice", path: "/PatientProfile/patientInvoice" },
           ].map(({ text, path }) => (
             <ListItem
               key={text}

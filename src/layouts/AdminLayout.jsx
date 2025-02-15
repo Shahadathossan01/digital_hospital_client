@@ -52,6 +52,8 @@ const Header=()=>{
   const {registerData}=useStoreState(state=>state.user)
   const { allUserData } = useStoreState((state) => state.admin);
   const { appointments } = useStoreState((state) => state.appointment);
+  const {getAllPromoCode}=useStoreActions(actions=>actions.promoCode)
+  const {allPromoData,createdPromoData,deletedData}=useStoreState(state=>state.promoCode)
 
   const {getDoctors}=useStoreActions(actions=>actions.doctor)
     const {data,deleteDoctorData,updatedProfileData}=useStoreState(state=>state.doctor)
@@ -68,10 +70,17 @@ const Header=()=>{
     useEffect(()=>{
       getAppointments()
     },[getAppointments])
+
+    useEffect(()=>{
+      getAllPromoCode()
+    },[getAllPromoCode,createdPromoData,deletedData])
+
+
     
-    if (allUserData.length==0 || data.length==0) return null;
+    if (allUserData.length==0 || data.length==0 ) return null;
     const totalAdmins=allUserData.filter((item)=>item.role=="admin")
-    const totalPatients=allUserData.filter((item)=>item.role=="patient")
+    // const totalPatients=allUserData.filter((item)=>item.role=="patient")
+    
     const filterRequestedDoctor=data?.filter(item=>item.isValid===false)
 
    
@@ -86,7 +95,7 @@ const Header=()=>{
                     <HeaderCard number={appointments.length} title={"Total"} subtitle={"Appointments"} />
                 </Grid>
                 <Grid size={{xs:12,sm:6,md:3}}>
-                    <HeaderCard number={totalPatients.length} title={"Total"} subtitle={"Patients"} />
+                    <HeaderCard number={allPromoData.length} title={"Total"} subtitle={"Promo Code"} />
                 </Grid>
                 <Grid size={{xs:12,sm:6,md:3}}>
                     <HeaderCard number={totalAdmins.length} title={"Total"} subtitle={"Admins"} />
@@ -110,7 +119,9 @@ const SideBarItem = () => {
             { text: "All Users", path: "/allUsers" },
             { text: "Promo Code", path: "/promoCode" },
             { text: "Add Doctor", path: "/addDoctor" },
-            { text: "Add Admin or Patient", path: "/addAdminOrPatient" }
+            { text: "Add Admin or Patient", path: "/addAdminOrPatient" },
+            { text: "Invoice", path: "/adminInvoice" },
+            { text: "Change Password", path: "/changePassword" },
           ].map(({ text, path }) => (
             <ListItem
               key={text}
