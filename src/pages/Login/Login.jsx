@@ -2,23 +2,22 @@ import { useStoreActions } from 'easy-peasy';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Grid, Box, Typography, TextField, Button } from '@mui/material';
+import { Password } from '@mui/icons-material';
+import { isValidEmailOrPhone } from '../../utils';
 
 const Login = () => {
     const { register, handleSubmit } = useForm();
     const { loginUser} = useStoreActions(action => action.user);
-    // const { user} = useStoreActions(state=>state.user);
     const navigate=useNavigate()
     const location=useLocation()
     const from=location.state?.from?.pathname || "/"
 
     const onSubmit = async(data) => {
-       await loginUser({ data});
-       const user=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):null
-       if(user?.role=="patient"){
-          navigate(from,{replace:true})
-          return
+        const loginData={
+            credential:data.credential,
+            password:data.password
         }
-         navigate("/")
+        loginUser({loginData,from,navigate})
     };
 
     return (
@@ -41,13 +40,17 @@ const Login = () => {
                     </Typography>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Box display="flex" flexDirection="column" gap={2} marginBottom={3}>
-                            <TextField
-                                required
-                                label="Email"
-                                {...register("email")}
-                                type="email"
-                                fullWidth
-                            />
+                        <TextField
+  required
+  label="Email or Phone"
+  {...register("credential", {
+    required: "This field is required",
+    validate: (value) =>
+      isValidEmailOrPhone(value) || "Enter a valid email or 11-digit phone number",
+  })}
+  type="text" // Change type to text to allow numbers
+  fullWidth
+/>
                             <TextField
                                 required
                                 label="Password"
@@ -56,6 +59,9 @@ const Login = () => {
                                 fullWidth
                             />
                         </Box>
+                        <Typography sx={{display:'flex',justifyContent:"end"}}>
+                            <Link to={"/password/forgot"}>Forgot your password?</Link>
+                        </Typography>
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Log in
                         </Button>

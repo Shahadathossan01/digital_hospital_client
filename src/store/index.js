@@ -21,39 +21,86 @@ const userModel={
     addRegisterError:action((state,payload)=>{
         state.registerError=payload
     }),
-    registerUser:thunk(async(actions,{formData,navigate})=>{
+    registerUser:thunk(async(actions,{formData,navigate,credential})=>{
+        console.log(formData)
        try{
         const {data}=await axios.post(`${api_base_url}/api/register`,formData,{headers:{"Content-Type":"multipart/form-data"}})
-           actions.addRegisterData(data.user)
-           toast.success("Register completed!",{position:'top-right'})
-           if(data.user.role=="doctor") return
-           navigate('/login')
+           toast.success(data.message,{position:'top-right'})
+           if(data.success){
+               navigate(`/otp-verification/${credential}`);
+           }
        }catch(e){
         console.log(e)
         actions.addRegisterError(e?.response?.data.message)
        }
     }),
-    loginUser:thunk(async(actions,payload)=>{
-        const {email,password}=payload.data
-        const {data}=await axios.post(`${api_base_url}/api/login`,{
-            email,
-            password
-        })
-        actions.addUser(data.payload)
-        actions.addIslogIn('true')
-        localStorage.setItem("token",data.token)
-        localStorage.setItem("user",JSON.stringify(data.payload))
-        toast.success('Login Successfully!',{position:'top-right'})
+    otpVerify:thunk(async(actions,{verifyingData,navigate})=>{
+        try{
+            const {data}= await axios.post(`${api_base_url}/api/otp-verification`,verifyingData)
+            if(data.success){
+                if(data?.user?.role=="patient"){
+                    toast.success(data.message,{position:'top-right'})
+                    actions.addUser(data.user)
+                    actions.addIslogIn('true')
+                    localStorage.setItem("token",data.token)
+                    localStorage.setItem("user",JSON.stringify(data.user))
+                    navigate("/")
+                  }
+                if(data?.user?.role=="doctor"){
+                    toast.success("Successfully Created New Doctor Account.",{position:'top-right'})
+                    navigate("/")
+                }  
+
+            }
+        }catch(error){
+            console.log(error)
+        }
+    }),
+    loginUser:thunk(async(actions,{loginData,from,navigate})=>{
+        console.log(loginData)
+        const {data}=await axios.post(`${api_base_url}/api/login`,loginData)
+        if(data.success){
+            toast.success(data.message,{position:'top-right'})
+            actions.addUser(data.user)
+            actions.addIslogIn('true')
+            localStorage.setItem("token",data.token)
+            localStorage.setItem("user",JSON.stringify(data.user))
+            if(data?.user?.role=="patient"){
+                navigate(from,{replace:true})
+                return
+              }
+            
+               navigate("/")
+        }
+        // const {data}=await axios.post(`${api_base_url}/api/login`,{
+        //     email,
+        //     password
+        // })
+        // actions.addUser(data.payload)
+        // actions.addIslogIn('true')
+        // localStorage.setItem("token",data.token)
+        // localStorage.setItem("user",JSON.stringify(data.payload))
+        // toast.success('Login Successfully!',{position:'top-right'})
         
-        return
         
     }),
-    logoutUser:action((state)=>{
-        localStorage.removeItem("token")
-        localStorage.removeItem("user")
+    addLogoutData:action((state)=>{
         state.user=null
         state.isLogoutUser=true
-        
+    }),
+    logoutUser:thunk(async(actions,{token})=>{
+        const {data}=await axios.get(`${api_base_url}/api/logout`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+
+        if(data.success){
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+        actions.addLogoutData()
+        toast.success(data.message)
+        }
     }),
     addAllUsers:action((state,payload)=>{
         state.allUsers=payload
@@ -61,6 +108,37 @@ const userModel={
     getAllUsers:thunk(async(actions)=>{
         const {data}=await axios.get(`${api_base_url}/api/users`)
         actions.addAllUsers(data)
+    }),
+    sendResetLink:thunk(async(actions,{credential})=>{
+        try{
+            const {data}=await axios.post(`http://localhost:3000/api/forgotPassword`,{credential})
+            if(data.success){
+                toast.success(data?.message)
+            }
+        }catch(error){
+            console.log(error)
+            toast.error(error?.response?.data?.message)
+        }
+        
+    }),
+    resetPassword:thunk(async(actions,{password,confirmPassword,resetToken,navigate,from})=>{
+       try{
+        const {data}=await axios.put(`${api_base_url}/api/password/reset/${resetToken}`,{password,confirmPassword})
+        if(data.success){
+            toast.success(data.message,{position:'top-right'})
+            actions.addUser(data.user)
+            actions.addIslogIn('true')
+            localStorage.setItem("token",data.token)
+            localStorage.setItem("user",JSON.stringify(data.user))
+            if(data?.user?.role=="patient"){
+                navigate(from,{replace:true})
+                return
+              }
+            navigate("/")
+        }
+       }catch(error){
+        toast.error(error?.response?.data?.message)
+       }
     })
 }
 const doctorModel={
@@ -327,7 +405,7 @@ const medicalRecordModel={
     addData:action((state,payload)=>{
         state.data=payload
     }),
-    getMedicalRecord:thunk(async(actions,payload)=>{
+    getMedicalRecord:thunk(async(actions)=>{
         const {data}=await axios.get(`${api_base_url}/api/medicalRecord`)
         actions.addData(data)
     })

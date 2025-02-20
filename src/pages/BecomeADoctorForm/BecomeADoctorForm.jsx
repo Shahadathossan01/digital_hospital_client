@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { useStoreActions } from 'easy-peasy';
 import { useNavigate } from 'react-router-dom';
 import CreateSlotForm from '../../components/shared/CreateSlotForm/CreateSlotForm';
-import { createSchedule, getTotalDaysInMonth } from '../../utils';
+import { createSchedule, getTotalDaysInMonth, isValidEmailOrPhone } from '../../utils';
 
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
@@ -165,7 +165,7 @@ const specialitys=[
     
 ]
 const BecomeADoctorForm = () => {
-  const {register,handleSubmit,reset}=useForm()
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [profileImage,setProfileImage]=useState(null)
   const [documentImage,setDocumentImage]=useState(null)
   const { registerUser } = useStoreActions(action => action.user);
@@ -196,13 +196,13 @@ const BecomeADoctorForm = () => {
       formData.append("speciality",data.speciality)
       formData.append("yearOfExperience",data.yearOfExperience)
       formData.append("username",data.username)
-      formData.append("email",data.email)
+      formData.append("credential",data.credential)
       formData.append("password",data.password)
       formData.append("document",documentImage)
       formData.append("role","doctor")
       formData.append("designation",data.designation)
       formData.append("schedule",JSON.stringify(schedule))
-      registerUser({formData,navigate})
+      registerUser({formData,navigate,credential:data.credential})
       reset()
     }
 
@@ -360,13 +360,40 @@ const BecomeADoctorForm = () => {
             </Grid>
             
             <Grid size={{xs:12,sm:6,md:4,lg:3}}>
-              <TextField {...register("username")} type="text" label="Username" name="username" fullWidth />
+            <TextField
+                            required
+                            label="Username"
+                            {...register("username",{
+                                required:"This field is required",
+                            })}
+                            fullWidth
+                            error={!!errors.username} 
+                            helperText={errors.username?.message} 
+                        />
             </Grid>
             <Grid size={{xs:12,sm:6,md:4,lg:3}}>
-              <TextField {...register("email")} type="email" label="Email" name="email" fullWidth />
+            <TextField
+  required
+  label="Email or Phone"
+  {...register("credential", {
+    required: "This field is required",
+    validate: (value) =>
+      isValidEmailOrPhone(value) || "Enter a valid email or 11-digit phone number",
+  })}
+  type="text" // Change type to text to allow numbers
+  fullWidth
+  error={!!errors.credential} // Show red border if error
+  helperText={errors.credential?.message} // Show error message below field
+/>
             </Grid>
             <Grid size={{xs:12,sm:6,md:4,lg:3}}>
-              <TextField {...register("password")} type="password" label="Password" name="password" fullWidth />
+            <TextField
+                            required
+                            label="Password"
+                            {...register("password")}
+                            type="password"
+                            fullWidth
+                        />
             </Grid>
 
           </Grid>

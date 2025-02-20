@@ -21,7 +21,7 @@ const DoctorProfile = () => {
     const [open, setOpen] = useState(false);
     const [openCP, setOpenCP] = useState(false);
 
-    const userID = user?.id;
+    const userID = user?._id;
     const userEmail = user?.email;
     useEffect(() => {
         getDoctorById(userID);

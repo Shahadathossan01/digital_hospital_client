@@ -1,20 +1,24 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Grid, Box, Typography, TextField, Button } from '@mui/material';
+import { isValidEmailOrPhone } from "../../utils";
 
 const Register = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const { registerUser } = useStoreActions(action => action.user);
     const { registerError } = useStoreState(state => state.user);
     const navigate = useNavigate();
+    const location=useLocation()
+    const from=location.state?.from?.pathname || "/"
     const onSubmit = (data) => {
-        const { username, email, confirmPassword } = data;
+        const { username, credential, confirmPassword } = data;
         const formData=new FormData()
         formData.append("username",username)
-        formData.append("email",email)
+        formData.append("credential",credential)
         formData.append("password",confirmPassword)
-        registerUser({ formData, navigate });
+        registerUser({ formData ,navigate,credential,from});
+        
     };
     const password = watch("password");
 
@@ -43,21 +47,26 @@ const Register = () => {
                         <TextField
                             required
                             label="Username"
-                            {...register("username")}
+                            {...register("username",{
+                                required:"This field is required",
+                            })}
                             fullWidth
+                            error={!!errors.username} 
+                            helperText={errors.username?.message} 
                         />
                         <TextField
-                            required
-                            label="Email"
-                            {...register("email")}
-                            type="email"
-                            fullWidth
-                        />
-                        {errors.email && (
-                            <Typography variant="body2" color="error">
-                                {errors.email.message}
-                            </Typography>
-                        )}
+  required
+  label="Email or Phone"
+  {...register("credential", {
+    required: "This field is required",
+    validate: (value) =>
+      isValidEmailOrPhone(value) || "Enter a valid email or 11-digit phone number",
+  })}
+  type="text" // Change type to text to allow numbers
+  fullWidth
+  error={!!errors.credential} // Show red border if error
+  helperText={errors.credential?.message} // Show error message below field
+/>
                     </Box>
                     <Box display="flex" flexDirection="column" gap={2} marginBottom={3}>
                         <TextField

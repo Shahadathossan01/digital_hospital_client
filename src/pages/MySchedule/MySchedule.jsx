@@ -81,7 +81,7 @@ const MySchedule = () => {
     const { user } = useStoreState((state) => state.user);
     const { getDoctorById,addNewSlot,deleteSlot,updateSchedule} = useStoreActions((action) => action.doctor);
     const { doctor ,updatedProfileData,imageData,statusData} = useStoreState((state) => state.doctor);
-    const userID = user?.id;
+    const userID = user?._id;
     useEffect(() => {
         getDoctorById(userID);
     }, [userID, getDoctorById,updatedProfileData,imageData,statusData]);

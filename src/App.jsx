@@ -45,9 +45,13 @@ import LeaderShipProfile from "./pages/LeadershipProfile/LeaderShipProfile";
 import SuccessFreeAppointment from "./pages/SuccessFreeAppointment/SuccessFreeAppointment";
 import PatientInvoice from "./pages/PatientInvoice/PatientInvoice";
 import AdminInvoice from "./pages/AdminInvoice/AdminInvoice";
+import OtpVerification from "./pages/OtpVerification/OtpVerification";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
+  console.log(user)
 
 
 
@@ -167,6 +171,9 @@ function App() {
           <Route path="/health_hub" element={<PrivateRoute><HealthHub/></PrivateRoute>}/>
           <Route path="/medicine_hub" element={<PrivateRoute><MedicineHub/></PrivateRoute>}/>
           <Route path="/lab_testing" element={<PrivateRoute></PrivateRoute>}/>
+          <Route path="/password/forgot" element={<ForgotPassword></ForgotPassword>}/>
+          <Route path="/password/reset/:resetToken" element={<ResetPassword></ResetPassword>}/>
+          <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
           
           <Route path="/PatientProfile" element={<><PrivateRoute><PatientProfileLayout /></PrivateRoute></>}>
             <Route path="" element={<MyProfile />}/>
@@ -204,6 +211,7 @@ function App() {
               <Route path="profile" element={<DoctorProfile />}/>
               <Route path="changePassword" element={<ChangePassword />}/>
               <Route path="createNewAccount" element={<CreateNewAccount />}/>
+              <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
             </Route>
           </>
         }
@@ -220,6 +228,7 @@ function App() {
               <Route path="changePassword" element={<ChangePassword />}/>
               <Route path="addAdminOrPatient" element={<AddAdminOrPatient></AddAdminOrPatient>}/>
               <Route path="adminInvoice" element={<AdminInvoice></AdminInvoice>}/>
+              <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
 
             </Route>
           </>

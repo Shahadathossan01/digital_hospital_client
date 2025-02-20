@@ -94,15 +94,14 @@ const ProfileDetails=({patient})=>{
 }
 
 const MyProfile = () => {
-    const { user } = useStoreState((state) => state.user);
+        const { user } = useStoreState((state) => state.user);
         const { getPatient } = useStoreActions((action) => action.patient);
         const { patient, updatedData,patientImageData } = useStoreState((state) => state.patient);
         const [open, setOpen] = useState(false);
         const [openCP, setOpenCP] = useState(false);
     
-        const userID = user?.id;
+        const userID = user?._id;
         const userEmail = user?.email;
-    
         useEffect(() => {
             getPatient(userID);
         }, [userID, getPatient, updatedData,patientImageData]);

@@ -27,9 +27,8 @@ const SpecialitiesCard = ({ item }) => {
         image={item.profile} // Replace with the image URL
         alt={item.firstName}
          sx={{
-    width: 120,
+    width: "100%",
     height: 120,
-    borderRadius: "50%",
     objectFit: "cover",
     display:"flex",
     justifyContent:"center"

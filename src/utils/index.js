@@ -118,6 +118,12 @@ const filterDoctorAppointments=(appointments,filterValue)=>{
 
     return filteredAppointments
 }
+const isValidEmailOrPhone = (value) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phoneRegex = /^\d{11}$/; // Only 11-digit numbers allowed
+  
+    return emailRegex.test(value) || phoneRegex.test(value);
+  };
 
 
-export {checkUpdatedData,specialityName,filterDoctorBySpecialty,createSchedule,getTotalDaysInMonth,filterUser,filterAppointments,getUpcommingAppointments,filterDoctorAppointments}
+export {checkUpdatedData,specialityName,filterDoctorBySpecialty,createSchedule,getTotalDaysInMonth,filterUser,filterAppointments,getUpcommingAppointments,filterDoctorAppointments,isValidEmailOrPhone}
