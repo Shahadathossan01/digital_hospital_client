@@ -36,8 +36,8 @@ const BookAppointment = () => {
     const navigate=useNavigate()
 
 useEffect(() => {
-    if (user?.id) {
-      getPatient(user?.id);
+    if (user?._id) {
+      getPatient(user?._id);
     }
   }, [getPatient,user]);
 

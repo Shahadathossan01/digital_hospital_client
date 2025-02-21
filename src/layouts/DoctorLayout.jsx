@@ -91,7 +91,7 @@ const SideBarItem = () => {
     const navigate=useNavigate()
     const { logoutUser } = useStoreActions(action => action.user);
     const location = useLocation(); // Get the current path
-  
+    const token = localStorage.getItem("token")?localStorage.getItem("token"):null;
     return (
       <Box p={2}>
         <List sx={{ display: "flex", flexDirection: "column", gap: "20px", borderRadius: 2, width: "100%" }}>
@@ -127,7 +127,7 @@ const SideBarItem = () => {
           <ListItem
             component="button"
             onClick={() => {
-              logoutUser()
+              logoutUser({token})
               navigate("/")
             }}
             sx={{
