@@ -37,30 +37,31 @@ const ImageCarousel = () => {
 
   return (
     <Box
-      sx={{
-        width: "100%",
-        overflow: "hidden", // Ensures no part of the previous/next image is visible
-        position: "relative", // Needed for dots to position correctly
-        marginTop:"30px"
-      }}
-    >
-      <Slider {...settings}>
-        {images.map((image, index) => (
-          <Box key={index}>
-            <img
-              src={image}
-              alt={`Slide ${index + 1}`}
-              style={{
-                width: "100%",
-                height: "350px", // Set height for images
-                objectFit: "cover", // Ensures the image scales proportionally
-                borderRadius: "10px", // Optional rounded corners
-              }}
-            />
-          </Box>
-        ))}
-      </Slider>
-    </Box>
+  sx={{
+    width: "100%",
+    overflow: "hidden",
+    position: "relative",
+    marginTop: "30px",
+  }}
+>
+  <Slider {...settings}>
+    {images.map((image, index) => (
+      <Box key={index}>
+        <img
+          src={image}
+          alt={`Slide ${index + 1}`}
+          style={{
+            width: "100%",
+            maxHeight: "350px", // Use maxHeight instead of fixed height
+            objectFit: "contain", // Show full image without cropping
+            borderRadius: "10px",
+          }}
+        />
+      </Box>
+    ))}
+  </Slider>
+</Box>
+
   );
 };
 
