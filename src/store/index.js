@@ -22,7 +22,6 @@ const userModel={
         state.registerError=payload
     }),
     registerUser:thunk(async(actions,{formData,navigate,credential})=>{
-        console.log(formData)
        try{
         const {data}=await axios.post(`${api_base_url}/api/register`,formData,{headers:{"Content-Type":"multipart/form-data"}})
            toast.success(data.message,{position:'top-right'})
@@ -30,7 +29,7 @@ const userModel={
                navigate(`/otp-verification/${credential}`);
            }
        }catch(e){
-        console.log(e)
+        toast.error(e?.response?.data.message)
         actions.addRegisterError(e?.response?.data.message)
        }
     }),
@@ -71,18 +70,7 @@ const userModel={
               }
             
                navigate("/")
-        }
-        // const {data}=await axios.post(`${api_base_url}/api/login`,{
-        //     email,
-        //     password
-        // })
-        // actions.addUser(data.payload)
-        // actions.addIslogIn('true')
-        // localStorage.setItem("token",data.token)
-        // localStorage.setItem("user",JSON.stringify(data.payload))
-        // toast.success('Login Successfully!',{position:'top-right'})
-        
-        
+        }   
     }),
     addLogoutData:action((state)=>{
         state.user=null
@@ -111,7 +99,7 @@ const userModel={
     }),
     sendResetLink:thunk(async(actions,{credential})=>{
         try{
-            const {data}=await axios.post(`http://localhost:3000/api/forgotPassword`,{credential})
+            const {data}=await axios.post(`${api_base_url}/api/forgotPassword`,{credential})
             if(data.success){
                 toast.success(data?.message)
             }
@@ -207,7 +195,6 @@ const doctorModel={
     }),
     updateSchedule:thunk(async(actions,payload)=>{
         const {doctorID,schedule}=payload
-        console.log("finding",schedule)
         const {data}=await axios.patch(`${api_base_url}/api/doctorSchedule/${doctorID}`,{
             schedule
         })
@@ -294,7 +281,6 @@ const patientModel={
     }),
     updatePatientImage:thunk(async(actions,payload)=>{
         const {userID,formData}=payload
-        console.log(userID)
         const {data}=await axios.patch(`${api_base_url}/api/patientImage/${userID}`,formData,{
             headers:{'Content-Type':'multipart/form-data'}
         })
@@ -440,7 +426,6 @@ const appointmentModel={
         state.appointmentByIdData=payload
     }),
     getAppointmentByid:thunk(async(actions,payload)=>{
-        console.log(payload)
         const {data}=await axios.get(`${api_base_url}/api/appointments/${payload}`)
         actions.addGetAppointmentById(data)
     })
