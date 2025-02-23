@@ -24,15 +24,15 @@ const SpecialitiesCard = ({ item }) => {
       {/* Image */}
       <CardMedia
         component="img"
-        image={item.profile} // Replace with the image URL
-        alt={item.firstName}
-         sx={{
-    width: "100%",
-    height: 120,
-    objectFit: "cover",
-    display:"flex",
-    justifyContent:"center"
-}}
+        image={item.profile}
+        alt="No image uploaded"
+        sx={{
+          width: 150,
+          height: 150,
+          borderRadius: "50%",
+          objectFit: "cover",
+          marginTop:"20px"
+      }}
       />
 
       {/* Card Content */}

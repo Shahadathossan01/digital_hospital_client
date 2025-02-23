@@ -48,7 +48,6 @@ const DoctorProfile = () => {
     const PersonalInfo=({doctor})=>{
         if(!doctor) return null
         const {firstName,lastName,dateOfBirth,gender,mobile,nationality,nidOrPassport,organization,title,}=doctor
-        console.log(doctor)
         return(
             <>
                 <Typography color="primary" sx={{textAlign:"center"}}>Personal Info:</Typography>
