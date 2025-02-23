@@ -41,7 +41,7 @@ const ImageCarousel = () => {
     width: "100%",
     overflow: "hidden",
     position: "relative",
-    marginTop: "30px",
+    marginTop: {xs:"10px",sm:"30px",md:"30px"},
   }}
 >
   <Slider {...settings}>

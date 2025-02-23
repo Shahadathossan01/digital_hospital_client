@@ -90,7 +90,7 @@ const HealthConcernCarousel = ({ healthConcerns }) => {
   };
 
   return (
-    <Box sx={{ width: "100%",marginTop:"50px"}}>
+    <Box sx={{ width: "100%",marginTop:"20px",paddingBottom:"18px"}}>
       <Slider {...settings}>
         {healthConcerns.map((item) => (
           <Box

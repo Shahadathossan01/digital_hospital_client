@@ -3,7 +3,7 @@ import HealthConcernCarousel from "../HealthConcernCarousel/HealthConcernCarouse
 
 const Header = () => {
     return (
-      <Box sx={{ textAlign: 'center', marginBottom: 3 ,marginTop:3}}>
+      <Box sx={{ textAlign: 'center'}}>
         <Typography 
           variant="h7" 
           sx={{ 
@@ -73,7 +73,7 @@ const HealthConcerns = () => {
     }
   ]
     return (
-        <Box sx={{marginTop:"90px"}}>
+        <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"},bgcolor:"#f3e5f5"}}>
             <Header></Header>
             <HealthConcernCarousel healthConcerns={healthConcerns}></HealthConcernCarousel>
         </Box>

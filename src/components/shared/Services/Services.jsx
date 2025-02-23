@@ -3,13 +3,13 @@ import ServiceList from "../ServiceList/ServiceList";
 
 const Header = () => {
   return (
-    <Box sx={{ textAlign: 'center', marginBottom: 3 ,marginTop:3}}>
+    <Box sx={{ textAlign: 'center'}}>
       <Typography 
         variant="h7" 
         sx={{ 
           fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem', lg: '3rem' }, 
           fontWeight: 'bold', 
-          color: 'black',
+          color: 'primary.main',
         }}
       >
         Our Services
@@ -46,7 +46,7 @@ const Services = () => {
         }
     ]
     return (
-        <Box sx={{marginTop:{md:"70px"},bgcolor:"#f3e5f5"}}>
+        <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"},bgcolor:"#f3e5f5"}}>
             <Header></Header>
             <ServiceList serviceItem={serviceItem}></ServiceList>
         </Box>
