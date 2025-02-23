@@ -12,12 +12,12 @@ const Main = () => {
                 minHeight: "100vh", // Ensures the page takes full height
             }}
         >
-            <Box sx={{ marginBottom: "80px" }}>
+            <Box>
                 <Navbar />
             </Box>
 
             {/* Content should take up remaining space */}
-            <Box sx={{ flexGrow: 1}}>
+            <Box sx={{marginTop:"80px"}}>
                 <Outlet />
             </Box>
 

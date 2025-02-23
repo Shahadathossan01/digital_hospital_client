@@ -1,4 +1,3 @@
-import React from "react";
 import { TextField, InputAdornment, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -6,8 +5,7 @@ const SearchDoctor = () => {
   return (
     <Box
       sx={{
-        width: "100%", // Full width
-        marginTop:"30px"
+        width: "100%"
       }}
     >
       <TextField
@@ -15,12 +13,12 @@ const SearchDoctor = () => {
         borderRadius:"20px"
        }}
         variant="outlined"
-        fullWidth // Ensures the search input takes the full width
-        placeholder="Search doctor by name" // Placeholder text
+        fullWidth 
+        placeholder="Search doctor by name"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon color="action" /> {/* Search icon */}
+              <SearchIcon color="action" />
             </InputAdornment>
           ),
         }}
