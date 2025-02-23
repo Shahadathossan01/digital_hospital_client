@@ -5,7 +5,8 @@ const SearchDoctor = () => {
   return (
     <Box
       sx={{
-        width: "100%"
+        width: "100%",
+        marginTop:{xs:"60px",sm:"70px",md:"80px"}
       }}
     >
       <TextField

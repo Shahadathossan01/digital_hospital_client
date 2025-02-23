@@ -17,7 +17,7 @@ const Main = () => {
             </Box>
 
             {/* Content should take up remaining space */}
-            <Box sx={{marginTop:"80px"}}>
+            <Box>
                 <Outlet />
             </Box>
 
