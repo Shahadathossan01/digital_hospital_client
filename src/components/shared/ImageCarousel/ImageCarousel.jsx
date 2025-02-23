@@ -18,14 +18,14 @@ const ImageCarousel = () => {
       <div
         style={{
           position: "absolute",
-          bottom: "10px",
+          bottom: "0px",
           width: "100%",
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "center"
         }}
       >
-        <ul style={{ margin: 0, padding: 0 ,backgroundColor:"white", borderRadius:"40px"}}> {dots} </ul>
+        <ul style={{ margin: 0, padding: 0 , borderRadius:"40px",}}> {dots} </ul>
       </div>
     ),
   };
@@ -52,7 +52,8 @@ const ImageCarousel = () => {
           alt={`Slide ${index + 1}`}
           style={{
             width: "100%",
-            maxHeight: "350px", // Use maxHeight instead of fixed height
+            maxHeight: "400px",
+             // Use maxHeight instead of fixed height
             objectFit: "contain", // Show full image without cropping
             borderRadius: "10px",
           }}
