@@ -51,108 +51,6 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
-  console.log(user)
-
-
-
-//   const  routes=createBrowserRouter([
-//     {
-//         path:'/',
-//         element:(
-//           <>
-//               <ScrollToTop></ScrollToTop>
-//               <Main></Main>
-//           </>
-//         ),
-//         children:[
-//             {
-//                 path:'/',
-//                 element:<PrivateRoute>
-//                     <Home></Home>
-//                 </PrivateRoute>
-//             },
-//             {
-//                 path:'/findDoctors',
-//                 element:<FindDoctors></FindDoctors>
-//             },
-//             {
-//                 path:'/register',
-//                 element:<Register></Register>
-//             },
-//             {
-//                 path:'/login',
-//                 element:<Login></Login>
-//             },
-//             {
-//                 path:'/appointment',
-//                 element:<Appointment></Appointment>
-//             },
-//             {
-//                 path:'/becomeADoctor',
-//                 element:<BecomeADoctor></BecomeADoctor>
-//             },
-//             {
-//                 path:'/becomeADoctorForm',
-//                 element:<BecomeADoctorForm></BecomeADoctorForm>
-//             },
-//             {
-//               path: '/PatientProfile',
-//               element: <PatientLayout />, // Using the new layout
-//               children: [
-//                   { path: '', element: <MyProfile /> },
-//                   { path: 'appointments', element: <MyAppointments /> },
-//                   { path: 'emergency', element: <MyEmergencyService /> },
-//               ],
-//           },
-//             {
-//                 path:'/record',
-//                 element:<MedicalRecord></MedicalRecord>
-//             },
-//             {
-//                 path:'/success',
-//                 element:<Success></Success>
-//             },
-//             {
-//                 path:'/cancel',
-//                 element:<Cancel></Cancel>
-//             },
-//             {
-//                 path:'/fail',
-//                 element:<Fail></Fail>
-//             },
-//             {
-//                 path:'/reqAppointment',
-//                 element:<RequestedAppointment></RequestedAppointment>
-//             },
-//             {
-//                 path:'/docAppointment',
-//                 element:<PrivateRoute>
-//                     <DoctorAppointment></DoctorAppointment>
-//                 </PrivateRoute>
-//             },
-//             {
-//                 path:'/DoctorProfile',
-//                 element:<DoctorProfile></DoctorProfile>
-//             },
-//             {
-//               path:'/adminDashboard',
-//               element:<AdminDashboard></AdminDashboard>
-//             },
-//             {
-//               path:'/adminCreateUser',
-//               element:<AdminCreateUser></AdminCreateUser>
-//             },
-//             {
-//               path:'/bookAppointment/:id',
-//               element:<BookAppointment></BookAppointment>
-//             },
-//             {
-//               path:"/paymentPage",
-//               element:<PaymentPage></PaymentPage>
-//             }
-//         ]
-//     },
-// ])
   return (
     <>
       <Routes>
@@ -174,7 +72,8 @@ function App() {
           <Route path="/password/forgot" element={<ForgotPassword></ForgotPassword>}/>
           <Route path="/password/reset/:resetToken" element={<ResetPassword></ResetPassword>}/>
           <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
-          
+
+          {/**Patient Profile */}
           <Route path="/PatientProfile" element={<><PrivateRoute><PatientProfileLayout /></PrivateRoute></>}>
             <Route path="" element={<MyProfile />}/>
             <Route path="appointments" element={<MyAppointments />}/>
@@ -196,9 +95,9 @@ function App() {
           <Route path="/leadershipProfile" element={<LeaderShipProfile></LeaderShipProfile>}/>                   
           <Route path="/successFreeAppointment/:freeAppointmentId" element={<SuccessFreeAppointment></SuccessFreeAppointment>}/>                   
         </Route>
-
         }
         
+
         {/**Doctor Route */}
         {
           user?.role=="doctor" &&
@@ -216,6 +115,7 @@ function App() {
           </>
         }
 
+
         {/**Admin Route */}
         {
           user?.role=="admin" &&
@@ -229,15 +129,11 @@ function App() {
               <Route path="addAdminOrPatient" element={<AddAdminOrPatient></AddAdminOrPatient>}/>
               <Route path="adminInvoice" element={<AdminInvoice></AdminInvoice>}/>
               <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
-
             </Route>
           </>
         }
-
-       
       </Routes>
     </>
-    // <RouterProvider router={routes}></RouterProvider>
   )
 }
 
