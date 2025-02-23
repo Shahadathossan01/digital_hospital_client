@@ -2,8 +2,8 @@ import React from 'react';
 
 const LabTesting = () => {
     return (
-        <div>
-            <h1>Working in process!!!!</h1>
+        <div style={{marginTop:"60px"}}>
+            <h1 style={{textAlign:"center"}}>Working in process!!!!</h1>
         </div>
     );
 };

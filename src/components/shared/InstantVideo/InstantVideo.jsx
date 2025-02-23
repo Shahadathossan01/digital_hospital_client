@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 const Header = () => {
     return (
-      <Box sx={{ textAlign: 'center', marginBottom: 3 ,marginTop:3}}>
+      <Box sx={{ textAlign: 'center'}}>
         <Typography 
           variant="h7" 
           sx={{ 
@@ -18,9 +18,9 @@ const Header = () => {
   };
 const InstantVideo = () => {
     return (
-        <Box sx={{marginTop:"60px"}}>
+        <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"}}}>
             <Header></Header>
-            <Grid container spacing={0}>
+            <Grid sx={{marginTop:"10px"}} container spacing={0}>
       {/* Left side: Image */}
       <Grid
         size={{xs:12,sm:6,md:4}}

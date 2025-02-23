@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 
 const Header = () => {
   return (
-    <Box sx={{ textAlign: 'center', marginBottom: 3 ,marginTop:3}}>
+    <Box sx={{ textAlign: 'center'}}>
       <Typography 
         variant="h4" 
         sx={{ 
@@ -85,7 +85,7 @@ const FrequentlyAskedList=()=>{
 
 export default function FrequentlyAsked() {
   return (
-    <Box sx={{marginTop:"80px",marginBottom:"30px"}}>
+    <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"}}}>
       <Header></Header>
       <FrequentlyAskedList></FrequentlyAskedList>
     </Box>

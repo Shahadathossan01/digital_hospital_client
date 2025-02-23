@@ -32,7 +32,6 @@ const Register = () => {
         >
             <Box 
                 padding={3} 
-                border={1} 
                 borderRadius={2} 
                 boxShadow={3} 
                 maxWidth={400} 

@@ -9,6 +9,7 @@ const Footer = () => {
         backgroundColor: "#333",
         color: "white",
         p: 3,
+        marginTop:"20px"
       }}
     >
       {/* Header Text */}
@@ -122,7 +123,7 @@ const Footer = () => {
 
       {/* Footer Branding */}
       <Typography sx={{ textAlign: "center" }} color="secondary" variant="h4">
-        Sureline
+        Sureline Health
       </Typography>
 
       {/* Copyright & Location */}

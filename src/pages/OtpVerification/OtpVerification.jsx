@@ -40,7 +40,7 @@ const navigate=useNavigate()
 
   return (
     <>
-      <Container maxWidth="sm" sx={{ textAlign: "center", mt: 5 }}>
+      <Container maxWidth="sm" sx={{ textAlign: "center", marginTop:"100px"}}>
       <Box sx={{
         display: "flex",
         flexDirection: "column",

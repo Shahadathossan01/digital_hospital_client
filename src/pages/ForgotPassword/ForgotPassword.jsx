@@ -22,6 +22,7 @@ const ForgotPassword = () => {
           borderRadius: 2,
           textAlign: "center",
           bgcolor: "background.paper",
+          marginTop:"100px"
         }}
       >
         <Typography variant="h4" gutterBottom>
@@ -42,7 +43,7 @@ const ForgotPassword = () => {
   type="text" // Change type to text to allow numbers
   fullWidth
 />
-          <Button type="submit" variant="contained" color="primary" fullWidth>
+          <Button sx={{marginTop:"20px"}} type="submit" variant="contained" color="primary" fullWidth>
             Send Reset Link
           </Button>
         </form>

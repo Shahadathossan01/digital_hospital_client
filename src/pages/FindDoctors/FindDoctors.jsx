@@ -19,7 +19,7 @@ const FilterSection = ({specialty,handleFilterValue}) => {
           <Select
             defaultValue="all"
             onChange={(e)=>{handleFilterValue(e.target.value)}}
-            fullWidth
+            sx={{width:"300px"}}
           >
             <MenuItem  value="all">All</MenuItem>
             {
@@ -33,13 +33,13 @@ const FilterSection = ({specialty,handleFilterValue}) => {
       </Grid>
 
       {/* Right: Search Bar */}
-      <Grid size={{xs:12,sm:6}}>
+      {/* <Grid size={{xs:12,sm:6}}>
         <TextField
           fullWidth
           label="Search"
           variant="outlined"
         />
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };
@@ -98,7 +98,7 @@ const FindDoctors = () => {
 
   const filterDoctor = filterDoctorBySpecialty(filterValidDoctor, filterValue);
   return (
-    <Box sx={{paddingTop:"50px"}}>
+    <Box sx={{paddingTop:"80px"}}>
       <Typography>Select Doctor</Typography>
       <Box sx={{marginTop:"20px"}}>
         <FilterSection handleFilterValue={handleFilterValue} specialty={specialty}></FilterSection>

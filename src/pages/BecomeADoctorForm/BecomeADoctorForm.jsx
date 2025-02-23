@@ -208,7 +208,7 @@ const BecomeADoctorForm = () => {
 
     return (
       <>
-        <Box sx={{ flexGrow:1,paddingTop:"50px"}}>
+        <Box sx={{ flexGrow:1,paddingTop:"80px"}}>
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box>
             <Typography variant="h5" sx={{ fontWeight: "bold" }}>

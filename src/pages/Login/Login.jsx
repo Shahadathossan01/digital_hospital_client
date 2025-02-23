@@ -29,7 +29,6 @@ const Login = () => {
         padding={2}
         >
         <Box padding={3} 
-                border={1} 
                 borderRadius={2} 
                 boxShadow={3} 
                 maxWidth={400} 
@@ -59,7 +58,7 @@ const Login = () => {
                                 fullWidth
                             />
                         </Box>
-                        <Typography sx={{display:'flex',justifyContent:"end"}}>
+                        <Typography sx={{display:'flex',justifyContent:"end",marginTop:"-15px",marginBottom:"10px"}}>
                             <Link to={"/password/forgot"}>Forgot your password?</Link>
                         </Typography>
                         <Button type="submit" variant="contained" color="primary" fullWidth>

@@ -3,7 +3,7 @@ import { CheckCircleOutline } from '@mui/icons-material'; // For icons
 import {  Card, CardContent, CardMedia } from "@mui/material";
 const Header = () => {
     return (
-      <Box sx={{ textAlign: 'center', marginBottom: 3 ,marginTop:3}}>
+      <Box sx={{ textAlign: 'center'}}>
         <Typography 
           variant="h7" 
           sx={{ 
@@ -18,52 +18,74 @@ const Header = () => {
     );
   };
 
-  
 
-
-const HowItWorkCard = ({ item, iconColor = "#ff9800" }) => {
-  return (
-    <Card
-      sx={{
-        maxWidth: 350,
-        borderRadius: 3,
-        boxShadow: 5,
-        transition: "transform 0.3s ease-in-out",
-        "&:hover": {
-          transform: "scale(1.05)", // Subtle zoom effect on hover
-        },
-      }}
-    >
-      {/* Fixed Image at the Top */}
-      <CardMedia
-        component="img"
-        image={item.image}
-        alt={item.title}
+  const HowItWorkCard = ({ item, iconColor = "#ff9800" }) => {
+    return (
+      <Card
         sx={{
-          height: 220, // Fixed height for consistency
-          width: "100%", // Ensures the image fits within the card
-          objectFit: "cover",
+          width: 350, // Fixed width
+          height: 450, // Fixed height
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          borderRadius: 3,
+          boxShadow: 5,
+          transition: "transform 0.3s ease-in-out",
+          "&:hover": {
+            transform: "scale(1.05)", // Subtle zoom effect on hover
+          },
         }}
-      />
-
-      <CardContent sx={{ textAlign: "center", padding: 3 }}>
-         {/* Position */}
-         <Typography variant="body2" sx={{ color: item.iconColor, mt: 1 }}>
-          {item.position}
-        </Typography>
-        {/* Icon with Color */}
-        <IconButton sx={{ color: item.iconColor || iconColor }}>
-          <CheckCircleOutline sx={{ fontSize: 40 }} />
-        </IconButton>
-
-        {/* Title */}
-        <Typography variant="h6" sx={{ fontWeight: "bold", mt: 1, color: "#333" }}>
-          {item.title}
-        </Typography>
-      </CardContent>
-    </Card>
-  );
-};
+      >
+        {/* Fixed Image at the Top */}
+        <CardMedia
+          component="img"
+          image={item.image}
+          alt={item.title}
+          sx={{
+            height: 220, // Fixed height for consistency
+            width: "100%", // Ensures the image fits within the card
+            objectFit: "cover",
+          }}
+        />
+  
+        <CardContent
+          sx={{
+            textAlign: "center",
+            padding: 3,
+            flexGrow: 1, // Ensures content takes up equal space
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {/* Position */}
+          <Typography variant="body2" sx={{ color: item.iconColor, mt: 1 }}>
+            {item.position}
+          </Typography>
+  
+          {/* Icon with Color */}
+          <IconButton sx={{ color: item.iconColor || iconColor }}>
+            <CheckCircleOutline sx={{ fontSize: 40 }} />
+          </IconButton>
+  
+          {/* Title */}
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: "bold",
+              mt: 1,
+              color: "#333",
+              minHeight: "48px", // Ensures titles align even if one is longer
+            }}
+          >
+            {item.title}
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  };
+  
 
 
   
@@ -93,7 +115,7 @@ const HowItWorkCard = ({ item, iconColor = "#ff9800" }) => {
         }
     ]
     return (
-        <Box sx={{display:"flexs",justifyContent:"center",alignItems:"center"}}>
+        <Box sx={{display:"flexs",justifyContent:"center",alignItems:"center",marginTop:"10px",padding:"0px 10px 20px 10px"}}>
               <Grid
                 container
                 spacing={2}
@@ -108,7 +130,7 @@ const HowItWorkCard = ({ item, iconColor = "#ff9800" }) => {
                     xs={12}
                     sm={6}
                     md={4}
-                    lg={3}
+                    lg={4}
                     key={item.id}
                     sx={{
                       display: "flex", // Ensures proper card centering within each Grid item
@@ -125,7 +147,7 @@ const HowItWorkCard = ({ item, iconColor = "#ff9800" }) => {
 
 const HowItWorks = () => {
     return (
-        <Box sx={{marginTop:"70px"}}>
+        <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"},bgcolor:"#f3e5f5"}}>
             <Header></Header>
             <HowItWorksList></HowItWorksList>
         </Box>

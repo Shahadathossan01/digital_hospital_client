@@ -1,8 +1,9 @@
 import { Box, Button, Card, CardContent, CardMedia, Container, Grid, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     return (
-      <Box sx={{ textAlign: 'center', marginBottom: 3 ,marginTop:3}}>
+      <Box sx={{ textAlign: 'center'}}>
         <Typography 
           variant="h7" 
           sx={{ 
@@ -11,7 +12,7 @@ const Header = () => {
             color: 'primary.main',
           }}
         >
-          Blogs and Articles for You (10)
+          Blogs and Articles for You
         </Typography>
       </Box>
     );
@@ -36,9 +37,12 @@ const Header = () => {
           <Typography variant="h6" fontWeight="bold">
             {item.title}
           </Typography>
+          <Box sx={{display:"flex",justifyContent:"space-between"}}>
           <Typography variant="body2" color="text.secondary" mt={1}>
             Published: {item.publishedDate}
           </Typography>
+          <Button>Details</Button>
+          </Box>
         </CardContent>
       </Card>
     );
@@ -82,7 +86,7 @@ const BlogList = () => {
       
       
       return (
-        <Box sx={{ flexGrow: 1,marginTop:"50px"}}>
+        <Box sx={{ flexGrow: 1,marginTop:"10px"}}>
       <Grid
         container
         spacing={2}
@@ -112,7 +116,8 @@ const BlogList = () => {
         ))}
       </Grid>
       <Box sx={{display:"flex",justifyContent:"center",marginTop:"20px"}}>
-      <Button
+       <Link to="/blogs">
+       <Button
           variant="contained"
           color="secondary"
           sx={{
@@ -122,6 +127,7 @@ const BlogList = () => {
         >
           View All
         </Button>
+       </Link>
       </Box>
     </Box>
     
@@ -131,7 +137,7 @@ const BlogList = () => {
 
 const HomeBlogs = () => {
     return (
-        <Box sx={{marginTop:"70px"}}>
+        <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"}}}>
             <Header></Header>
             <BlogList></BlogList>
         </Box>

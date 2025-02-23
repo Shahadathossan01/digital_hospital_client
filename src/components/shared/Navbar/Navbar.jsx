@@ -66,7 +66,7 @@ const Navbar=()=>{
               flexGrow:4
             }}
           >
-            <Link to="/" style={{textDecoration:'none',color:'white'}}>Sureline</Link>
+            <Link to="/" style={{textDecoration:'none',color:'white'}}>Sureline Health</Link>
           </Typography>
 
           <Typography
@@ -85,7 +85,7 @@ const Navbar=()=>{
               textDecoration: 'none',
             }}
           >
-            <Link to="/" style={{textDecoration:'none',color:'white'}}>Sureline</Link>
+            <Link to="/" style={{textDecoration:'none',color:'white'}}>Sureline Health</Link>
           </Typography>
 
           <Box sx={{ flexGrow:0, display: { xs: 'flex', md: 'none' } }}>

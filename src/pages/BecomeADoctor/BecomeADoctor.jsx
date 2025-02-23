@@ -63,10 +63,10 @@ const SectionTwo=()=>{
 
 const BecomeADoctor = () => {
     return (
-        <>
+        <Box sx={{marginTop:"40px"}}>
             <SectionOne></SectionOne>
             <SectionTwo></SectionTwo>
-        </>
+        </Box>
     );
 };
 

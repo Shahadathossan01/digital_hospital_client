@@ -48,6 +48,7 @@ import AdminInvoice from "./pages/AdminInvoice/AdminInvoice";
 import OtpVerification from "./pages/OtpVerification/OtpVerification";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import LabTesting from "./pages/LabTesting/LabTesting";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
@@ -61,14 +62,16 @@ function App() {
           <Main></Main></>}>
           <Route path="/" element={<Home></Home>}/>
           <Route path="/findDoctors" element={<FindDoctors></FindDoctors>}/>
-          <Route path="/register" element={<Register></Register>}/>
-          <Route path="/login" element={<Login></Login>}/>
           <Route path="/becomeADoctor" element={<BecomeADoctor></BecomeADoctor>}/>
-          <Route path="/becomeADoctorForm" element={<BecomeADoctorForm></BecomeADoctorForm>}/>
           <Route path="/instant_video" element={<PrivateRoute><GetInstantVideo /></PrivateRoute>}/>
           <Route path="/health_hub" element={<PrivateRoute><HealthHub/></PrivateRoute>}/>
           <Route path="/medicine_hub" element={<PrivateRoute><MedicineHub/></PrivateRoute>}/>
-          <Route path="/lab_testing" element={<PrivateRoute></PrivateRoute>}/>
+          <Route path="/lab_testing" element={<PrivateRoute><LabTesting></LabTesting></PrivateRoute>}/>
+          <Route path="/about_us" element={<AboutUs></AboutUs>}/>                   
+          <Route path="/blogs" element={<Blogs></Blogs>}/>          
+          <Route path="/register" element={<Register></Register>}/>
+          <Route path="/login" element={<Login></Login>}/>
+          <Route path="/becomeADoctorForm" element={<BecomeADoctorForm></BecomeADoctorForm>}/>
           <Route path="/password/forgot" element={<ForgotPassword></ForgotPassword>}/>
           <Route path="/password/reset/:resetToken" element={<ResetPassword></ResetPassword>}/>
           <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
@@ -86,8 +89,6 @@ function App() {
           <Route path="/fail" element={<Fail></Fail>}/>
           <Route path="/bookAppointment/:id" element={<PrivateRoute><BookAppointment/></PrivateRoute>}/>
           <Route path="/paymentPage" element={<PrivateRoute><PaymentPage/></PrivateRoute>}/>          
-          <Route path="/about_us" element={<AboutUs></AboutUs>}/>                   
-          <Route path="/blogs" element={<Blogs></Blogs>}/>          
           <Route path="/faq" element={<FrequentlyAsked></FrequentlyAsked>}/>                   
           <Route path="/termsOrconditions" element={<TermsOrConditions></TermsOrConditions>}/>                   
           <Route path="/privacy_policy" element={<PrivacyPolicy></PrivacyPolicy>}/>                   

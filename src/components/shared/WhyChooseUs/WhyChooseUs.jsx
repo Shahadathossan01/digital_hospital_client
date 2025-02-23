@@ -4,7 +4,7 @@ import { List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/mater
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 const Header = () => {
     return (
-      <Box sx={{ textAlign: 'center', marginBottom: 3 ,marginTop:3}}>
+      <Box sx={{ textAlign: 'center',marginBottom:"10px"}}>
         <Typography 
           variant="h7" 
           sx={{ 
@@ -62,7 +62,7 @@ const Header = () => {
       ]
       
     return (
-      <Box sx={{ width: "100%", maxWidth: 400, margin: "auto", borderRadius: 2, boxShadow: 3 }}>
+      <Box sx={{ width: "100%", maxWidth: 400, margin: "auto", borderRadius: 2, boxShadow: 3 ,bgcolor:"white"}}>
         <List>
           {items.map((item) => (
             <ListItem key={item.id}>
@@ -80,8 +80,8 @@ const Header = () => {
 
 const Content=()=>{
     return (
-        <Box>
-            <Grid  container spacing={0}>
+        <Box sx={{paddingBottom:"20px",paddingLeft:"10px",paddingRight:"10px"}}>
+            <Grid  container spacing={2}>
       {/* Left side: Image */}
       <Grid
         size={{xs:12,sm:6,md:6}}
@@ -107,7 +107,7 @@ const Content=()=>{
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center", // Center the content horizontally
+          alignItems: "center", 
           
         }}
       >
@@ -120,7 +120,7 @@ const Content=()=>{
 
 const WhyChooseUs = () => {
     return (
-        <Box sx={{marginTop:"80px",bgcolor:"#ffcdd2",padding:"20px"}}>
+        <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"},bgcolor:"#f3e5f5"}}>
             <Header></Header>
             <Content></Content>
         </Box>

@@ -2,7 +2,7 @@ import { Container, Typography, Grid, Card, CardContent, Divider } from "@mui/ma
 import VideocamIcon from '@mui/icons-material/Videocam';
 const AboutUs = () => {
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 4 ,marginTop:"60px"}}>
       <Typography variant="h4" gutterBottom align="center">
         About Us
       </Typography><Divider></Divider>
