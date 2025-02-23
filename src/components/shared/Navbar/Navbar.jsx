@@ -204,8 +204,8 @@ const Navbar=()=>{
                 user?
                 <Link style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleLogout}>
-                  <Typography component="button" sx={{ textAlign: 'center' }}>
-                  Logout
+                <Typography sx={{ textAlign: 'center' }}>
+                    Logout
                   </Typography>
                 </MenuItem>
                 </Link>
@@ -228,7 +228,7 @@ const Navbar=()=>{
                 
             </Menu>
           </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' },alignItems:"center"}}>
               <Link to="/" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button></Link>
               <Link to="/findDoctors" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Find Doctor</Button></Link>
 
@@ -263,9 +263,7 @@ const Navbar=()=>{
               </Menu>
       
               <Link to="/about_us" style={{textDecoration:'none'}}><Button  size='small' sx={{ my: 2, color: 'white', display: 'block' }}>About Us</Button></Link>
-
               <Link to="/blogs" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Blogs</Button></Link>
-
               <Link to="/register" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Register</Button></Link> 
             {
               user?
@@ -274,7 +272,7 @@ const Navbar=()=>{
               <Link to="/login" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
             }
               <Link to="/PatientProfile" style={{textDecoration:'none'}}>
-              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+              <Button sx={{ my: 2, color: 'white' }}>
                 <AccountCircleIcon></AccountCircleIcon>
               </Button>
               </Link>
