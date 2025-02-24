@@ -42,7 +42,7 @@ const HealthSpecialitiesList = ({home,filterDoctor}) => {
         ))}
       </Grid>
       {
-        home &&
+        (home && filterDoctor.length!==0)&&
         <Box sx={{display:"flex",justifyContent:"center",marginTop:"20px"}}>
           <Link to="/findDoctors">
       <Button

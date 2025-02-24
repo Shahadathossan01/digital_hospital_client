@@ -92,9 +92,9 @@ function App() {
           <Route path="/faq" element={<FrequentlyAsked></FrequentlyAsked>}/>                   
           <Route path="/termsOrconditions" element={<TermsOrConditions></TermsOrConditions>}/>                   
           <Route path="/privacy_policy" element={<PrivacyPolicy></PrivacyPolicy>}/>                   
-          <Route path="/refund_policy" element={<RefundPolicy></RefundPolicy>}/>                   
+          <Route path="/refund_policy" element={<PrivateRoute><RefundPolicy/></PrivateRoute>}/>                   
           <Route path="/leadershipProfile" element={<LeaderShipProfile></LeaderShipProfile>}/>                   
-          <Route path="/successFreeAppointment/:freeAppointmentId" element={<SuccessFreeAppointment></SuccessFreeAppointment>}/>                   
+          <Route path="/successFreeAppointment/:freeAppointmentId" element={<PrivateRoute><SuccessFreeAppointment/></PrivateRoute>}/>                   
         </Route>
         }
         
@@ -121,14 +121,14 @@ function App() {
         {
           user?.role=="admin" &&
           <>
-            <Route path="" element={<AdminLayout></AdminLayout>}> 
-              <Route path="/" element={<UpdatedAdminDashboard></UpdatedAdminDashboard>}/>
-              <Route path="allUsers" element={<AllUsers></AllUsers>}/>
-              <Route path="promoCode" element={<PromoCode></PromoCode>}/>
-              <Route path="addDoctor" element={<AddDoctor></AddDoctor>}/>
-              <Route path="changePassword" element={<ChangePassword />}/>
-              <Route path="addAdminOrPatient" element={<AddAdminOrPatient></AddAdminOrPatient>}/>
-              <Route path="adminInvoice" element={<AdminInvoice></AdminInvoice>}/>
+            <Route path="" element={<PrivateRoute><AdminLayout/></PrivateRoute>}> 
+              <Route path="/" element={<PrivateRoute><UpdatedAdminDashboard/></PrivateRoute>}/>
+              <Route path="allUsers" element={<PrivateRoute><AllUsers/></PrivateRoute>}/>
+              <Route path="promoCode" element={<PrivateRoute><PromoCode/></PrivateRoute>}/>
+              <Route path="addDoctor" element={<PrivateRoute><AddDoctor/></PrivateRoute>}/>
+              <Route path="changePassword" element={<PrivateRoute><ChangePassword /></PrivateRoute>}/>
+              <Route path="addAdminOrPatient" element={<PrivateRoute><AddAdminOrPatient/></PrivateRoute>}/>
+              <Route path="adminInvoice" element={<PrivateRoute><AdminInvoice/></PrivateRoute>}/>
               <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
             </Route>
           </>

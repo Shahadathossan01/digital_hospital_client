@@ -26,7 +26,8 @@ const PromoSection=()=>{
       <Typography variant="h5" sx={{ mb: 2, textAlign: "center", fontWeight: "bold" }}>
         Apply Promo Code
       </Typography>
-      
+      <Typography sx={{textAlign:"center"}}>use promo code for <span style={{color:"red"}}>FREE APPOINTMENT</span></Typography>
+      <Typography sx={{textAlign:"center"}}>Payed is not availabe now!!</Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2} justifyContent="center">
           {/* Promo Code Input */}
@@ -122,6 +123,7 @@ const BillSection=({patientData})=>{
               Fee Appointment
             </Button>:
             <Button
+            disabled
             onClick={handlePayment}
             variant="contained"
             color="primary"
