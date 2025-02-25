@@ -18,6 +18,7 @@ const Navbar=()=>{
   const [anchorElNav, setAnchorElNav] =useState(null);
   const {user,isLogoutUser,isLogIn}=useStoreState(state=>state.user)
   const {logoutUser}=useStoreActions(action=>action.user)
+  const navigate=useNavigate()
   useEffect(()=>{
   
   },[user,isLogIn,isLogoutUser])
@@ -31,7 +32,7 @@ const Navbar=()=>{
 
   const handleLogout=()=>{
     const token = localStorage.getItem("token")?localStorage.getItem("token"):null;
-    logoutUser({token})
+    logoutUser({token,navigate})
     handleCloseNavMenu()
   }
 

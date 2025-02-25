@@ -76,7 +76,7 @@ const userModel={
         state.user=null
         state.isLogoutUser=true
     }),
-    logoutUser:thunk(async(actions,{token})=>{
+    logoutUser:thunk(async(actions,{token,navigate})=>{
         const {data}=await axios.get(`${api_base_url}/api/logout`,{
             headers:{
                 Authorization:`Bearer ${token}`
@@ -88,6 +88,7 @@ const userModel={
         localStorage.removeItem("user")
         actions.addLogoutData()
         toast.success(data.message)
+        // navigate("/")
         }
     }),
     addAllUsers:action((state,payload)=>{

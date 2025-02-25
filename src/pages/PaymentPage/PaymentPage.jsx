@@ -123,7 +123,7 @@ const BillSection=({patientData})=>{
               Fee Appointment
             </Button>:
             <Button
-            disabled
+            
             onClick={handlePayment}
             variant="contained"
             color="primary"
