@@ -32,15 +32,15 @@ const DoctorHeader=({appointmentByIdData})=>{
   return(
     <Box sx={{display:"flex",justifyContent:"space-between"}}>
       <Box>
-        <Typography>{appointmentByIdData?.doctor?.title} {appointmentByIdData?.doctor?.firstName} {appointmentByIdData?.doctor?.lastName}</Typography>
+        <Typography sx={{fontWeight:"bold"}}>{appointmentByIdData?.doctor?.title} {appointmentByIdData?.doctor?.firstName} {appointmentByIdData?.doctor?.lastName}</Typography>
         <Typography>{appointmentByIdData?.doctor?.designation}</Typography>
         <Typography>{appointmentByIdData?.doctor?.speciality}</Typography>
         <Typography>{appointmentByIdData?.doctor?.organization}</Typography>
-        <Typography>BMDC Reg. No-{appointmentByIdData?.doctor?.bmdcNumber}</Typography>
+        <Typography><strong>BMDC Reg. No-</strong>{appointmentByIdData?.doctor?.bmdcNumber}</Typography>
       </Box>
       <Box>
-        <Typography>Date: {format(new Date(appointmentByIdData?.doctor?.createdAt), "M/d/yyyy")}</Typography>
-        <Typography>Ref: {"todo"}</Typography>
+        <Typography><strong>Date:</strong> {format(new Date(appointmentByIdData?.doctor?.createdAt), "M/d/yyyy")}</Typography>
+        <Typography><strong>Ref:</strong> {"todo"}</Typography>
       </Box>
     </Box>
   )
