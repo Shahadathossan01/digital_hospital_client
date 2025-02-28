@@ -123,7 +123,7 @@ const BillSection=({patientData})=>{
               Fee Appointment
             </Button>:
             <Button
-            
+            disabled
             onClick={handlePayment}
             variant="contained"
             color="primary"
@@ -131,9 +131,7 @@ const BillSection=({patientData})=>{
             sx={{marginTop:"-10px",marginBottom:"10px"}}
           >
             Continue to payment
-          </Button> }
-                        
-                        
+          </Button> }                  
         </Box>
     )
 }

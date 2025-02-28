@@ -3,11 +3,24 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 import { useForm } from "react-hook-form";
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-
+import ResultModal from "../ResultModal/ResultModal";
+import { useState } from "react";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 const TestRecommendation = ({ item, pdf ,isDoctor,index}) => {
+    console.log(item)
     const { register, handleSubmit, reset } = useForm();
     const { uploadTestResult,deleteTest } = useStoreActions((action) => action.testRecommendation);
     const id = item._id;
+     const [open, setOpen] = useState(false);
+      const handleClickOpen = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };
 
     const onSubmit = (data) => {
         const formData = new FormData();
@@ -18,86 +31,30 @@ const TestRecommendation = ({ item, pdf ,isDoctor,index}) => {
 
     return (
         <>
-        {
-            isDoctor ?
-            <Box
-  sx={{
-    display: "flex",
-    flexDirection: { xs: "column", sm: "row" },
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 2,
-    padding: 2,
-    border: "1px solid #e0e0e0",
-    borderRadius: "8px",
-    backgroundColor: "#f9f9f9",
-    marginBottom: 2,
-  }}
->
-  <Typography variant="body1" sx={{ fontWeight: "bold", flex: 1 }}>
-    {index + 1}. {item.testName}
-  </Typography>
-  <Tooltip title="Delete Appointment" arrow>
-    <IconButton
-      onClick={()=>deleteTest(id)}
-      sx={{
-        color: "error.main",
-        border: "1px solid",
-        borderColor: "error.main",
-        "&:hover": {
-          backgroundColor: "error.light",
-        },
-      }}
-      aria-label="delete"
-    >
-      <DeleteIcon />
-    </IconButton>
-  </Tooltip>
-</Box>
-
-            :
-        <Box style={{ marginBottom: '10px' }}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-            <Box display="flex" alignItems="center" mb={1}>
-      <Typography variant="h6" sx={{ mr: 1 }}>
-       {index+1} {'.'} {item.testName}
-      </Typography>
-      {item.image && !pdf && (
-        <Chip
-          label="Uploaded"
-          color="success"
-          size="small"
-          icon={<CheckCircleIcon />}
-          sx={{
-            height: 24,
-            fontSize: '0.75rem',
-            fontWeight: 'bold',
-          }}
-        />
-      )}
-    </Box>
-                {
-                    !pdf && (
-                        <Box>
-                            <TextField 
-                                {...register('image', { required: 'Please choose a file' })}
-                                type="file" 
-                                name="image" 
-                                variant="outlined"
-                                margin="normal"
-                                fullWidth
-                            />
-                            <Button type="submit" variant="contained" color="primary" size="small">
-                                Upload
-                            </Button>
-                            <hr />
-                        </Box>
-                    )
-                }
-            </form>
-        </Box>
-
-        }
+      
+            <Box sx={{display:"flex",alignItems:"center",gap:"5px",flexWrap:"wrap"}}>
+              <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                  {index + 1}. {item.testName}
+              </Typography>
+              <form style={{display:"flex",alignItems:"center"}} onSubmit={handleSubmit(onSubmit)}>
+      
+        <input required {...register('image')}
+            type="file" 
+            name="image" />
+          <Button type="submit">
+             Upload
+          </Button>
+    </form>
+            {
+                item?.image?(
+                    <VisibilityIcon onClick={handleClickOpen}  color="success"></VisibilityIcon>
+                ):(
+                    <VisibilityOffIcon></VisibilityOffIcon>
+                )
+            }
+              <HighlightOffIcon color="warning"  onClick={()=>deleteTest(id)} />
+            </Box>
+            <ResultModal open={open} handleClose={handleClose} image={item?.image} />
         </>
     );
 };

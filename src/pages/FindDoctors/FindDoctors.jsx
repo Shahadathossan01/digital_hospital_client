@@ -44,9 +44,6 @@ const FilterSection = ({specialty,handleFilterValue}) => {
   );
 };
 
-
-
-
 const FindDoctors = () => {
   const { getDoctors } = useStoreActions((action) => action.doctor);
   const { data } = useStoreState((state) => state.doctor);

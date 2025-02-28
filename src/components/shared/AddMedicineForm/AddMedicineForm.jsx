@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Box, Button, TextField, Typography } from "@mui/material";
-import { useStoreActions } from "easy-peasy";
 
+import { useForm, Controller } from "react-hook-form";
+import { Box, Button, TextField } from "@mui/material";
+import { useStoreActions } from "easy-peasy";
+import Grid from '@mui/material/Grid2';
 const AddMedicineForm = ({prescriptionID}) => {
     const {createMedicine}=useStoreActions(action=>action.prescription)
-    const { control, handleSubmit, setValue ,reset} = useForm({
+    const { control, handleSubmit ,reset} = useForm({
         defaultValues: {
             medicinName: "",
             dosage: "",
@@ -21,26 +21,13 @@ const AddMedicineForm = ({prescriptionID}) => {
 
     return (
         <Box
-            sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 2,
-                padding: 3,
-                border: "1px solid #e0e0e0",
-                borderRadius: "8px",
-                backgroundColor: "#f9f9f9",
-                maxWidth: 400,
-                margin: "0 auto",
-                paddingBottom: 3
-            }}
+           
         >
-            <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-                Add Medicine Instructions
-            </Typography>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-                <Controller
+            <Box sx={{ flexGrow: 1 }}>
+                <Grid container spacing={2}>
+                    <Grid size={{xs:12,sm:12,md:6}}>
+                    <Controller
                     name="medicinName"
                     control={control}
                     render={({ field }) => (
@@ -49,12 +36,14 @@ const AddMedicineForm = ({prescriptionID}) => {
                             id="medicinName"
                             label="Medicine Name"
                             variant="outlined"
-                            fullWidth
+                          
                             sx={{ marginBottom: 2 }}
                         />
                     )}
                 />
-                <Controller
+                    </Grid>
+                    <Grid size={{xs:12,sm:12,md:6}}>
+                    <Controller
                     name="dosage"
                     control={control}
                     render={({ field }) => (
@@ -63,12 +52,14 @@ const AddMedicineForm = ({prescriptionID}) => {
                             id="dosage"
                             label="Dosage - e.g. 50-mg"
                             variant="outlined"
-                            fullWidth
+                            
                             sx={{ marginBottom: 2 }}
                         />
                     )}
                 />
-                <Controller
+                    </Grid>
+                    <Grid size={{xs:12,sm:12,md:6}}>
+                    <Controller
                     name="frequency"
                     control={control}
                     render={({ field }) => (
@@ -77,12 +68,14 @@ const AddMedicineForm = ({prescriptionID}) => {
                             id="frequency"
                             label="Frequency -e.g. (1-0-1)"
                             variant="outlined"
-                            fullWidth
+                           
                             sx={{ marginBottom: 2 }}
                         />
                     )}
                 />
-                <Controller
+                    </Grid>
+                    <Grid size={{xs:12,sm:12,md:6}}>
+                    <Controller
                     name="duration"
                     control={control}
                     render={({ field }) => (
@@ -91,12 +84,16 @@ const AddMedicineForm = ({prescriptionID}) => {
                             id="duration"
                             label="Duration -e.g(10 days or 2 months)"
                             variant="outlined"
-                            fullWidth
+                            
                             sx={{ marginBottom: 2 }}
                         />
                     )}
                 />
-                <Button
+                    </Grid>
+                </Grid>
+            </Box>
+            <Box sx={{textAlign:"center"}}>
+            <Button
                     type="submit"
                     variant="contained"
                     color="primary"
@@ -108,6 +105,7 @@ const AddMedicineForm = ({prescriptionID}) => {
                 >
                     Add Medicine
                 </Button>
+            </Box>
             </form>
         </Box>
     );
