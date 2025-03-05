@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { format } from 'date-fns';
-import TestRecommendation from '../../components/shared/TestRecommendation/TestRecommendation';
 import TestResult from '../../components/shared/TestResult/TestResult';
 import Prescription from '../../components/shared/Prescription/Prescription';
 import { usePDF } from 'react-to-pdf';
@@ -21,55 +20,53 @@ import TestRecommendationModal from '../../components/shared/TestRecommendationm
 import { get, useForm } from 'react-hook-form';
 import { action, useStoreActions, useStoreState } from 'easy-peasy';
 import { forwardRef, useEffect, useState } from 'react';
+import PdfPrescription from '../../components/shared/PdfPrescription/PdfPrescription';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
-/**Header */
-// const Header=({item,isDoctor})=>{
-//   if(!item){
-//     return null
-//   }
-//   return(
-//     <Box sx={{ p: { xs: 2, sm: 3, md: 4 } ,marginTop:'40px'}}>
-//     <Typography variant="h6">
-//       {isDoctor
-//         ? `Patient: ${item?.patientDetails?.fullName?item?.patientDetails?.fullName:'N/A'}`
-//         : `${item?.doctor?.title} ${item?.doctor?.firstName} ${item?.doctor?.lastName}`}
-//     </Typography>
-//     <Typography variant="subtitle1">Schedule Date: {item?.date?format(item?.date, 'yyyy-MM-dd'):''}</Typography>
-//     <Typography variant="subtitle1">Schedule Slot: {item?.time}</Typography>
-//     <Typography
-// component="a"
-// href={item?.googleMeetLink}
-// target="_blank"
-// rel="noopener noreferrer"
-// sx={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
-// >
-// Google Meet Link
-// </Typography>
-//     <hr />
-//   </Box>
-//   )
-// }
-
-/**Test Recommendation List */
-
-
-/**Test Recommendation and Result */
-
-
-
 const AppointmentDetails = ({item, open, handleClose, isDoctor }) => { 
   const {user}=useStoreState(state=>state.user)
+  const { createPrescription } = useStoreActions((actions) => actions.prescription);
   const {register,handleSubmit,reset}=useForm()
   const [openTest, setOpenTest] = useState(false);
   const { toPDF, targetRef } = usePDF({ filename: 'prescription.pdf' });
   const {createTest}=useStoreActions(action=>action.testRecommendation)
   const {updatedData}=useStoreState(state=>state.testRecommendation)
   const apppintmentID=item?._id
+  const [isShow,setIsShow]=useState(false)
+
+  const handlePDF=()=>{
+    setIsShow(true)
+    setTimeout(() => {
+      toPDF();
+      setIsShow(false); 
+    }, 200);
+  }
+  const appointmentID = item?._id;
+  const onSubmit = (data) => {
+    createPrescription({ data, appointmentID });
+    reset();
+  };
+
+     const id=item?._id
+    const {updatedProblem,medicineData,deletedMedicin,instructionData,createPresData}=useStoreState(state=>state.prescription)
+    const {getAppointmentByid,resetAppointmentByIdData}=useStoreActions(actions=>actions.appointment)
+    const {appointmentByIdData}=useStoreState(state=>state.appointment)
+    
+    useEffect(()=>{
+      getAppointmentByid(id)
+    },[getAppointmentByid,id,createPresData,updatedProblem,medicineData,deletedMedicin,instructionData])
+
+    const handleCloseBtn=()=>{
+      resetAppointmentByIdData()
+      handleClose()
+    }
+
+    
+    if(!appointmentByIdData) return null
+    console.log(appointmentByIdData?._id)
   return (
     <Dialog
       fullScreen
@@ -80,11 +77,11 @@ const AppointmentDetails = ({item, open, handleClose, isDoctor }) => {
       {/**Navbar */}
       <AppBar sx={{ position: 'fixed'}}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+          <IconButton edge="start" color="inherit" onClick={handleCloseBtn} aria-label="close">
             <CloseIcon />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            Appointment Details
+            Prescription
           </Typography>
           {/* {
             !isDoctor &&
@@ -93,19 +90,44 @@ const AppointmentDetails = ({item, open, handleClose, isDoctor }) => {
           </Button>
 
           } */}
-          <Button autoFocus color="inherit" onClick={toPDF}>
-            Download Prescription
+          <Button autoFocus color="inherit" onClick={handlePDF}>
+            Download
           </Button>
         </Toolbar>
       </AppBar>
-
-      {/**Header */}
-      {/* <Header item={item} isDoctor={isDoctor}></Header> */}
-      
-      {/**Test Recommendation and result */}
-      {/* <TestRecomAndResult item={item} isDoctor={isDoctor}></TestRecomAndResult> */}
       <Box sx={{ p: { xs: 2, sm: 3 } ,marginTop:"50px"}}>
-            <Prescription  isDoctor={user.role=='patient'?false:true} targetRef={targetRef} item={item} />
+            {
+              appointmentByIdData.prescription?(
+                <Prescription appointmentByIdData={appointmentByIdData} isDoctor={user.role=='patient'?false:true} item={appointmentByIdData} />
+              ):(
+                <Box>
+              <Typography variant="h6" color="textSecondary" mb={2}>
+              Let's Start..
+          </Typography>
+          {isDoctor && (
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <TextField
+                {...register("problem")}
+                label="problem"
+                variant="outlined"
+                fullWidth
+                sx={{ mb: 2 }}
+                required
+              />
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                To Start Write A Prescription
+              </Button>
+            </form>
+          )}
+            </Box>
+              )
+            }
+           {/* {
+            isShow && (
+              <PdfPrescription  targetRef={targetRef} item={item}></PdfPrescription>
+            )
+           } */}
+            
       </Box>
     </Dialog>
   );

@@ -8,12 +8,12 @@ const DoctorAppointments = () => {
     const {getDoctorById}=useStoreActions(action=>action.doctor)
         const {doctor}=useStoreState(state=>state.doctor)
         const {user}=useStoreState(state=>state.user)
-        const {updatedData}=useStoreState(state=>state.appointment)
+        const {updatedData,updatedStatusData}=useStoreState(state=>state.appointment)
         const {deleteData}=useStoreState(state=>state.applyedAppointment)
         const userID=user?._id
         useEffect(()=>{
             getDoctorById(userID)
-        },[getDoctorById,userID,updatedData,deleteData])
+        },[getDoctorById,userID,updatedData,deleteData,updatedStatusData])
         
         if(!doctor){
             return null

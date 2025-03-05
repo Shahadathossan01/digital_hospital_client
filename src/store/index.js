@@ -327,9 +327,10 @@ const prescriptionModel={
     data:null,
     deletedMedicin:null,
     createPresData:null,
-    updatedDiag:null,
+    updatedData:null,
     medicineData:null,
     instructionData:null,
+    getPrescriptionByIdData:null,
     addDeletedMedicin:action((state,payload)=>{
         state.deletedMedicin=payload
     }),
@@ -341,24 +342,25 @@ const prescriptionModel={
         state.createPresData=payload
     }),
     createPrescription:thunk(async(actions,payload)=>{
-        const {diagnosis}=payload.data
+        console.log(payload.data)
+        const {problem}=payload.data
         const {appointmentID}=payload
         const {data}=await axios.post(`${api_base_url}/api/prescriptions`,{
-            diagnosis,
+            problem,
             appointmentID
         })
         actions.addCreatePress(data)
     }),
-    addUpdatedDiag:action((state,payload)=>{
-        state.updatedDiag=payload
+    addUpdatedPrescriptionData:action((state,payload)=>{
+        state.updatedData=payload
     }),
-    updateDiagnosis:thunk(async(actions,payload)=>{
+    updatePrescription:thunk(async(actions,payload)=>{
         const {id}=payload
-        const {diagnosis}=payload.data
+        const {data:updatedData}=payload
         const {data}=await axios.patch(`${api_base_url}/api/prescriptions/${id}`,{
-            diagnosis
+            updatedData
         })
-        actions.addUpdatedDiag(data)
+        actions.addUpdatedPrescriptionData(data)
     }),
     addMedicineData:action((state,payload)=>{
         state.medicineData=payload
@@ -380,12 +382,19 @@ const prescriptionModel={
     }),
     updateAdditionalInstruction:thunk(async(actions,payload)=>{
         const {prescriptionID}=payload
-        const {instruction}=payload.data
+        const {advice}=payload.data
         const {data}=await axios.patch(`${api_base_url}/api/prescriptions/${prescriptionID}`,{
-            instruction
+            advice
         })
         actions.addAdditionalInstruction(data)
     }),
+    addGetPrescriptionByid:action((state,payload)=>{
+        state.getPrescriptionByIdData=payload
+    }),
+    getPrescriptionById:thunk(async(actions,{id})=>{
+        const {data}=await axios.get(`http://localhost:3000/api/prescriptions/${id}`)
+        actions.addGetPrescriptionByid(data)
+    })
 }
 const medicalRecordModel={
     data:[],
@@ -398,8 +407,9 @@ const medicalRecordModel={
     })
 }
 const appointmentModel={
-    appointmentByIdData:[],
+    appointmentByIdData:null,
     appointments:[],
+    updatedStatusData:null,
     addAppointments:action((state,payload)=>{
         state.appointments=payload
     }),
@@ -429,6 +439,17 @@ const appointmentModel={
     getAppointmentByid:thunk(async(actions,payload)=>{
         const {data}=await axios.get(`${api_base_url}/api/appointments/${payload}`)
         actions.addGetAppointmentById(data)
+    }),
+    resetAppointmentByIdData:action((state,payload)=>{
+        state.appointmentByIdData=null
+    }),
+    addedUpdatedStatusData:action((state,payload)=>{
+        state.updatedStatusData=payload
+    }),
+    updateStatus:thunk(async(actions,{id})=>{
+        console.log(id)
+        const {data}=await axios.patch(`${api_base_url}/api/appointments/status/${id}`)
+        actions.addedUpdatedStatusData(data)
     })
 
 }

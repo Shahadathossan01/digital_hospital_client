@@ -239,7 +239,6 @@ const PatientInfoWithHandleDoctor=({isDoctor,item})=>{
   const {getPrescriptionByIdData,updatedData}=useStoreState(state=>state.prescription)
   const id=item?.prescription?._id
   useEffect(()=>{
-    if(!id) return
     getPrescriptionById({id})
   },[id,getPrescriptionById,updatedData])
  
@@ -651,19 +650,19 @@ const PresFooter=({item})=>{
     </Box>
   )
 }
-const Prescription = ({ item, targetRef, isDoctor,isShow,appointmentByIdData}) => {
+const Prescription = ({ item, targetRef, isDoctor,isShow}) => {
   const { user } = useStoreState((state) => state.user);
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
-  // const { createPrescription } = useStoreActions((actions) => actions.prescription);
-  //   const id=item?._id
-  //   const {updatedProblem,medicineData,deletedMedicin,instructionData,createPresData}=useStoreState(state=>state.prescription)
-  //   const {getAppointmentByid}=useStoreActions(actions=>actions.appointment)
-  //   const {appointmentByIdData}=useStoreState(state=>state.appointment)
+  const { createPrescription } = useStoreActions((actions) => actions.prescription);
+    const id=item?._id
+    const {updatedProblem,medicineData,deletedMedicin,instructionData,createPresData}=useStoreState(state=>state.prescription)
+    const {getAppointmentByid}=useStoreActions(actions=>actions.appointment)
+    const {appointmentByIdData}=useStoreState(state=>state.appointment)
     
-  //   useEffect(()=>{
-  //     getAppointmentByid(id)
-  //   },[getAppointmentByid,id,createPresData,updatedProblem,medicineData,deletedMedicin,instructionData])
+    useEffect(()=>{
+      getAppointmentByid(id)
+    },[getAppointmentByid,id,createPresData,updatedProblem,medicineData,deletedMedicin,instructionData])
   
     if(!appointmentByIdData) return null
   
