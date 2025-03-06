@@ -126,7 +126,6 @@ const TableRowAction=({item})=>{
     )
 }
 const AppointmentTableRow=({item,index,dashboard})=>{
-  console.log(item)
     if(!item){
         return
     }

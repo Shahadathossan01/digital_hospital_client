@@ -32,12 +32,11 @@ const MyAppointments = () => {
     const handleFilterValue=(data)=>{
         setFilterValue(data)
     }
-    
     return (
-        <>
+        <Box>
             <FilterValue handleFilterValue={handleFilterValue}  activeFilter={filterValue}></FilterValue>
             <AppointmentTable filterValue={filterValue}></AppointmentTable>
-        </>
+        </Box>
     )
 };
 

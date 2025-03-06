@@ -61,7 +61,7 @@ const SideBarItem = () => {
 const PatientLayout = () => {
     return (
         <>
-        <Box sx={{paddingTop:"40px",marginBottom:"10px"}} flexGrow={1}>
+        <Box sx={{paddingTop:"40px",marginBottom:"10px",marginTop:"50px"}} flexGrow={1}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12,md:4}}>
                     <Box>

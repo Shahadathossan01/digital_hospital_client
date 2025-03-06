@@ -21,7 +21,8 @@ import { get, useForm } from 'react-hook-form';
 import { action, useStoreActions, useStoreState } from 'easy-peasy';
 import { forwardRef, useEffect, useState } from 'react';
 import PdfPrescription from '../../components/shared/PdfPrescription/PdfPrescription';
-
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -36,14 +37,35 @@ const AppointmentDetails = ({item, open, handleClose, isDoctor }) => {
   const {updatedData}=useStoreState(state=>state.testRecommendation)
   const apppintmentID=item?._id
   const [isShow,setIsShow]=useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  // const handlePDF=()=>{
+  //   setIsShow(true)
+  //   setTimeout(() => {
+  //       toPDF();
+  //       setIsShow(false); 
+  //   }, 200);
+  // }
+  const handlePDF = async () => {
+    setIsShow(true);
+  
+    // Wait for state update to complete
+    setTimeout(async () => {
+      const content = document.getElementById("pdf-content");
+      if (!content) return; // Prevent errors if content is missing
+  
+      const canvas = await html2canvas(content, { useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+  
+      const pdf = new jsPDF("p", "mm", "a4");
+      pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
+      pdf.save("document.pdf");
+  
+      setIsShow(false);
+    }, 300); // Give enough time for rendering
+  };
 
-  const handlePDF=()=>{
-    setIsShow(true)
-    setTimeout(() => {
-      toPDF();
-      setIsShow(false); 
-    }, 200);
-  }
+
+
   const appointmentID = item?._id;
   const onSubmit = (data) => {
     createPrescription({ data, appointmentID });
@@ -56,7 +78,7 @@ const AppointmentDetails = ({item, open, handleClose, isDoctor }) => {
     const {appointmentByIdData}=useStoreState(state=>state.appointment)
     
     useEffect(()=>{
-      getAppointmentByid(id)
+        getAppointmentByid(id)
     },[getAppointmentByid,id,createPresData,updatedProblem,medicineData,deletedMedicin,instructionData])
 
     const handleCloseBtn=()=>{
@@ -66,7 +88,6 @@ const AppointmentDetails = ({item, open, handleClose, isDoctor }) => {
 
     
     if(!appointmentByIdData) return null
-    console.log(appointmentByIdData?._id)
   return (
     <Dialog
       fullScreen
@@ -102,7 +123,7 @@ const AppointmentDetails = ({item, open, handleClose, isDoctor }) => {
               ):(
                 <Box>
               <Typography variant="h6" color="textSecondary" mb={2}>
-              Let's Start..
+              {isDoctor?"Let's Start..":"No Provide Yet!"}
           </Typography>
           {isDoctor && (
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -122,11 +143,11 @@ const AppointmentDetails = ({item, open, handleClose, isDoctor }) => {
             </Box>
               )
             }
-           {/* {
+           {
             isShow && (
-              <PdfPrescription  targetRef={targetRef} item={item}></PdfPrescription>
+              <PdfPrescription onLoad={() => setIsImageLoaded(true)}   appointmentByIdData={appointmentByIdData} item={appointmentByIdData}></PdfPrescription>
             )
-           } */}
+           }
             
       </Box>
     </Dialog>

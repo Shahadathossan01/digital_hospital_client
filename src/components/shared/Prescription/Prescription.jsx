@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { Typography, Box, Divider, TextField, Button, Paper } from "@mui/material";
+import { Typography, Box, Divider, TextField, Button, Paper, Card, CardContent } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import MedicinList from "../MedicinList/MedicinList";
 import AddMedicineForm from "../AddMedicineForm/AddMedicineForm";
 import DiagnosisUpdateModal from "../DiagnosisUpdateModal/DiagnosisUpdateModal";
-import Grid from '@mui/material/Grid2';
 import { Link } from "react-router-dom";
 import TestRecommendationModal from "../TestRecommendationmodal/TestRecommendationModal";
 import TestResult from "../TestResult/TestResult";
@@ -15,6 +14,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ResultModal from "../ResultModal/ResultModal";
 import OpenModal from "../../../modal/OpenModal";
+import Grid from '@mui/material/Grid2';
+
 const Header=()=>{
   return(
     <Box sx={{textAlign:"center"}}>
@@ -583,6 +584,25 @@ const AddInstructionForm = ({id}) => {
     </Box>
     );
 };
+const FollowUPAction=({id})=>{
+  const {updatePrescription}=useStoreActions(action=>action.prescription)
+  const [open,setOpen]=useState(false)
+  const handleOpen=()=>{
+    setOpen(true)
+  }
+  const handleClose=()=>{
+    setOpen(false)
+  }
+
+  return(
+    <Box>
+      <Button onClick={handleOpen}>edit</Button>
+      <OpenModal open={open} handleClose={handleClose}>
+        <ActionFrom id={id} type="followUp" handleClose={handleClose} handleAction={updatePrescription}></ActionFrom>
+      </OpenModal>
+    </Box>
+  )
+}
 const Section2=({isDoctor,appointmentByIdData})=>{
   const {getPrescriptionById}=useStoreActions(actions=>actions.prescription)
   const {getPrescriptionByIdData,updatedData}=useStoreState(state=>state.prescription)
@@ -590,6 +610,7 @@ const Section2=({isDoctor,appointmentByIdData})=>{
   useEffect(()=>{
     getPrescriptionById({id})
   },[id,getPrescriptionById,updatedData])
+console.log(getPrescriptionByIdData)
   return(
     <Box>
       <Typography variant="h6">Rx.</Typography>
@@ -613,10 +634,10 @@ const Section2=({isDoctor,appointmentByIdData})=>{
             )}
       </Box>
       <Box sx={{display:"flex",alignItems:"center",marginTop:"100px"}}>
-        <Typography><strong style={{textDecoration:"underline"}}>Follow-up within:</strong> {"todo"}</Typography>
+        <Typography><strong style={{textDecoration:"underline"}}>Follow-up within:</strong> {getPrescriptionByIdData?.followUp}</Typography>
         {
           isDoctor && (
-            <Button>edit</Button>
+            <FollowUPAction id={id}></FollowUPAction>
           )
         }
       </Box>
@@ -630,6 +651,7 @@ const Section2=({isDoctor,appointmentByIdData})=>{
 }
 const MainSection=({item,isDoctor,appointmentByIdData})=>{
   return(
+    <>
     <Box sx={{ flexGrow: 1,marginTop:"40px" }}>
     <Grid container spacing={8}>
       <Grid size={{xs:12,sm:12,md:5}} sx={{borderRight:{xs:"",md:"1px solid gray"},padding:"10px"}}>
@@ -639,70 +661,55 @@ const MainSection=({item,isDoctor,appointmentByIdData})=>{
         <Section2 isDoctor={isDoctor} appointmentByIdData={appointmentByIdData}></Section2>
       </Grid>
     </Grid>
-  </Box>
+  </Box><Divider></Divider>
+  </>
   )
 }
-const PresFooter=({item})=>{
-  return(
-    <Box sx={{textAlign:"center",marginTop:"30px"}}>
-      <Divider></Divider>
-      <Typography variant="h6">Sureline Health অ্যাপ এবং ওয়েবসাইটের মাধ্যমে প্রয়োজনীয় সেবা গ্ৰহণ করুন সহজে।</Typography>
-      <Typography variant="body2">This prescription is generated from Sureline Health platfrom. <strong>Ref. No-</strong> {item?.prescription?.ref}</Typography>
+const Signature = () => {
+  return (
+    <Box sx={{ maxWidth: 300,  textAlign: 'center' }}>
+      <CardContent>
+        <Box
+          component="img"
+          src="http://res.cloudinary.com/dmel68anu/image/upload/v1741291857/hyfcbkfnqamsmgif4xzm.png"
+          alt="Signature"
+          sx={{ width: '100%', height: 'auto', objectFit: 'contain'}}
+        />
+        <Typography variant="h6" color="text.primary" fontWeight={600}>
+          Signature
+        </Typography>
+      </CardContent>
     </Box>
-  )
-}
+  );
+};
+const PresFooter = ({ item }) => {
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <Grid item xs={12} md={8}>
+          <Box sx={{ textAlign: "center", marginTop: "30px" }}>
+            <Typography variant="h6">
+              Sureline Health অ্যাপ এবং ওয়েবসাইটের মাধ্যমে প্রয়োজনীয় সেবা গ্ৰহণ করুন সহজে।
+            </Typography>
+            <Typography variant="body2">
+              This prescription is generated from Sureline Health platform.{" "}
+              <strong>Ref. No-</strong> {item?.prescription?.ref}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Signature />
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
 const Prescription = ({ item, targetRef, isDoctor,isShow,appointmentByIdData}) => {
-  const { user } = useStoreState((state) => state.user);
-  const [open, setOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
-  // const { createPrescription } = useStoreActions((actions) => actions.prescription);
-  //   const id=item?._id
-  //   const {updatedProblem,medicineData,deletedMedicin,instructionData,createPresData}=useStoreState(state=>state.prescription)
-  //   const {getAppointmentByid}=useStoreActions(actions=>actions.appointment)
-  //   const {appointmentByIdData}=useStoreState(state=>state.appointment)
-    
-  //   useEffect(()=>{
-  //     getAppointmentByid(id)
-  //   },[getAppointmentByid,id,createPresData,updatedProblem,medicineData,deletedMedicin,instructionData])
-  
-    if(!appointmentByIdData) return null
-  
-  const appointmentID = item?._id;
-  const prescriptionID = item?.prescription?._id;
 
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const onSubmit = (data) => {
-    createPrescription({ data, appointmentID });
-    reset();
-  };
-
+  if(!appointmentByIdData) return null
   return (
     <Box>
-        {
-          !appointmentByIdData?.prescription ?(
-            <Box>
-              <Typography variant="h6" color="textSecondary" mb={2}>
-              Let's Start..
-          </Typography>
-          {isDoctor && (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <TextField
-                {...register("problem")}
-                label="problem"
-                variant="outlined"
-                fullWidth
-                sx={{ mb: 2 }}
-                required
-              />
-              <Button type="submit" variant="contained" color="primary" fullWidth>
-                To Start Write A Prescription
-              </Button>
-            </form>
-          )}
-            </Box>
-          ):(
        <Box ref={targetRef} sx={{padding:"15px"}}>
           <Header></Header><Divider></Divider>
           <DoctorHeader appointmentByIdData={appointmentByIdData}></DoctorHeader><Divider></Divider>
@@ -710,9 +717,6 @@ const Prescription = ({ item, targetRef, isDoctor,isShow,appointmentByIdData}) =
           <MainSection item={item} isDoctor={isDoctor} appointmentByIdData={appointmentByIdData}></MainSection>
           <PresFooter item={item}></PresFooter>
        </Box>
-
-          )
-        }
     </Box>
   );
 };
