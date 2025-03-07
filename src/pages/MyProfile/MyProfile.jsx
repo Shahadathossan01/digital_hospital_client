@@ -35,7 +35,7 @@ const ProfileDetails=({patient})=>{
                             <Typography >
                                 Phone
                             </Typography>
-                            <Typography variant="body3">{patient?.profile?patient.profile.phone:""}
+                            <Typography variant="body3">0{patient?.profile?patient.profile.phone:""}
                             </Typography>
                         </Box><hr />
 

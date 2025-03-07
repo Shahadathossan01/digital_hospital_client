@@ -6,7 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { format } from "date-fns";
 
 const columns = [
@@ -32,7 +32,11 @@ const InvoiceTable=({appointments})=>{
             </TableRow>
           </TableHead>
           <TableBody>
-            {appointments
+            {
+              appointments?.length ==0?(
+                <Typography>No Data</Typography>
+              ):(
+                appointments
               .map((item,index) =>(
                 <TableRow key={item?._id}>
                     <TableCell>{index+1}</TableCell>
@@ -47,8 +51,8 @@ const InvoiceTable=({appointments})=>{
                     <TableCell></TableCell>
                 </TableRow>
               ))
-          
-              }
+              )
+            }
           </TableBody>
         </Table>
       </TableContainer>
@@ -61,15 +65,12 @@ const PatientInvoice = () => {
     const {user}=useStoreState(state=>state.user)
     const {getPatient}=useStoreActions(actions=>actions.patient)
     const {patient}=useStoreState(state=>state.patient)
-    console.log(user)
-    const userId=user?.id
+    const userId=user?._id
     useEffect(()=>{
         getPatient(userId)
     },[getPatient,userId])
 
     if(!patient) return null
-
-    console.log(patient.appointments)
 
     return (
         <Box>

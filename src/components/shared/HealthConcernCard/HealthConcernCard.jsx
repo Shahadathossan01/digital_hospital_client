@@ -1,5 +1,6 @@
 
 import { Card, CardContent, Typography, Button, CardMedia, Box } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const HealthConcernCard = ({item}) => {
   return (
@@ -37,6 +38,7 @@ const HealthConcernCard = ({item}) => {
         </Typography>
 
         {/* Button */}
+        <Link to="/findDoctors">
         <Button
           variant="contained"
           color="primary"
@@ -47,6 +49,7 @@ const HealthConcernCard = ({item}) => {
         >
           Book Now
         </Button>
+        </Link>
       </CardContent>
     </Card>
   );

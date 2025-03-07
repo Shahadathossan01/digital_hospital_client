@@ -25,9 +25,7 @@ const SpecialitiesCard = ({ item }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "space-between",
-        width: 250,  // Fixed width
-        height: 380, // Fixed height
+        width: 250,
         padding: 2,
       }}
     >
@@ -45,13 +43,12 @@ const SpecialitiesCard = ({ item }) => {
       />
 
       {/* Card Content */}
-      <CardContent sx={{ textAlign: "center", flexGrow: 1 }}>
-        {/* Name and Designation */}
+      <CardContent sx={{ textAlign: "center" }}>
         <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 1 }}>
           {item.firstName} {item.lastName}
         </Typography>
-        <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 1 }}>
-          {item.designation}
+        <Typography variant="body2"  sx={{ marginBottom: 1 }}>
+         <strong>Designation:</strong>  {item.designation}
         </Typography>
 
         {/* Rating */}
@@ -60,19 +57,18 @@ const SpecialitiesCard = ({ item }) => {
           <Typography sx={{ marginLeft: "5px" }}>(0)</Typography>
         </Box>
 
-        {/* Category Name */}
         <Typography variant="body2" sx={{ marginBottom: 1 }}>
-          {item.speciality}
+         <strong>Speciality:</strong> {item.speciality}
         </Typography>
 
         {/* Fee */}
-        <Typography variant="body1" color="info" sx={{ marginBottom: 2, fontWeight: "bold" }}>
+        <Typography variant="body1" color="info" sx={{ fontWeight: "bold" }}>
           Fee: {item.fee} Taka
         </Typography>
       </CardContent>
 
       {/* Button Container */}
-      <Box sx={{ display: "flex", justifyContent: "center", gap: 1, width: "100%" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 1, width: "100%",flexWrap:"wrap" }}>
         <Link to={`/bookAppointment/${item._id}`} style={{ textDecoration: "none" }}>
           <Button variant="contained" color="primary" sx={{ flex: 1 }}>
             Book Now

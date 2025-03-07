@@ -41,7 +41,7 @@ const Login = () => {
                         <Box display="flex" flexDirection="column" gap={2} marginBottom={3}>
                         <TextField
   required
-  label="Email or Phone"
+  label="Email"
   {...register("credential", {
     required: "This field is required",
     validate: (value) =>

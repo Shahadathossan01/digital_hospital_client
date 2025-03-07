@@ -632,16 +632,16 @@ const MainSection=({item,isDoctor,appointmentByIdData})=>{
   </>
   )
 }
-const Signature = ({onLoad}) => {
+const Signature = ({item}) => {
+  if(!item) return null
   return (
     <Box sx={{ maxWidth: 300,  textAlign: 'center' }}>
       <CardContent>
         <Box
           component="img"
-          src="http://res.cloudinary.com/dmel68anu/image/upload/v1741291857/hyfcbkfnqamsmgif4xzm.png"
+          src={item?.doctor?.signature}
           alt="Signature"
           sx={{ width: '100%', height: 'auto', objectFit: 'contain'}}
-          onLoad={onLoad}
         />
         <Typography variant="h6" color="text.primary" fontWeight={600}>
           Signature
@@ -650,7 +650,7 @@ const Signature = ({onLoad}) => {
     </Box>
   );
 };
-const PresFooter = ({ item,onLoad }) => {
+const PresFooter = ({ item }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
@@ -666,7 +666,7 @@ const PresFooter = ({ item,onLoad }) => {
           </Box>
         </Grid>
         <Grid item xs={12} md={4} display="flex" justifyContent="flex-end">
-        <Signature onLoad={onLoad} />
+        <Signature item={item} />
         </Grid>
       </Grid>
     </Box>
@@ -674,7 +674,7 @@ const PresFooter = ({ item,onLoad }) => {
 };
 
 
-const PdfPrescription = ({ item, targetRef, isDoctor,isShow,appointmentByIdData,onLoad}) => {
+const PdfPrescription = ({ item, targetRef, isDoctor,isShow,appointmentByIdData}) => {
 
   if(!appointmentByIdData) return null
   return (
@@ -684,7 +684,7 @@ const PdfPrescription = ({ item, targetRef, isDoctor,isShow,appointmentByIdData,
           <DoctorHeader appointmentByIdData={appointmentByIdData}></DoctorHeader><Divider></Divider>
           <PatientHeader appointmentByIdData={appointmentByIdData}></PatientHeader><Divider></Divider>
           <MainSection item={item} isDoctor={isDoctor} appointmentByIdData={appointmentByIdData}></MainSection>
-          <PresFooter onLoad={onLoad}  item={item}></PresFooter>
+          <PresFooter  item={item}></PresFooter>
        </Box>
     </Box>
   );

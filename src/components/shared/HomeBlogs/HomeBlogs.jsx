@@ -17,36 +17,43 @@ const Header = () => {
       </Box>
     );
   };
-  const BlogCard = ({item}) => {
+  const BlogCard = ({ item }) => {
     return (
-        <Card sx={{ borderRadius: 2, boxShadow: 3, transition: "0.3s", "&:hover": { boxShadow: 6} }}>
+      <Card
+        sx={{
+          width: 300, // Set a fixed width
+          height: 350, // Set a fixed height
+          borderRadius: 2,
+          boxShadow: 3,
+          transition: "0.3s",
+          "&:hover": { boxShadow: 6 },
+        }}
+      >
         <CardMedia
-                component="img"
-                image={item.image} // Replace with the image URL
-                alt="Specialist"
-                sx={{
-                  width: "100%",
-                  height: 200,
-                  minWidth:"500px",
-                  margin: "0 auto",
-                  objectFit: "cover",
-                  marginTop: -4, // Adjust the image to make it more prominent
-                }}
-              />
+          component="img"
+          image={item.image}
+          alt="Specialist"
+          sx={{
+            width: "100%",
+            height: 180, // Keep a fixed height
+            objectFit: "cover",
+          }}
+        />
         <CardContent>
           <Typography variant="h6" fontWeight="bold">
             {item.title}
           </Typography>
-          <Box sx={{display:"flex",justifyContent:"space-between"}}>
-          <Typography variant="body2" color="text.secondary" mt={1}>
-            Published: {item.publishedDate}
-          </Typography>
-          <Button>Details</Button>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="body2" color="text.secondary" mt={1}>
+              Published: {item.publishedDate}
+            </Typography>
+            <Button>Details</Button>
           </Box>
         </CardContent>
       </Card>
     );
   };
+  
 
 
 

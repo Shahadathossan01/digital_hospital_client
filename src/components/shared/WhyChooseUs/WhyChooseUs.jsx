@@ -24,11 +24,6 @@ const Header = () => {
   const ListItems = () => {
     const items=[
         {
-          "id": "1a2b3c4d",
-          "title": "Why You Should Use This Service",
-          "description": "In today’s digital age, healthcare should be as convenient as any other service. Our online treatment platform is designed to offer you quick, reliable, and hassle-free medical consultations anytime, anywhere. Whether you need expert medical advice, a follow-up consultation, or a prescription, we bring healthcare to your fingertips."
-        },
-        {
           "id": "2b3c4d5e",
           "title": "Instant Doctor Appointments",
           "description": "No need to wait in long queues or struggle to find a specialist. Book your appointment within minutes and consult with experienced doctors at your preferred time."

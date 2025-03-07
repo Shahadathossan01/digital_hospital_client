@@ -52,7 +52,7 @@ const ImageCarousel = () => {
           alt={`Slide ${index + 1}`}
           style={{
             width: "100%",
-            maxHeight: "500px",
+            maxHeight: "600px",
              // Use maxHeight instead of fixed height
             objectFit: "cover", // Show full image without cropping
             borderRadius: "10px",

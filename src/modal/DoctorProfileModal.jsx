@@ -7,11 +7,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box, Divider, Rating, Typography } from '@mui/material';
 const Profile=({item})=>{
-  console.log(item)
+  if(!item) return null
   return(
+    <Box>
     <Box sx={{display:"flex",
       justifyContent:"center",
-      alignItems:"center",gap:3,flexWrap:"wrap"}}>
+      alignItems:"center",gap:3,flexWrap:"wrap",marginBottom:"20px"}}>
        {/* Doctor Profile Image */}
        <Box
           component="img"
@@ -45,7 +46,7 @@ const Profile=({item})=>{
 
                           <Typography variant="body3">BMDC Expiry Date:{item.bmdcExpiryDate}</Typography><Divider></Divider>
 
-                          <Typography variant="body3">Date of Birth:{item?.dateOfBirth}</Typography><Divider></Divider>
+                          {/* <Typography variant="body3">Date of Birth:{item?.dateOfBirth}</Typography><Divider></Divider> */}
 
                           <Typography variant="body3">Degree: {item?.degrees}</Typography><Divider></Divider>
 
@@ -55,14 +56,20 @@ const Profile=({item})=>{
 
                           <Typography variant="body3">Gender:{item?.gender}</Typography><Divider></Divider>
 
-                          <Typography variant="body3">Mobile:{item?.mobile}</Typography><Divider></Divider>
+                          {/* <Typography variant="body3">Mobile:{item?.mobile}</Typography><Divider></Divider> */}
 
                           <Typography variant="body3">Nationality:{item?.nationality}</Typography><Divider></Divider>
 
-                          <Typography variant="body3">NID/Passport:{item?.nidOrPassport}</Typography><Divider></Divider>
+                          {/* <Typography variant="body3">NID/Passport:{item?.nidOrPassport}</Typography><Divider></Divider> */}
 
-                          <Typography variant="body3">Organization:{item?.organization}</Typography><Divider></Divider>
+                          <Typography variant="body3">Organization:{item?.organization}</Typography>
                         </Box>
+                        
+    </Box><Divider></Divider>
+    <Box>
+      <Typography variant='h6'>Biography:</Typography>
+      <Typography>{item?.biography}</Typography>
+    </Box>
     </Box>
   )
 }

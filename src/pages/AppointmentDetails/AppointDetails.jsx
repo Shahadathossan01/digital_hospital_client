@@ -37,7 +37,6 @@ const AppointmentDetails = ({item, open, handleClose, isDoctor }) => {
   const {updatedData}=useStoreState(state=>state.testRecommendation)
   const apppintmentID=item?._id
   const [isShow,setIsShow]=useState(false)
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
   // const handlePDF=()=>{
   //   setIsShow(true)
   //   setTimeout(() => {
@@ -145,7 +144,7 @@ const AppointmentDetails = ({item, open, handleClose, isDoctor }) => {
             }
            {
             isShow && (
-              <PdfPrescription onLoad={() => setIsImageLoaded(true)}   appointmentByIdData={appointmentByIdData} item={appointmentByIdData}></PdfPrescription>
+              <PdfPrescription   appointmentByIdData={appointmentByIdData} item={appointmentByIdData}></PdfPrescription>
             )
            }
             

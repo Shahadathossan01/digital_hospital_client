@@ -1,7 +1,7 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useEffect, useState } from "react";
 import DoctorCard from "../../components/shared/DoctorCard/DoctorCard";
-import { Box, Typography, CircularProgress, Button } from "@mui/material";
+import { Box, Typography, CircularProgress, Button, Divider } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { filterDoctorBySpecialty, specialityName } from "../../utils";
 
@@ -11,7 +11,7 @@ import HealthSpecialitiesList from "../../components/shared/HealthSpecialitiesLi
 const FilterSection = ({specialty,handleFilterValue}) => {
   
   return (
-    <Grid container spacing={2} alignItems="center">
+    <Grid sx={{marginTop:"10px"}} container spacing={2} alignItems="center">
       {/* Left: Dropdown */}
       <Grid size={{xs:12,sm:6}}>
         <FormControl fullWidth>
@@ -20,6 +20,7 @@ const FilterSection = ({specialty,handleFilterValue}) => {
             defaultValue="all"
             onChange={(e)=>{handleFilterValue(e.target.value)}}
             sx={{width:"300px"}}
+            label="Speciality"
           >
             <MenuItem  value="all">All</MenuItem>
             {
@@ -80,7 +81,7 @@ const FindDoctors = () => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        textAlign: "center",
+        textAlign: "center"
       }}
       >
         <Typography variant="h4" color="textSecondary">
@@ -95,13 +96,13 @@ const FindDoctors = () => {
 
   const filterDoctor = filterDoctorBySpecialty(filterValidDoctor, filterValue);
   return (
-    <Box sx={{paddingTop:"80px"}}>
-      <Typography>Select Doctor</Typography>
-      <Box sx={{marginTop:"20px"}}>
+    <Box sx={{padding:"100px 30px 0px 30px"}}>
+      <Box sx={{padding:"50px 0px 0px 50px"}}>
+        <Typography variant="h6">Select Doctors By Speciality:</Typography>
         <FilterSection handleFilterValue={handleFilterValue} specialty={specialty}></FilterSection>
+        <Typography variant="h6" sx={{marginTop:"20px",textAlign:"center"}}><strong style={{color:"red"}}>{filterDoctor?.length}</strong> doctors are available</Typography>
       </Box>
-      <Typography sx={{marginTop:"10px"}}>{filterDoctor?.length} doctors are available</Typography>
-      <Box>
+      <Box sx={{marginTop:"10px"}}>
         <HealthSpecialitiesList filterDoctor={filterDoctor}></HealthSpecialitiesList>
       </Box>
     </Box>

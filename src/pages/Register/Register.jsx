@@ -55,7 +55,7 @@ const Register = () => {
                         />
                         <TextField
   required
-  label="Email or Phone"
+  label="Email"
   {...register("credential", {
     required: "This field is required",
     validate: (value) =>

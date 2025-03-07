@@ -12,7 +12,7 @@ const HealthSpecialitiesList = ({home,filterDoctor}) => {
   }
     const cardItem=home?filterDoctor?.slice(0,8):filterDoctor
     return (
-        <Box sx={{ flexGrow: 1, padding: 2 }}>
+        <Box sx={{ flexGrow: 1 }}>
       <Grid
         container
         spacing={2}

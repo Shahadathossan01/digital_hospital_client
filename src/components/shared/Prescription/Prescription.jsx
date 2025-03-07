@@ -634,7 +634,7 @@ console.log(getPrescriptionByIdData)
             )}
       </Box>
       <Box sx={{display:"flex",alignItems:"center",marginTop:"100px"}}>
-        <Typography><strong style={{textDecoration:"underline"}}>Follow-up within:</strong> {getPrescriptionByIdData?.followUp}</Typography>
+        <Typography><strong style={{textDecoration:"underline"}}>Follow-up within:</strong> {getPrescriptionByIdData?.followUp || "N/A"}</Typography>
         {
           isDoctor && (
             <FollowUPAction id={id}></FollowUPAction>
@@ -665,13 +665,14 @@ const MainSection=({item,isDoctor,appointmentByIdData})=>{
   </>
   )
 }
-const Signature = () => {
+const Signature = ({item}) => {
+  if(!item) return null
   return (
     <Box sx={{ maxWidth: 300,  textAlign: 'center' }}>
       <CardContent>
         <Box
           component="img"
-          src="http://res.cloudinary.com/dmel68anu/image/upload/v1741291857/hyfcbkfnqamsmgif4xzm.png"
+          src={item?.doctor?.signature}
           alt="Signature"
           sx={{ width: '100%', height: 'auto', objectFit: 'contain'}}
         />
@@ -698,7 +699,7 @@ const PresFooter = ({ item }) => {
           </Box>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Signature />
+          <Signature item={item} />
         </Grid>
       </Grid>
     </Box>

@@ -38,8 +38,8 @@ const HealthConcerns = () => {
     },
     {
       "id": 2,
-      "name": "Allergies",
-      "image": "https://www.docgenie.in/blogs/wp-content/uploads/2023/05/Untitled-design-43.jpg"
+      "name": "Veterinary",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmvanBIOtu-qFY0zcEmUXFrN9cWfvQ0OxYqA&s"
     },
     {
       "id": 3,
@@ -70,6 +70,11 @@ const HealthConcerns = () => {
       "id": 8,
       "name": "Asthma",
       "image": "https://www.asterhospitals.in/sites/default/files/styles/optimize_images/public/2023-07/bronchial-asthma.jpg.webp?itok=UXPYGdWa"
+    },
+    {
+      "id": 9,
+      "name": "Allergies",
+      "image": "https://www.docgenie.in/blogs/wp-content/uploads/2023/05/Untitled-design-43.jpg"
     }
   ]
     return (
