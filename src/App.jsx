@@ -38,7 +38,6 @@ import HealthHub from "./pages/HealthHub/HealthHub";
 import MedicineHub from "./pages/MedicineHub/MedicineHub";
 import Blogs from "./pages/Blogs/Blogs";
 import FrequentlyAsked from "./components/shared/FrequentlyAsked/FrequentlyAsked";
-import TermsOrConditions from "./pages/TermsOrConditions/TermsOrConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import RefundPolicy from "./pages/RefundPolicy/RefundPolicy";
 import LeaderShipProfile from "./pages/LeadershipProfile/LeaderShipProfile";
@@ -49,6 +48,7 @@ import OtpVerification from "./pages/OtpVerification/OtpVerification";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import LabTesting from "./pages/LabTesting/LabTesting";
+import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
@@ -90,7 +90,7 @@ function App() {
           <Route path="/bookAppointment/:id" element={<PrivateRoute><BookAppointment/></PrivateRoute>}/>
           <Route path="/paymentPage" element={<PrivateRoute><PaymentPage/></PrivateRoute>}/>          
           <Route path="/faq" element={<FrequentlyAsked></FrequentlyAsked>}/>                   
-          <Route path="/termsOrconditions" element={<TermsOrConditions></TermsOrConditions>}/>                   
+          <Route path="/termsOrconditions" element={<TermsAndConditions></TermsAndConditions>}/>                   
           <Route path="/privacy_policy" element={<PrivacyPolicy></PrivacyPolicy>}/>                   
           <Route path="/refund_policy" element={<PrivateRoute><RefundPolicy/></PrivateRoute>}/>                   
           <Route path="/leadershipProfile" element={<LeaderShipProfile></LeaderShipProfile>}/>                   

@@ -95,8 +95,8 @@ const AppointmentTableRow=({item,index})=>{
    if(!item){
           return
       }
-      const upcomming=isAfter(parseISO(item?.date),new Date)
       const today=isToday(parseISO(item?.date),new Date)
+      const upcomming=!today && isAfter(parseISO(item?.date),new Date)
       const over=!today && isBefore(parseISO(item?.date),new Date)
       const getColor = () => {
         if (item?.status === "completed") return "success.main";
