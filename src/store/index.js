@@ -620,6 +620,62 @@ const superAdminModel={
         actions.addCreatedAdmin(data)
     }),
 }
+const blogModel={
+    createdBlog:null,
+    allBlogsData:[],
+    deletedData:null,
+    updatedData:null,
+    addCreatedBlog:action((state,payload)=>{
+        state.createdBlog=payload
+    }),
+    createBlogs:thunk(async(actions,{formData})=>{
+        try{
+            const {data}=await axios.post(`${api_base_url}/api/blogs`,formData,{
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+            actions.addCreatedBlog(data)
+            console.log(data)
+        }catch(e){
+            console.log('Error creating blog',e)
+        }
+    }),
+    addGetAllBlogsData:action((state,payload)=>{
+        state.allBlogsData=payload
+    }),
+    getAllBlogs:thunk(async(actions,payload)=>{
+        try{
+            const {data}=await axios.get(`${api_base_url}/api/blogs`)
+            actions.addGetAllBlogsData(data)
+        }catch(error){
+            console.log('Not found all blogs',error)
+        }
+    }),
+    addUpdatedData:action((state,payload)=>{
+        state.updatedData=payload
+    }),
+    updateBlogs:thunk(async(actions,{id,formData})=>{
+        try{
+            const {data}=await axios.patch(`${api_base_url}/api/blogs/${id}`,formData,{
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+            actions.addUpdatedData(data)
+        }catch(error){
+            console.log('Not updated',error)
+        }
+    }),
+
+    addDeletedData:action((state,payload)=>{
+        state.deletedData=payload
+    }),
+    deleteBlogs:thunk(async(actions,{id})=>{
+        try{
+            const {data}=await axios.delete(`${api_base_url}/api/blogs/${id}`)
+            actions.addDeletedData(data)
+        }catch(error){
+            console.log('Blog not found',error)
+        }
+    })
+}
 
 const store=createStore({
     user:userModel,
@@ -634,7 +690,8 @@ const store=createStore({
     admin:adminModel,
     promoCode:promoCodeModel,
     superAdmin:superAdminModel,
-    freeAppointment:freeAppointmentModel
+    freeAppointment:freeAppointmentModel,
+    blog:blogModel
 })
 
 export default store;

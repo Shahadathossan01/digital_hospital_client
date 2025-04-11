@@ -49,6 +49,7 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import LabTesting from "./pages/LabTesting/LabTesting";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
+import AdminBlogs from "./pages/AdminBlogs/AdminBlogs";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
@@ -129,6 +130,7 @@ function App() {
               <Route path="changePassword" element={<PrivateRoute><ChangePassword /></PrivateRoute>}/>
               <Route path="addAdminOrPatient" element={<PrivateRoute><AddAdminOrPatient/></PrivateRoute>}/>
               <Route path="adminInvoice" element={<PrivateRoute><AdminInvoice/></PrivateRoute>}/>
+              <Route path="adminBlogs" element={<PrivateRoute><AdminBlogs/></PrivateRoute>}/>
               <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
             </Route>
           </>

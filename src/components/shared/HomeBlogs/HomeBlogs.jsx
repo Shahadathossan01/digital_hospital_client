@@ -54,9 +54,6 @@ const Header = () => {
     );
   };
   
-
-
-
 const BlogList = () => {
    const blogs= [
         {
@@ -140,8 +137,6 @@ const BlogList = () => {
     
       );
 };
-
-
 const HomeBlogs = () => {
     return (
         <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"}}}>

@@ -121,6 +121,7 @@ const SideBarItem = () => {
             { text: "Add Doctor", path: "/addDoctor" },
             { text: "Add Admin or Patient", path: "/addAdminOrPatient" },
             { text: "Invoice", path: "/adminInvoice" },
+            { text: "Blogs", path: "/adminBlogs" },
             { text: "Change Password", path: "/changePassword" },
           ].map(({ text, path }) => (
             <ListItem
