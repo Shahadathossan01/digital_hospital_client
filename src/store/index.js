@@ -625,6 +625,7 @@ const blogModel={
     allBlogsData:[],
     deletedData:null,
     updatedData:null,
+    singleBlog:null,
     addCreatedBlog:action((state,payload)=>{
         state.createdBlog=payload
     }),
@@ -648,6 +649,21 @@ const blogModel={
             actions.addGetAllBlogsData(data)
         }catch(error){
             console.log('Not found all blogs',error)
+        }
+    }),
+    clearSingleBlog:action((state)=>{
+        state.singleBlog=null
+    }),
+    addSingleBlog:action((state,payload)=>{
+        state.singleBlog=payload
+    }),
+    getBlogsById:thunk(async(actions,{id})=>{
+        actions.clearSingleBlog()
+        try{
+            const {data}=await axios.get(`${api_base_url}/api/blogs/${id}`)
+            actions.addSingleBlog(data)
+        }catch(error){
+            console.log('Blogs not found',error)
         }
     }),
     addUpdatedData:action((state,payload)=>{

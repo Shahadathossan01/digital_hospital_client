@@ -50,6 +50,7 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import LabTesting from "./pages/LabTesting/LabTesting";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 import AdminBlogs from "./pages/AdminBlogs/AdminBlogs";
+import BlogDetails from "./pages/BlogDetails/BlogDetails";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
@@ -92,6 +93,7 @@ function App() {
           <Route path="/paymentPage" element={<PrivateRoute><PaymentPage/></PrivateRoute>}/>          
           <Route path="/faq" element={<FrequentlyAsked></FrequentlyAsked>}/>                   
           <Route path="/termsOrconditions" element={<TermsAndConditions></TermsAndConditions>}/>                   
+          <Route path="/blogsDetails/:id" element={<BlogDetails></BlogDetails>}/>                   
           <Route path="/privacy_policy" element={<PrivacyPolicy></PrivacyPolicy>}/>                   
           <Route path="/refund_policy" element={<PrivateRoute><RefundPolicy/></PrivateRoute>}/>                   
           <Route path="/leadershipProfile" element={<LeaderShipProfile></LeaderShipProfile>}/>                   

@@ -1,4 +1,7 @@
 import { Box, Button, Card, CardContent, CardMedia, Container, Grid, Typography } from "@mui/material";
+import { format } from "date-fns";
+import { useStoreActions, useStoreState } from "easy-peasy";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
@@ -18,6 +21,8 @@ const Header = () => {
     );
   };
   const BlogCard = ({ item }) => {
+    if(!item) return null
+    const id=item?._id
     return (
       <Card
         sx={{
@@ -45,9 +50,9 @@ const Header = () => {
           </Typography>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="body2" color="text.secondary" mt={1}>
-              Published: {item.publishedDate}
+              Published: {format(new Date(item.createdAt),'M-d-yyyy')}
             </Typography>
-            <Button>Details</Button>
+            <Link to={`/blogsDetails/${id}`}><Button>Details</Button></Link>
           </Box>
         </CardContent>
       </Card>
@@ -55,40 +60,13 @@ const Header = () => {
   };
   
 const BlogList = () => {
-   const blogs= [
-        {
-          "id": "blog-1",
-          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEePh6rZuIiL3TeXJXVzFfK6CGOkqaoHV1qQ&s",
-          "title": "Effective Home Remedies for Common Colds",
-          "publishedDate": "2025-01-15"
-        },
-        {
-          "id": "blog-2",
-          "image": "https://www.kimssunshine.co.in/wp-content/uploads/2024/06/How-to-Manage-High-Blood-Pressure-Naturally-1024x768.jpg",
-          "title": "Managing High Blood Pressure Naturally",
-          "publishedDate": "2025-01-18"
-        },
-        {
-          "id": "blog-3",
-          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFVYBkzK8hCEdQF7pDSiebuuZkiTR43VrYlw&s",
-          "title": "How to Improve Digestive Health with Diet",
-          "publishedDate": "2025-01-20"
-        },
-        {
-          "id": "blog-4",
-          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGDSZdi4UdqGjQN191ebyG2Jjzjcs_B-4D3A&s",
-          "title": "The Best Exercises for Joint Pain Relief",
-          "publishedDate": "2025-01-22"
-        },
-        {
-          "id": "blog-5",
-          "image": "https://www.rickysinghmd.com/wp-content/uploads/2020/03/Boost-your-Immune-System.png",
-          "title": "Natural Ways to Boost Your Immune System",
-          "publishedDate": "2025-01-25"
-        }
-      ]
-      
-      
+  const {getAllBlogs}=useStoreActions((actions)=>actions.blog)
+  const {allBlogsData}=useStoreState(state=>state.blog)
+
+
+  useEffect(()=>{
+    getAllBlogs()
+  },[getAllBlogs])
       return (
         <Box sx={{ flexGrow: 1,marginTop:"10px"}}>
       <Grid
@@ -102,14 +80,14 @@ const BlogList = () => {
           alignItems: "center", // Center vertically
         }}
       >
-        {blogs.map((item) => (
+        {allBlogsData.map((item) => (
           <Grid
             item
             xs={12}
             sm={6}
             md={4}
             lg={3}
-            key={item.id}
+            key={item._id}
             sx={{
               display: "flex", // Ensures proper card centering within each Grid item
               justifyContent: "center", // Center horizontally within the grid
