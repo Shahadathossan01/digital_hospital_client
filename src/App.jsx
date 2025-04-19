@@ -51,6 +51,11 @@ import LabTesting from "./pages/LabTesting/LabTesting";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 import AdminBlogs from "./pages/AdminBlogs/AdminBlogs";
 import BlogDetails from "./pages/BlogDetails/BlogDetails";
+import RegisterHealthHub from "./pages/RegisterHealthHub/RegisterHealthHub";
+import HealthHubProfile from "./pages/HealthHubProfile/HealthHubProfile";
+import HealthHubAppointments from "./pages/HealthHubAppointments/HealthHubAppointments";
+import HealthHubInvoice from "./pages/HealthHubInvoice/HealthHubInvoice";
+import HealthHubProfileLayout from "./layouts/HealthHubProfileLayout";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
@@ -59,7 +64,7 @@ function App() {
       <Routes>
         {/**!user or patient route */}
         {
-          (user?.role=="patient" || !user) &&
+          (user?.role=="patient" || !user || user?.role=='healthHub') &&
         <Route path="/" element={<><ScrollToTop></ScrollToTop>
           <Main></Main></>}>
           <Route path="/" element={<Home></Home>}/>
@@ -72,6 +77,7 @@ function App() {
           <Route path="/about_us" element={<AboutUs></AboutUs>}/>                   
           <Route path="/blogs" element={<Blogs></Blogs>}/>          
           <Route path="/register" element={<Register></Register>}/>
+          <Route path="/registerHealthHub" element={<RegisterHealthHub></RegisterHealthHub>}/>
           <Route path="/login" element={<Login></Login>}/>
           <Route path="/becomeADoctorForm" element={<BecomeADoctorForm></BecomeADoctorForm>}/>
           <Route path="/password/forgot" element={<ForgotPassword></ForgotPassword>}/>
@@ -79,12 +85,14 @@ function App() {
           <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
 
           {/**Patient Profile */}
-          <Route path="/PatientProfile" element={<><PrivateRoute><PatientProfileLayout /></PrivateRoute></>}>
-            <Route path="" element={<MyProfile />}/>
-            <Route path="appointments" element={<MyAppointments />}/>
-            <Route path="patientInvoice" element={<PatientInvoice />}/>
-            {/* <Route path="emergency" element={<MyEmergencyService />}/> */}
-          </Route>
+  
+              <Route path="/profile" element={<><PrivateRoute>{user?.role=='patient'?<PatientProfileLayout />:<HealthHubProfileLayout />}</PrivateRoute></>}>
+                <Route path="" element={user?.role=='patient' ? <MyProfile />:<HealthHubProfile />}/>
+                <Route path="/profile/appointments" element={user?.role=='patient' ? <MyAppointments /> :<HealthHubAppointments />}/>
+                <Route path="/profile/invoice" element={user?.role=='patient' ? <PatientInvoice />: <HealthHubInvoice />}/>
+              </Route>
+          
+        
           
           <Route path="/success/:transactionId" element={<Success></Success>}/>
           <Route path="/cancel" element={<Cancel></Cancel>}/>

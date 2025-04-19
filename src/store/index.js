@@ -29,15 +29,16 @@ const userModel={
                navigate(`/otp-verification/${credential}`);
            }
        }catch(e){
-        toast.error(e?.response?.data.message)
-        actions.addRegisterError(e?.response?.data.message)
+        console.log(e)
+        toast.error(e?.response?.data.error)
+        actions.addRegisterError(e?.response?.data.error)
        }
     }),
     otpVerify:thunk(async(actions,{verifyingData,navigate})=>{
         try{
             const {data}= await axios.post(`${api_base_url}/api/otp-verification`,verifyingData)
             if(data.success){
-                if(data?.user?.role=="patient"){
+                if(data?.user?.role=="patient" || data?.user?.role=="healthHub"){
                     toast.success(data.message,{position:'top-right'})
                     actions.addUser(data.user)
                     actions.addIslogIn('true')
@@ -64,7 +65,7 @@ const userModel={
             actions.addIslogIn('true')
             localStorage.setItem("token",data.token)
             localStorage.setItem("user",JSON.stringify(data.user))
-            if(data?.user?.role=="patient"){
+            if(data?.user?.role=="patient" || data?.user?.role=="healthHub"){
                 navigate(from,{replace:true})
                 return
               }
@@ -77,19 +78,22 @@ const userModel={
         state.isLogoutUser=true
     }),
     logoutUser:thunk(async(actions,{token,navigate})=>{
-        const {data}=await axios.get(`${api_base_url}/api/logout`,{
-            headers:{
-                Authorization:`Bearer ${token}`
-            }
-        })
+        // const {data}=await axios.get(`${api_base_url}/api/logout`,{
+        //     headers:{
+        //         Authorization:`Bearer ${token}`
+        //     }
+        // })
 
-        if(data.success){
+        // if(data.success){
+        // localStorage.removeItem("token")
+        // localStorage.removeItem("user")
+        // actions.addLogoutData()
+        // toast.success(data.message)
+        // // navigate("/")
+        // }
         localStorage.removeItem("token")
         localStorage.removeItem("user")
         actions.addLogoutData()
-        toast.success(data.message)
-        // navigate("/")
-        }
     }),
     addAllUsers:action((state,payload)=>{
         state.allUsers=payload
@@ -525,6 +529,7 @@ const adminModel={
 }
 const promoCodeModel={
     createdPromoData:null,
+    singlePromoCode:null,
     allPromoData:[],
     percentage:0,
     error:null,
@@ -596,13 +601,20 @@ const promoCodeModel={
             const {data}=await axios.patch(`${api_base_url}/api/promoCodes/${id}`,updateData)
             actions.addUpdatedData(data)
         }catch(e){
+            toast.error(e?.response?.data.message)
             console.log(e)
         }
     }),
-
     resetPercentage:action((state)=>{
         state.percentage=0
         state.error=null
+    }),
+    addSinglePromoCode:action((state,payload)=>{
+        state.singlePromoCode=payload
+    }),
+    getSinglePromoCode:thunk(async(actions,{id})=>{
+        const {data}=await axios.get(`${api_base_url}/api/promoCodes/${id}`)
+        actions.addSinglePromoCode(data)
     })
 }
 const superAdminModel={
@@ -692,7 +704,35 @@ const blogModel={
         }
     })
 }
+const healthHubModel={
+    healthHub:null,
+    updatedData:null,
+    addHealthHub:action((state,payload)=>{
+        state.healthHub=payload
+    }),
+    getHealthHub:thunk(async(actions,{id})=>{
+        try{
+            const {data}=await axios.get(`${api_base_url}/api/healthHub/${id}`)
+            actions.addHealthHub(data)
 
+        }catch(e){
+            console.log('Health Hub not found',e)
+        }
+    }),
+    addUpdatedData:action((state,payload)=>{
+        state.updatedData=payload
+    }),
+    updateHealthHub:thunk(async(actions,{id,formData})=>{
+        try{
+            const {data}=await axios.patch(`${api_base_url}/api/healthHub/${id}`,formData)
+            actions.addUpdatedData(data)
+
+        }catch(e){
+            toast.error(e?.response?.data.error)
+            console.log(e)
+        }
+    })
+}
 const store=createStore({
     user:userModel,
     doctor:doctorModel,
@@ -707,7 +747,8 @@ const store=createStore({
     promoCode:promoCodeModel,
     superAdmin:superAdminModel,
     freeAppointment:freeAppointmentModel,
-    blog:blogModel
+    blog:blogModel,
+    healthHub:healthHubModel
 })
 
 export default store;
