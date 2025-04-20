@@ -27,10 +27,9 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const BookAppointment = () => {
   const {register,handleSubmit,formState: { errors, isValid}}=useForm()
-  const { getUrl } = useStoreActions((action) => action.sslCommerz);
   const { patient } = useStoreState((state) => state.patient);
   const { getPatient } = useStoreActions((action) => action.patient);
-  const {resetPercentage}=useStoreActions((action=>action.promoCode))
+  const {resetPromoCode}=useStoreActions((action=>action.promoCode))
     const { user } = useStoreState((state) => state.user);
 
     const navigate=useNavigate()
@@ -112,7 +111,7 @@ const areMonthsEqual=isEqual(month1,month2)
       height:data.height,
       weight:data.weight
     };
-    resetPercentage()
+    resetPromoCode()
     navigate("/paymentPage",{state:payload})
     
   }

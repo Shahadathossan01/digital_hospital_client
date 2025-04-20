@@ -531,15 +531,15 @@ const promoCodeModel={
     createdPromoData:null,
     singlePromoCode:null,
     allPromoData:[],
-    percentage:0,
+    promoCodeByCode:null,
     error:null,
     deletedData:null,
     updatedData:null,
     addError:action((state,payload)=>{
         state.error=payload
     }),
-    addPercentage:action((state,payload)=>{
-        state.percentage=payload
+    addPromoCodeByCode:action((state,payload)=>{
+        state.promoCodeByCode=payload
     }),
     addPromoData:action((state,payload)=>{
         state.createdPromoData=payload
@@ -547,7 +547,6 @@ const promoCodeModel={
     createPromoCode:thunk(async(actions,{data:createData})=>{
         try{
             const {data}=await axios.post(`${api_base_url}/api/promoCode`,createData)
-            console.log(data)
             actions.addPromoData(data)
             actions.addError(null)
             toast.success("Created a New Promo Code",{position:'top-right'})
@@ -562,19 +561,14 @@ const promoCodeModel={
         const {data}=await axios.get(`${api_base_url}/api/promoCodes`)
         actions.addAllPromoData(data)
     }),
-    getPercentage:thunk(async(actions,payload)=>{
+    getPromoCodeByCode:thunk(async(actions,{code,userId})=>{
         try{
-            const {data}=await axios.post(`${api_base_url}/api/promoCodeValidate`,{code:payload})
+            const {data}=await axios.post(`${api_base_url}/api/promoCodeValidate`,{code,userId})
         console.log(data)
-        if(data.valid){
-            actions.addPercentage(data.percentage)
-            actions.addError(null)
-        }else{
-            actions.addPercentage(0)
-            actions.addError(data.message)
-        }
+        actions.addPromoCodeByCode(data)
+        actions.addError(null)
     }catch(error){
-            actions.addPercentage(0)
+            actions.addPromoCodeByCode(null)
             actions.addError(error.response?.data?.message || "Something went Wrong")
         }
     }),
@@ -605,8 +599,8 @@ const promoCodeModel={
             console.log(e)
         }
     }),
-    resetPercentage:action((state)=>{
-        state.percentage=0
+    resetPromoCode:action((state)=>{
+        state.promoCodeByCode=0
         state.error=null
     }),
     addSinglePromoCode:action((state,payload)=>{

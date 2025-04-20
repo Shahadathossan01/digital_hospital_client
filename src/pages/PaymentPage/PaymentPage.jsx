@@ -13,12 +13,13 @@ import { toast } from "react-toastify";
 
 
 const PromoSection=()=>{
-    const {getPercentage,}=useStoreActions(actions=>actions.promoCode)
-    const {error,percentage}=useStoreState(state=>state.promoCode)
+    const {user}=useStoreState(state=>state.user)
+    const {getPromoCodeByCode,}=useStoreActions(actions=>actions.promoCode)
+    const {error,promoCodeByCode}=useStoreState(state=>state.promoCode)
     const {register,handleSubmit,reset}=useForm()
     const onSubmit=async(data)=>{
-        const promoCode=data.promoCode
-        getPercentage(promoCode)
+        const code=data.promoCode
+        getPromoCodeByCode({code,userId:user?._id})
         reset()
     }
     return(
@@ -42,7 +43,8 @@ const PromoSection=()=>{
             />
             <Box sx={{marginTop:"-10px",display:"flex",justifyContent:"center",marginBottom:"-20px"}}>
             {error && <p style={{ color: "red" }}>{error}</p>}
-            {((percentage > 0 ||percentage==100)&& !error) && <p>Discount Applied: {percentage}%</p>}
+            { (promoCodeByCode?.valid==='notValid' && !error) && <p style={{ color: "red" }}>This is Promo Code is applicable for only Patient Account</p>}
+            {((promoCodeByCode?.percentage > 0 || promoCodeByCode?.percentage==100)&& !error) && <p>Discount Applied: {promoCodeByCode?.percentage}%</p>}
             </Box>
           </Grid>
 
@@ -67,16 +69,29 @@ const PromoSection=()=>{
 }
 
 const BillSection=({patientData})=>{
-    const {percentage}=useStoreState(state=>state.promoCode)
-    const discountAmount=(patientData.fee*percentage)/100;
+    const {age,dateOfBirth,dateValue,doctorID,fee,fullName,gender,height,patientID,scheduleID,slotID,timeValue,weight}=patientData
+    const {user}=useStoreState(state=>state.user)
+    const {promoCodeByCode}=useStoreState(state=>state.promoCode)
+    const discountAmount=(patientData.fee* (promoCodeByCode?.percent ?? 0))/100;
     const totalFee=patientData.fee-discountAmount
     const { getUrl } = useStoreActions((action) => action.sslCommerz);
     const {createFreeAppointment}=useStoreActions(actions=>actions.freeAppointment)
     const navigate=useNavigate()
-
     const handlePayment=()=>{
         const payload={
-            ...patientData,
+            age,
+            dateOfBirth,
+            dateValue,
+            doctorID,
+            fee,
+            fullName,
+            gender,
+            height,
+            patientID:user?.role=='patient'?patientID:null,
+            referenceHealhtHubID:(user?.role==='healthHub' || (promoCodeByCode?.valid==='patient' && promoCodeByCode?.author?.role=='healthHub'))?promoCodeByCode?.author?._id:null,
+            scheduleID,
+            slotID,timeValue,
+            weight,
             totalFee
         }
         getUrl(payload)
@@ -111,7 +126,7 @@ const BillSection=({patientData})=>{
                         <hr />
                         <PromoSection></PromoSection>
                         {
-                            percentage==100?
+                            promoCodeByCode?.percent==100?
                             <Button
                             onClick={handleFreeAppointment}
               type="submit"
@@ -123,7 +138,6 @@ const BillSection=({patientData})=>{
               Fee Appointment
             </Button>:
             <Button
-            disabled
             onClick={handlePayment}
             variant="contained"
             color="primary"
