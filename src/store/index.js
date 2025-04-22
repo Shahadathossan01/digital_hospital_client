@@ -473,8 +473,12 @@ const sslCommerzModel={
     addUrl:action((state,payload)=>{
         state.url=payload
     }),
-    getUrl:thunk(async(actions,payload)=>{
-        const {data}=await axios.post(`${api_base_url}/api/initApplyForPayment`,payload)
+    getUrl:thunk(async(actions,{token,payload})=>{
+        const {data}=await axios.post(`${api_base_url}/api/initApplyForPayment`,payload,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         window.location.href=data
     })
 }
@@ -564,7 +568,7 @@ const promoCodeModel={
     getPromoCodeByCode:thunk(async(actions,{code,userId})=>{
         try{
             const {data}=await axios.post(`${api_base_url}/api/promoCodeValidate`,{code,userId})
-        console.log(data)
+        console.log('index data',data)
         actions.addPromoCodeByCode(data)
         actions.addError(null)
     }catch(error){

@@ -44,7 +44,7 @@ const PromoSection=()=>{
             <Box sx={{marginTop:"-10px",display:"flex",justifyContent:"center",marginBottom:"-20px"}}>
             {error && <p style={{ color: "red" }}>{error}</p>}
             { (promoCodeByCode?.valid==='notValid' && !error) && <p style={{ color: "red" }}>This is Promo Code is applicable for only Patient Account</p>}
-            {((promoCodeByCode?.percentage > 0 || promoCodeByCode?.percentage==100)&& !error) && <p>Discount Applied: {promoCodeByCode?.percentage}%</p>}
+            {((promoCodeByCode?.percent > 0 || promoCodeByCode?.percent==100)&& !error) && <p>Discount Applied: {promoCodeByCode?.percent}%</p>}
             </Box>
           </Grid>
 
@@ -69,6 +69,7 @@ const PromoSection=()=>{
 }
 
 const BillSection=({patientData})=>{
+    const token=localStorage.getItem("token")?localStorage.getItem("token"):null;
     const {age,dateOfBirth,dateValue,doctorID,fee,fullName,gender,height,patientID,scheduleID,slotID,timeValue,weight}=patientData
     const {user}=useStoreState(state=>state.user)
     const {promoCodeByCode}=useStoreState(state=>state.promoCode)
@@ -88,14 +89,21 @@ const BillSection=({patientData})=>{
             gender,
             height,
             patientID:user?.role=='patient'?patientID:null,
-            referenceHealhtHubID:(user?.role==='healthHub' || (promoCodeByCode?.valid==='patient' && promoCodeByCode?.author?.role=='healthHub'))?promoCodeByCode?.author?._id:null,
+            referenceHealhtHubID: user?.role === 'healthHub'
+            ? user?._id
+            : promoCodeByCode?.valid === 'patient' &&
+              promoCodeByCode?.author?.role === 'healthHub'
+            ? promoCodeByCode?.author?._id
+            : null,
             scheduleID,
             slotID,timeValue,
             weight,
             totalFee
         }
-        getUrl(payload)
+        // console.log(payload)
+        getUrl({payload,token})
     }
+
 
     const handleFreeAppointment=()=>{
         const payload={

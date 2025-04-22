@@ -15,6 +15,7 @@ const PromoForm = ({handlePromo,update,handleClose,id}) => {
   const { register, handleSubmit, setValue,reset } = useForm();
   const [promoCode, setPromoCode] = useState("");
   const {error}=useStoreState(state=>state.promoCode)
+  const {user}=useStoreState(state=>state.user)
   // Function to generate a random promo code
   const generatePromoCode = () => {
     const code = Math.random().toString(36).substring(2, 10).toUpperCase();
@@ -25,7 +26,11 @@ const PromoForm = ({handlePromo,update,handleClose,id}) => {
   // Handle form submission
   const onSubmit = (data) => {
     const checkEmptyData=checkUpdatedData(data)
-    handlePromo({data:checkEmptyData,id})
+    const payload={
+      ...checkEmptyData,
+      creatorId:user?._id
+    }
+    handlePromo({data:payload,id})
     reset()
     handleClose()
     setPromoCode("")
