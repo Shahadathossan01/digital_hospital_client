@@ -10,21 +10,12 @@ import { Box, Button, IconButton, Tooltip, Typography } from "@mui/material";
 import { format } from "date-fns";
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 const columns = [
-  "No","Doctor Name","CreatedAt","TransactionId","Schedule Date&Slot","Fee","Ref. Payment","Payment Status"
+  "No","Patient Name","CreatedAt","TransactionId","Schedule Date&Slot","Fee","Ref. Payment","Payment Status"
 ];
 
 const InvoiceTable=({appointments})=>{
   const {user}=useStoreState(state=>state.user)
-  const handleMarkAsPaid = (id) => {
-    // update status to true
-  };
-  
-  const handleMarkAsPending = (id) => {
-    // update status to false
-  };
-  
   return (
     <Box sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -47,14 +38,21 @@ const InvoiceTable=({appointments})=>{
               appointments?.length ==0?(
                 <Typography>No Data</Typography>
               ):(
-                appointments.map((item,index) =>(
+                appointments
+              .map((item,index) =>(
                 <TableRow key={item?._id}>
                     <TableCell>{index+1}</TableCell>
-                    <TableCell>{item?.doctor?.title} {item?.doctor?.firstName} {item?.doctor?.lastName}</TableCell>
+                    <TableCell>{item?.patient?.profile?.firstName} {item?.patient?.profile?.lastName}</TableCell>
                     <TableCell>
                       {format(new Date(item?.createdAt),"M/d/yyyy")}
                     </TableCell>
-                    <TableCell>{item?.transactionId?item?.transactionId:"N/A free appointment"} <span></span></TableCell>
+                    <TableCell>
+                    {item?.transactionId
+                    ? (user.role === 'healthHub'
+                        ? item.transactionId.slice(0, 8) + '...'
+                        : item.transactionId)
+                    : "N/A free appointment"} 
+                    </TableCell>
                     <TableCell>
                       {format(new Date(item?.date),"M/d/yyyy")}<br></br>
                       {item?.time}
@@ -79,7 +77,7 @@ const InvoiceTable=({appointments})=>{
                         <>
                           {/* Green Button - already paid */}
                           <Tooltip title="Payment Success">
-                            <IconButton disabled={user?.role==='healthHub'?true:false} size="large"  color="success" onClick={() => handleMarkAsPending(item._id)}>
+                            <IconButton disabled={user?.role==='healthHub'?true:false} size="large"  color="success">
                               <PriceCheckIcon />
                             </IconButton>
                           </Tooltip>
@@ -88,7 +86,7 @@ const InvoiceTable=({appointments})=>{
                         <>
                           {/* Gray Button - pending */}
                           <Tooltip title={user?.role==='healthHub'?'':'Mark as Paid'}>
-                            <IconButton disabled={user?.role==='healthHub'?true:false} color="default" onClick={() => handleMarkAsPaid(item._id)}>
+                            <IconButton disabled={user?.role==='healthHub'?true:false} color="default">
                               <CurrencyExchangeIcon />
                             </IconButton>
                           </Tooltip>
@@ -98,7 +96,7 @@ const InvoiceTable=({appointments})=>{
                     </TableCell>
                     <TableCell></TableCell>
                 </TableRow>
-              )).reverse()
+              ))
               )
             }
           </TableBody>
@@ -109,22 +107,22 @@ const InvoiceTable=({appointments})=>{
 }
 
 
-const HealthHubInvoice = () => {
+const RefferedInvoice = () => {
   const user=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):null
   const userID = user?._id;
-  const {getHealthHub}=useStoreActions(actions=>actions.healthHub)
-  const {healthHub,updatedData}=useStoreState(state=>state.healthHub)
+ const {getRefAppointmentByHealthHubId}=useStoreActions(actions=>actions.healthHub)
+ const {refAppointments}=useStoreState(state=>state.healthHub)
 
 useEffect(()=>{
-    getHealthHub({id:userID})
-},[getHealthHub,userID])
+  getRefAppointmentByHealthHubId({id:userID})
+},[getRefAppointmentByHealthHubId,userID])
 
-    if(!healthHub) return null
+    if(!refAppointments) return null
     return (
         <Box>
-            <InvoiceTable appointments={healthHub?.appointments}></InvoiceTable>
+            <InvoiceTable appointments={refAppointments}></InvoiceTable>
         </Box>
     );
 };
 
-export default HealthHubInvoice;
+export default RefferedInvoice;

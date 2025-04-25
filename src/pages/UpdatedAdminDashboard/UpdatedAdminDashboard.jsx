@@ -106,7 +106,6 @@ const UpdatedAdminDashboard = () => {
     },[getDoctors,deleteDoctorData,updatedProfileData])
 
     const filterData=data?.filter(item=>item.isValid===false)
-
     return (
         <div>
             <Typography variant="h6"><span style={{color:"red"}}>Requested Doctors</span> For Join Our Platform.</Typography>

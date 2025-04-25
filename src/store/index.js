@@ -412,12 +412,13 @@ const medicalRecordModel={
 }
 const appointmentModel={
     appointmentByIdData:null,
+    updatedData:null,
     appointments:[],
     updatedStatusData:null,
+    updatedRefPayment:null,
     addAppointments:action((state,payload)=>{
         state.appointments=payload
     }),
-    updatedData:null,
     addUpdatedData:action((state,payload)=>{
         state.updatedData=payload
     }),
@@ -454,6 +455,16 @@ const appointmentModel={
         console.log(id)
         const {data}=await axios.patch(`${api_base_url}/api/appointments/status/${id}`)
         actions.addedUpdatedStatusData(data)
+    }),
+    addUpdatedRefPayment:action((state,payload)=>{
+        state.updatedRefPayment=payload
+    }),
+    updateReferredPayment:thunk(async(actions,{id,referredPayment})=>{
+        console.log(id)
+        const {data}=await axios.patch(`${api_base_url}/api/appointments/referredPayment/${id}`,{
+            referredPayment
+        })
+        actions.addUpdatedRefPayment(data)
     })
 
 }
@@ -705,6 +716,9 @@ const blogModel={
 const healthHubModel={
     healthHub:null,
     updatedData:null,
+    allHealthHub:[],
+    refAppointments:[],
+    allRefAppointments:[],
     addHealthHub:action((state,payload)=>{
         state.healthHub=payload
     }),
@@ -728,6 +742,42 @@ const healthHubModel={
         }catch(e){
             toast.error(e?.response?.data.error)
             console.log(e)
+        }
+    }),
+    addGetAllHealthHub:action((state,payload)=>{
+        state.allHealthHub=payload
+    }),
+    getAllHealthHub:thunk(async(actions,payload)=>{
+        try{
+            const {data}=await axios.get(`${api_base_url}/api/healthHub`)
+            actions.addGetAllHealthHub(data)
+        }catch(e){
+            console.log(e)
+            console.log('Health hub not found')
+        }
+    }),
+    addRefAppointments:action((state,payload)=>{
+        state.refAppointments=payload
+    }),
+    addAllRefAppointments:action((state,payload)=>{
+        state.allRefAppointments=payload
+    }),
+    getRefAppointmentByHealthHubId:thunk(async(actions,{id})=>{
+        try{
+            const {data}=await axios.get(`${api_base_url}/api/healthHub/${id}/refAppointments`)
+            actions.addRefAppointments(data)
+        }catch(e){
+            console.log(e)
+            console.log('Ref. Appointments not found')
+        }
+    }),
+    getAllRefAppointments:thunk(async(actions,payload)=>{
+        try{
+            const {data}=await axios.get(`${api_base_url}/api/allRefAppointments`)
+            actions.addAllRefAppointments(data)
+        }catch(e){
+            console.log(e)
+            console.log('Ref. Appointments not found')
         }
     })
 }

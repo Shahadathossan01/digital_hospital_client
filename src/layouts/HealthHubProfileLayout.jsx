@@ -15,8 +15,9 @@ const SideBarItem = () => {
           {[
             { text: "Pharmacy Profile", path: "/profile" },
             { text: "Appointments", path: "/profile/appointments" },
-            { text: "Invoice", path: "/profile/invoice" },
-            { text: "Change Password", path: "/profile/changePassword" },
+            { text: "Own Invoice", path: "/profile/invoice" },
+            { text: "Reffered Invoice", path: "/profile/refferedInvoice" },
+            // { text: "Change Password", path: "/profile/changePassword" },
           ].map(({ text, path }) => (
             <ListItem
               key={text}

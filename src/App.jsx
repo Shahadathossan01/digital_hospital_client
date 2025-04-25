@@ -56,6 +56,8 @@ import HealthHubProfile from "./pages/HealthHubProfile/HealthHubProfile";
 import HealthHubAppointments from "./pages/HealthHubAppointments/HealthHubAppointments";
 import HealthHubInvoice from "./pages/HealthHubInvoice/HealthHubInvoice";
 import HealthHubProfileLayout from "./layouts/HealthHubProfileLayout";
+import RefferedInvoice from "./pages/RefferedInvoice/RefferedInvoice";
+import RefAllAppointments from "./pages/RefAllAppointments/RefAllAppointments";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
@@ -90,6 +92,7 @@ function App() {
                 <Route path="" element={user?.role=='patient' ? <MyProfile />:<HealthHubProfile />}/>
                 <Route path="/profile/appointments" element={user?.role=='patient' ? <MyAppointments /> :<HealthHubAppointments />}/>
                 <Route path="/profile/invoice" element={user?.role=='patient' ? <PatientInvoice />: <HealthHubInvoice />}/>
+                <Route path="/profile/refferedInvoice" element={<RefferedInvoice></RefferedInvoice>}/>
               </Route>
           
         
@@ -140,6 +143,7 @@ function App() {
               <Route path="changePassword" element={<PrivateRoute><ChangePassword /></PrivateRoute>}/>
               <Route path="addAdminOrPatient" element={<PrivateRoute><AddAdminOrPatient/></PrivateRoute>}/>
               <Route path="adminInvoice" element={<PrivateRoute><AdminInvoice/></PrivateRoute>}/>
+              <Route path="refAllAppointments" element={<PrivateRoute><RefAllAppointments/></PrivateRoute>}/>
               <Route path="adminBlogs" element={<PrivateRoute><AdminBlogs/></PrivateRoute>}/>
               <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
             </Route>

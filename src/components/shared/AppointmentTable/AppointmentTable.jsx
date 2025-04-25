@@ -134,17 +134,16 @@ const AppointmentTableRow=({item,index})=>{
 }
 
 const AppointmentTableBody=({filterValue})=>{
-      const { getPatient } = useStoreActions((action) => action.patient);
-      const { patient, delteState } = useStoreState((state) => state.patient);
-      const { updatedData } = useStoreState((state) => state.testRecommendation);
-      const { deletedMedicin } = useStoreState((state) => state.prescription);
       const user=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):null
       const userID = user?._id;
-      useEffect(() => {
-          getPatient(userID);
-        
-      }, [getPatient, userID, delteState, updatedData, deletedMedicin]);
-     if (!patient) {
+      const {getHealthHub}=useStoreActions(actions=>actions.healthHub)
+      const {healthHub,updatedData}=useStoreState(state=>state.healthHub)
+
+    useEffect(()=>{
+        getHealthHub({id:userID})
+    },[getHealthHub,userID])
+      
+     if (!healthHub) {
         return (
           <Box
             sx={{
@@ -156,7 +155,7 @@ const AppointmentTableBody=({filterValue})=>{
           </Box>
         );
       }
-      const appointments=patient?.appointments
+      const appointments=healthHub?.appointments
       const filterAppointment = [...appointments].filter((item) => item.status === filterValue);
       if(filterAppointment?.length==0){
         return (
@@ -171,7 +170,6 @@ const AppointmentTableBody=({filterValue})=>{
         </Typography>
         )
       }
-
     return(
         <>
         <TableBody>

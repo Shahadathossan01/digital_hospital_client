@@ -1,5 +1,5 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
-import { useEffect } from "react";
+import { act, useEffect } from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,19 +10,20 @@ import { Box, Button, IconButton, Tooltip, Typography } from "@mui/material";
 import { format } from "date-fns";
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 const columns = [
-  "No","Doctor Name","CreatedAt","TransactionId","Schedule Date&Slot","Fee","Ref. Payment","Payment Status"
+  "No","Author","CreatedAt","TransactionId","Schedule Date&Slot","Fee","Ref. Payment","Payment Status"
 ];
 
 const InvoiceTable=({appointments})=>{
   const {user}=useStoreState(state=>state.user)
+  const {updateReferredPayment}=useStoreActions(actions=>actions.appointment)
+
   const handleMarkAsPaid = (id) => {
-    // update status to true
+    updateReferredPayment({id,referredPayment:true})
   };
   
   const handleMarkAsPending = (id) => {
-    // update status to false
+    updateReferredPayment({id,referredPayment:false})
   };
   
   return (
@@ -47,14 +48,28 @@ const InvoiceTable=({appointments})=>{
               appointments?.length ==0?(
                 <Typography>No Data</Typography>
               ):(
-                appointments.map((item,index) =>(
+                appointments
+              .map((item,index) =>(
                 <TableRow key={item?._id}>
                     <TableCell>{index+1}</TableCell>
-                    <TableCell>{item?.doctor?.title} {item?.doctor?.firstName} {item?.doctor?.lastName}</TableCell>
+                    <TableCell>
+                        {item?.patient?
+                            'Patient'
+                        
+                        :
+                            'HealthHub'
+                        }
+                    </TableCell>
                     <TableCell>
                       {format(new Date(item?.createdAt),"M/d/yyyy")}
                     </TableCell>
-                    <TableCell>{item?.transactionId?item?.transactionId:"N/A free appointment"} <span></span></TableCell>
+                    <TableCell>
+                    {item?.transactionId
+                    ? (user.role === 'healthHub'
+                        ? item.transactionId.slice(0, 8) + '...'
+                        : item.transactionId)
+                    : "N/A free appointment"} 
+                    </TableCell>
                     <TableCell>
                       {format(new Date(item?.date),"M/d/yyyy")}<br></br>
                       {item?.time}
@@ -98,7 +113,7 @@ const InvoiceTable=({appointments})=>{
                     </TableCell>
                     <TableCell></TableCell>
                 </TableRow>
-              )).reverse()
+              ))
               )
             }
           </TableBody>
@@ -109,22 +124,23 @@ const InvoiceTable=({appointments})=>{
 }
 
 
-const HealthHubInvoice = () => {
+const RefAllAppointments = () => {
   const user=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):null
   const userID = user?._id;
-  const {getHealthHub}=useStoreActions(actions=>actions.healthHub)
-  const {healthHub,updatedData}=useStoreState(state=>state.healthHub)
+ const {getAllRefAppointments}=useStoreActions(actions=>actions.healthHub)
+ const {allRefAppointments}=useStoreState(state=>state.healthHub)
+ const {updatedRefPayment}=useStoreState(state=>state.appointment)
 
 useEffect(()=>{
-    getHealthHub({id:userID})
-},[getHealthHub,userID])
+    getAllRefAppointments()
+},[getAllRefAppointments,userID,updatedRefPayment])
 
-    if(!healthHub) return null
+    if(!allRefAppointments) return null
     return (
         <Box>
-            <InvoiceTable appointments={healthHub?.appointments}></InvoiceTable>
+            <InvoiceTable appointments={allRefAppointments}></InvoiceTable>
         </Box>
     );
 };
 
-export default HealthHubInvoice;
+export default RefAllAppointments;

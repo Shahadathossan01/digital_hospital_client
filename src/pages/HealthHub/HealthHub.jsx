@@ -1,10 +1,139 @@
-import React from 'react';
+import { Box, Button, Card, CardContent, CardMedia, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import{ useEffect, useState } from 'react';
+import Grid from '@mui/material/Grid';
+import { filterHealthHubByDivison, healthHubDivisionName } from '../../utils';
 
-const HealthHub = () => {
+const InfoCard = ({item}) => {
+    const {category,country,description,district,division,facilities,pharmacyImage,pharmacyName,status,upazila,phone}=item
+    const facilityList =
+    typeof facilities === "string" ? facilities.split(",") : facilities;
     return (
-        <div style={{display:"flex",justifyContent:"center",marginTop:"50px"}}>
-            <h1>In Working Process!!</h1>
-        </div>
+      <Card sx={{ display: 'flex', maxWidth: 1000, mx: 'auto', my: 2 ,mb:10}}>
+        {/* Image */}
+        <CardMedia
+          component="img"
+          sx={{ width: 300 }}
+          image={pharmacyImage}
+          alt={name}
+        />
+  
+        {/* Content */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+          <CardContent sx={{ flex: '1 0 auto' }}>
+            <Typography component="div" variant="h5" fontWeight="bold">
+              {pharmacyName}
+            </Typography>
+            <Box sx={{display:'flex',justifyContent:'space-between'}}>
+                <Typography variant="subtitle1" color="text.secondary" component="div">
+                Category: {category}
+                </Typography>
+                <Typography variant="subtitle1" color="primary" component="div">
+                *Partner
+                </Typography>
+            </Box>
+            <Typography variant="subtitle" color="text.secondary" component="div">
+               {upazila}-{district}-{division}-{country}
+            </Typography>
+  
+            <Typography variant="body2" color="text.secondary" mt={1}>
+              {description}
+            </Typography>
+  
+  
+            {facilityList.length > 0 && (
+              <Box mt={2}>
+                <Typography variant="subtitle2" color="text.primary">
+                  Facilities:
+                </Typography>
+                <Box display="flex" gap={1} flexWrap="wrap">
+                    {facilityList.map((item, index) => (
+                        <Typography key={index} variant="body2" color="text.secondary">
+                        {item}
+                        </Typography>
+                    ))}
+                </Box>
+              </Box>
+            )}
+
+            <Box>
+                <Typography variant="subtitle2" color="text.primary">
+                  Contact Us:
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Phone:{phone}
+                </Typography>
+            </Box>
+          </CardContent>
+        </Box>
+      </Card>
+    );
+  };
+
+const ListsOfHealthHub=({item})=>{
+    return(
+        <Box>
+            <InfoCard item={item}></InfoCard>
+        </Box>
+    )
+}
+const HealthHub = () => {
+    const {getAllHealthHub}=useStoreActions(actions=>actions.healthHub)
+    const {allHealthHub}=useStoreState(state=>state.healthHub)
+    const [filterValue,setFilterValue]=useState('all')
+    useEffect(()=>{
+        getAllHealthHub()
+    },[getAllHealthHub])
+    if(allHealthHub.length===0){
+        return (
+            <Typography>There is no Health Hub here...</Typography>
+        )
+    }
+    const categoryDivision=healthHubDivisionName(allHealthHub)
+    const filterdHealthHub=filterHealthHubByDivison(allHealthHub,filterValue)
+    return (
+      <Box sx={{ flexGrow: 1, mt: 12 }}>
+      <Grid container spacing={2}>
+        {/* Left Sidebar */}
+        <Grid item xs={12} md={3}>
+          <Box
+            sx={{
+              position: 'sticky',
+              top: 100, // adjust based on your header height
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+              p: 2,
+              backgroundColor: '#f9f9f9',
+              borderRadius: 2,
+            }}
+          >
+            <Button onClick={()=>setFilterValue('all')} variant={filterValue === 'all' ? 'contained' : 'outlined'}>All</Button>
+            {
+              categoryDivision.map((item,index)=>(
+                <Button onClick={()=>setFilterValue(item)} key={index} variant={filterValue === item ? 'contained' : 'outlined'}>{item}</Button>
+              ))
+            }
+            
+          </Box>
+        </Grid>
+  
+        {/* Right Scrollable Content */}
+        <Grid item xs={12} md={9}>
+          <Box
+            sx={{
+              maxHeight: 'calc(100vh - 150px)', // adjust if needed
+              overflowY: 'auto',
+              pr: 2,
+            }}
+          >
+            {filterdHealthHub.map((item) => (
+              <ListsOfHealthHub key={item._id} item={item} />
+            ))}
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
     );
 };
 

@@ -21,6 +21,17 @@ const specialityName=(data)=>{
     },[])
     return singleName
 }
+const healthHubDivisionName=(data)=>{
+    if(!data) return
+  const singleName=data.reduce((acc,cur)=>{
+        const division=cur.division.trim()
+        if(!acc.includes(division)){
+            acc.push(division)
+        }
+        return acc
+    },[])
+    return singleName
+}
 
 const filterDoctorBySpecialty=(data,filterValue)=>{
     if(!data) return
@@ -35,6 +46,20 @@ const filterDoctorBySpecialty=(data,filterValue)=>{
         return acc;
     },[])
     return filterDoctor
+}
+const filterHealthHubByDivison=(data,filterValue)=>{
+    if(!data) return
+    if(filterValue=='all'){
+        return data
+    }
+    const filteredHealthHub=data.reduce((acc,cur)=>{
+        const division=cur.division.trim()
+        if(division==filterValue){
+            acc.push(cur)
+        }
+        return acc;
+    },[])
+    return filteredHealthHub
 }
 
 
@@ -126,4 +151,4 @@ const isValidEmailOrPhone = (value) => {
   };
 
 
-export {checkUpdatedData,specialityName,filterDoctorBySpecialty,createSchedule,getTotalDaysInMonth,filterUser,filterAppointments,getUpcommingAppointments,filterDoctorAppointments,isValidEmailOrPhone}
+export {checkUpdatedData,specialityName,filterDoctorBySpecialty,createSchedule,getTotalDaysInMonth,filterUser,filterAppointments,getUpcommingAppointments,filterDoctorAppointments,isValidEmailOrPhone,healthHubDivisionName,filterHealthHubByDivison}
