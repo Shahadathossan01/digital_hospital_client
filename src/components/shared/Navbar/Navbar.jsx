@@ -103,17 +103,17 @@ const RegistrationRoute=()=>{
       >
         <MenuItem onClick={handleClose}>
           <Link to="/register" style={{ textDecoration: 'none', color: 'black' }}>
-          Register as patient
+          Patient Registration
           </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Link to="/becomeADoctor" style={{ textDecoration: 'none', color: 'black' }}>
-          Become a Doctor
+          Doctor Registration
           </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Link to="/registerHealthHub" style={{ textDecoration: 'none', color: 'black' }}>
-            Register Health Hub
+            Health Hub Registration
           </Link>
         </MenuItem>
               </Menu>

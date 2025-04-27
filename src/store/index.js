@@ -513,11 +513,11 @@ const adminModel={
         state.data=payload
     }),
     addUser:thunk(async(actions,payload)=>{
-        const {username,email,password,role}=payload.data
+        const {username,credential,password,role}=payload.data
         try{
          const {data}=await axios.post(`${api_base_url}/api/register`,{
              username,
-             email,
+             credential,
              password,
              role,
             })

@@ -1,4 +1,4 @@
-import { format, formatISO, isEqual, parse, set } from 'date-fns';
+import { format, formatISO, isBefore, isEqual, parse, set } from 'date-fns';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -58,7 +58,6 @@ useEffect(() => {
     getSingleDoctor(id);
   }, [getSingleDoctor, id]);
 
-  console.log(singleDoctor)
 
   if (!singleDoctor) return null;
 

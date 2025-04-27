@@ -20,8 +20,8 @@ const Header=()=>{
   return(
     <Box sx={{textAlign:"center"}}>
       <Typography variant="h6" sx={{fontSize:"40px",textDecoration:"underline"}}>Sureline Health</Typography>
-      <Box sx={{display:"flex",justifyContent:"center",gap:{xs:"5px",sm:"70px"},alignItems:"center",flexWrap:"wrap"}}>
-      <Link style={{ textDecoration: 'none' }} href="https://www.surelinehealth.com" target="_blank" rel="noopener noreferrer">
+      <Box sx={{display:"flex",justifyContent:"center",gap:{xs:"5px",sm:"20px"},alignItems:"center",flexWrap:"wrap"}}>
+      <Link style={{ textDecoration: 'none' ,color:'black'}} href="https://www.surelinehealth.com" target="_blank" rel="noopener noreferrer">
         <Typography>www.surelinehealth.com</Typography>
       </Link>
         <Typography>sureline.official@gmail.com</Typography>
@@ -35,7 +35,7 @@ const DoctorHeader=({appointmentByIdData})=>{
   return(
     <Box sx={{display:"flex",justifyContent:"space-between",margin:"30px 0px"}}>
       <Box>
-        <Typography sx={{fontWeight:"bold"}}>{appointmentByIdData?.doctor?.title} {appointmentByIdData?.doctor?.firstName} {appointmentByIdData?.doctor?.lastName}</Typography>
+        <Typography variant="h6" sx={{fontWeight:"bold"}}>{appointmentByIdData?.doctor?.title} {appointmentByIdData?.doctor?.firstName} {appointmentByIdData?.doctor?.lastName}</Typography>
         <Typography>{appointmentByIdData?.doctor?.designation}</Typography>
         <Typography>{appointmentByIdData?.doctor?.speciality}</Typography>
         <Typography>{appointmentByIdData?.doctor?.organization}</Typography>
@@ -51,7 +51,6 @@ const DoctorHeader=({appointmentByIdData})=>{
 const PatientHeader=({appointmentByIdData})=>{
   return(
     <Box>
-      <Typography variant="h6" sx={{textAlign:"center",textDecoration:"underline",marginTop:"10px"}}>Patient Info.</Typography>
       <Box sx={{textAlign:"center",margin:"30px 0px"}}>
         <Grid container spacing={0} >
             <Grid size={{xs:12,sm:4,md:4}} sx={{}}><Typography><strong>Name:</strong> {appointmentByIdData?.patientDetails?.fullName}</Typography></Grid>
@@ -603,7 +602,7 @@ const FollowUPAction=({id})=>{
     </Box>
   )
 }
-const Section2=({isDoctor,appointmentByIdData})=>{
+const Section2=({isDoctor,appointmentByIdData,item})=>{
   const {getPrescriptionById}=useStoreActions(actions=>actions.prescription)
   const {getPrescriptionByIdData,updatedData}=useStoreState(state=>state.prescription)
   const id=appointmentByIdData?.prescription?._id
@@ -633,18 +632,28 @@ console.log(getPrescriptionByIdData)
           </Typography>
             )}
       </Box>
-      <Box sx={{display:"flex",alignItems:"center",marginTop:"100px"}}>
-        <Typography><strong style={{textDecoration:"underline"}}>Follow-up within:</strong> {getPrescriptionByIdData?.followUp || "N/A"}</Typography>
-        {
-          isDoctor && (
-            <FollowUPAction id={id}></FollowUPAction>
-          )
-        }
-      </Box>
-      <Box sx={{marginTop:"50px"}}>
+      
+      <Box sx={{marginTop:"0px"}}>
             {isDoctor && <AddInstructionForm id={appointmentByIdData?.prescription?._id} />}
-            <Typography sx={{textDecoration:"underline"}} variant="h6">Advice:</Typography>
-            <Typography>{getPrescriptionByIdData?.advice || "Not Provided."}</Typography>
+            <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+               <Box>
+                  <Box sx={{display:"flex",alignItems:"center"}}>
+                    <Typography><strong style={{textDecoration:"underline"}}>Follow-up within:</strong> {getPrescriptionByIdData?.followUp || "N/A"}</Typography>
+                    {
+                      isDoctor && (
+                        <FollowUPAction id={id}></FollowUPAction>
+                      )
+                    }
+                  </Box>
+                  <Box>
+                    <Typography sx={{textDecoration:"underline"}} variant="h6">Advice:</Typography>
+                    <Typography>{getPrescriptionByIdData?.advice || "Not Provided."}</Typography>
+                  </Box>
+               </Box>
+               <Box sx={{mt:20}}>
+                  <Signature item={item} />
+               </Box>
+            </Box>
       </Box>
     </Box>
   )
@@ -658,7 +667,7 @@ const MainSection=({item,isDoctor,appointmentByIdData})=>{
         <Section1 item={item} isDoctor={isDoctor}></Section1>
       </Grid>
       <Grid size={{xs:12,sm:12,md:7}}>
-        <Section2 isDoctor={isDoctor} appointmentByIdData={appointmentByIdData}></Section2>
+        <Section2 item={item} isDoctor={isDoctor} appointmentByIdData={appointmentByIdData}></Section2>
       </Grid>
     </Grid>
   </Box><Divider></Divider>
@@ -699,7 +708,7 @@ const PresFooter = ({ item }) => {
           </Box>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Signature item={item} />
+          {/* <Signature item={item} /> */}
         </Grid>
       </Grid>
     </Box>

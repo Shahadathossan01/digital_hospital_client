@@ -1,5 +1,5 @@
 
-import { Card, CardContent, Typography, Avatar, Box, Collapse, } from '@mui/material';
+import { Card, CardContent, Typography, Avatar, Box, Collapse, CardMedia, Divider, } from '@mui/material';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import { useState } from 'react';
 
@@ -7,20 +7,34 @@ const ProfileCard = ({ item }) => {
   const [isShow, setIsShow] = useState(false);
 
   return (
-    <Card sx={{ maxWidth: 300, mx: 'auto', p: 2 }}>
+    <Card sx={{ maxWidth: 400, mx: 'auto', p: 2 }}>
       {/* Image Section */}
       <Box display="flex" justifyContent="center" mb={2}>
-        <Avatar
-          alt={item.name}
-          src={item.img}
-          sx={{
-            width: 200,
-            height: 200,
-            objectFit: 'cover', // Ensures the image covers the area of the Avatar
-            borderRadius: '50%', // Keeps the avatar circular
-          }}
-        />
-      </Box>
+  <Box
+    sx={{
+      width: 120,
+      height: 120,
+      borderRadius: "50%",
+      overflow: "hidden",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#f0f0f0", // optional
+    }}
+  >
+    <CardMedia
+      component="img"
+      image={item.img}
+      alt="No image uploaded"
+      sx={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+      }}
+    />
+  </Box>
+</Box>
+
 
       <CardContent>
         {/* Name and Arrow Section */}
@@ -40,7 +54,7 @@ const ProfileCard = ({ item }) => {
         </Box>
 
         {/* Role Section */}
-        <Typography sx={{ textAlign: 'center' }} variant="body2" component="div" gutterBottom>
+        <Typography sx={{ textAlign: 'center',mt:5 }} variant="body2" component="div" gutterBottom>
           {item.role}
         </Typography>
 
@@ -64,11 +78,11 @@ const Banner = () => {
       >
         <Box
           component="img"
-          src="https://t4.ftcdn.net/jpg/04/28/76/95/360_F_428769564_NB2T4JM9E2xsxFdXXwqW717HwgaZdpAq.jpg"
+          src="http://res.cloudinary.com/dmel68anu/image/upload/v1745786283/pkj5yg9xjxhlyyihqqku.jpg"
           alt="Banner"
           sx={{
             width: '100%',
-            height: '150px',
+            height: '300px',
             display: 'block',
             objectFit: 'cover',
           }}
@@ -76,6 +90,56 @@ const Banner = () => {
       </Box>
     );
   };
+
+const About = () => {
+    return (
+      <Card sx={{ margin: "auto", my: 4, p: 2 }}>
+        <CardContent>
+          <Typography variant="h4" gutterBottom>
+            About
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Sure Line Private Company Ltd. is revolutionizing the way healthcare is delivered by offering seamless, global access to medical expertise through cutting-edge telemedicine. Our mission is to break down geographical barriers and ensure that every individual, regardless of location, receives the highest standard of care. From remote villages to urban centers, it empowers patients with timely consultations, advanced diagnostics, and personalized treatment plans, all facilitated by a network of international doctors and healthcare professionals. We are committed to making healthcare accessible, affordable, and efficient—because your health deserves no compromise.
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  };
+  
+const Mission = () => {
+  return (
+    <Card sx={{ margin: "auto", my: 4, p: 2 }}>
+      <CardContent>
+        <Typography sx={{display:'flex',justifyContent:'right'}} variant="h4" gutterBottom>
+          Mission
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Sure Line Private Company Ltd. is dedicated to transforming healthcare access by providing high-quality, affordable medical services to underserved and rural communities in Bangladesh. Our mission is to harness the power of telemedicine to bridge the gap between these communities and international healthcare professionals, ensuring that everyone, regardless of location, receives the care they need. We are committed to expanding our services to include comprehensive psychological health support, recognizing the vital role mental well-being plays in overall health. Additionally, we will develop a robust training system for our health workers, equipping them with the skills necessary to deliver effective care and facilitate meaningful patient-doctor interactions. Through large-scale health campaigns targeting students, the elderly, and various communities, Sure Line aims to promote health education and disease prevention on a national and international scale. We also strive to maintain international collaborations, ensuring that our patients benefit from global medical expertise and standards.
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+const Vision = () => {
+  return (
+    <Card sx={{ margin: "auto", my: 4, p: 2 }}>
+      <CardContent>
+        <Typography variant="h4" gutterBottom>
+          Vision
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Our vision at Sure Line is to lead a global transformation in healthcare delivery, where every individual, regardless of their geographical or financial situation, has access to high-quality medical care. We envision a future where physical and mental health services are seamlessly integrated into everyday life, supported by well-trained health workers who are committed to serving their communities. It aspires to be a pioneer in telehealth, offering not only medical consultations but also comprehensive health education through community campaigns that empower people to take charge of their health. By fostering international partnerships, we will ensure that our services are of the highest quality, making world-class healthcare accessible to all. Our ultimate goal is to create a sustainable and inclusive healthcare model that can be replicated globally, breaking down barriers to healthcare and improving the lives of millions.
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+
+
+
+  
 const LeaderShipProfile = () => {
     const executiveLeaderShip=[
         {
@@ -127,9 +191,9 @@ const LeaderShipProfile = () => {
     return (
         <Box sx={{mt:12}}>
             <Box>
-                <Typography variant='h4' sx={{textAlign:'center',mb:2}}>Our People</Typography>
                 <Banner></Banner>
-                <Typography variant='body2' sx={{textAlign:'center',mb:2,color:'#7e57c2'}}>We work closely with you to turn your needs into personalized solutions.</Typography>
+                <Typography variant='h4' sx={{textAlign:'center',mb:2,mt:10}}>Our Team</Typography>
+                <Typography variant='h6' sx={{textAlign:'center',mb:1,color:'#7e57c2',mt:2}}>We work closely with you to turn your needs into personalized solutions.</Typography><Divider></Divider>
             </Box>
             <Box sx={{mt:8}}>
                 {/* <Typography variant='h5'>
@@ -154,6 +218,11 @@ const LeaderShipProfile = () => {
                     ))
                 }
                 </Box>
+            </Box>
+            <Box sx={{mt:10}}>
+              <About></About>
+              <Mission></Mission>
+              <Vision></Vision>
             </Box>
         </Box>
     );

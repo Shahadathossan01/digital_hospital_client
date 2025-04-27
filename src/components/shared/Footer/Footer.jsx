@@ -13,7 +13,7 @@ const Footer = () => {
       }}
     >
       {/* Header Text */}
-      <Typography sx={{ textAlign: "center" }} variant="h4">
+      <Typography sx={{ textAlign: "center" ,mb:8}} variant="h4">
         Your care is our joy—we can’t wait to serve you!
       </Typography>
 
@@ -35,17 +35,17 @@ const Footer = () => {
             <Typography variant="h6">Company</Typography>
             <Box sx={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: 1 }}>
               <Link to="/about_us" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   About Us
                 </Typography>
               </Link>
               <Link to="/blogs" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   Blogs
                 </Typography>
               </Link>
               <Link to="/faq" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   FAQ?
                 </Typography>
               </Link>
@@ -56,17 +56,17 @@ const Footer = () => {
             <Typography variant="h6">Service</Typography>
             <Box sx={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: 1 }}>
               <Link to="/findDoctors" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   Online Consultation
                 </Typography>
               </Link>
               <Link to="/findDoctors" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   Specialists
                 </Typography>
               </Link>
               <Link to="/findDoctors" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   Find Doctor
                 </Typography>
               </Link>
@@ -77,17 +77,17 @@ const Footer = () => {
             <Typography variant="h6">Legal and Policies</Typography>
             <Box sx={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: 1 }}>
               <Link to="/termsOrconditions" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   Terms & Conditions
                 </Typography>
               </Link>
               <Link to="/privacy_policy" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   Privacy Policy
                 </Typography>
               </Link>
               <Link to="/refund_policy" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   Refund Policy
                 </Typography>
               </Link>
@@ -98,17 +98,17 @@ const Footer = () => {
             <Typography variant="h6">Social Links</Typography>
             <Box sx={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: 1 }}>
               <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   Facebook
                 </Typography>
               </a>
               <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   LinkedIn
                 </Typography>
               </a>
               <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
-                <Typography color="white" variant="subtitle1">
+                <Typography color="white" variant="body1">
                   YouTube
                 </Typography>
               </a>

@@ -144,7 +144,7 @@ const AppointmentTableBody=({filterValue})=>{
     },[getPatient,userID])
 
   
-     if (!patient.appointments) {
+     if (!patient?.appointments) {
         return (
           <Box
             sx={{

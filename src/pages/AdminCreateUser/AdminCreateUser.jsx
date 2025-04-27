@@ -31,7 +31,7 @@ const AdminCreateUser = () => {
           />
           <TextField
             required
-            {...register("email")}
+            {...register("credential")}
             label="Email"
             variant="outlined"
             type="email"
