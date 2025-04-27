@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardMedia, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Chip, List, ListItem, ListItemText, Typography } from '@mui/material';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import{ useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
@@ -6,8 +6,8 @@ import { filterHealthHubByDivison, healthHubDivisionName } from '../../utils';
 
 const InfoCard = ({item}) => {
     const {category,country,description,district,division,facilities,pharmacyImage,pharmacyName,status,upazila,phone}=item
-    const facilityList =
-    typeof facilities === "string" ? facilities.split(",") : facilities;
+    console.log(facilities)
+    const facilitiesArray = facilities.split(',').map(item => item.trim());
     return (
       <Card sx={{ display: 'flex', maxWidth: 1000, mx: 'auto', my: 2 ,mb:10}}>
         {/* Image */}
@@ -21,19 +21,19 @@ const InfoCard = ({item}) => {
         {/* Content */}
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           <CardContent sx={{ flex: '1 0 auto' }}>
-            <Typography component="div" variant="h5" fontWeight="bold">
-              {pharmacyName}
-            </Typography>
             <Box sx={{display:'flex',justifyContent:'space-between'}}>
-                <Typography variant="subtitle1" color="text.secondary" component="div">
-                Category: {category}
+                <Typography component="div" variant="h5" fontWeight="bold">
+                  {pharmacyName}
                 </Typography>
                 <Typography variant="subtitle1" color="primary" component="div">
                 *Partner
                 </Typography>
             </Box>
-            <Typography variant="subtitle" color="text.secondary" component="div">
-               {upazila}-{district}-{division}-{country}
+            <Typography variant="subtitle1" color="info" component="div">
+                Category: {category}
+                </Typography>
+            <Typography variant="body1" color="text.secondary" component="div">
+               {upazila}-{district}-{division}
             </Typography>
   
             <Typography variant="body2" color="text.secondary" mt={1}>
@@ -41,16 +41,14 @@ const InfoCard = ({item}) => {
             </Typography>
   
   
-            {facilityList.length > 0 && (
+            {facilitiesArray.length > 0 && (
               <Box mt={2}>
                 <Typography variant="subtitle2" color="text.primary">
                   Facilities:
                 </Typography>
                 <Box display="flex" gap={1} flexWrap="wrap">
-                    {facilityList.map((item, index) => (
-                        <Typography key={index} variant="body2" color="text.secondary">
-                        {item}
-                        </Typography>
+                    {facilitiesArray.map((item, index) => (
+                      <Chip key={index} label={item} /> 
                     ))}
                 </Box>
               </Box>
@@ -58,10 +56,11 @@ const InfoCard = ({item}) => {
 
             <Box>
                 <Typography variant="subtitle2" color="text.primary">
-                  Contact Us:
+                  
+                 Emergency Contact:
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Phone:{phone}
+                  {phone}
                 </Typography>
             </Box>
           </CardContent>

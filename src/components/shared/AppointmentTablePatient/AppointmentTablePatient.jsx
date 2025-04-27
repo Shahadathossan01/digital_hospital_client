@@ -10,11 +10,11 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useEffect, useState } from 'react';
 import { format, isAfter, isBefore, isToday, parseISO } from 'date-fns';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AppointmentDetails from '../../../pages/AppointmentDetails/AppointDetails';
 import { filterAppointments } from '../../../utils';
 import { InsertEmoticon } from '@mui/icons-material';
 import VideoChatIcon from '@mui/icons-material/VideoChat';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+import AppointmentDetails from '../../../pages/AppointmentDetails/AppointDetails';
 const columns = ["No","Docto Name","Created","Schedule Start","Status","Action"];
 
 const TableRowAction=({item})=>{
@@ -85,7 +85,7 @@ const TableRowAction=({item})=>{
             </Tooltip> */}
             {
               open && (
-                <AppointmentDetails isDoctor={(user.role=='patient' || user.role=='healthHub')?false:true} item={selectedItem} open={open} handleClose={handleClose} />
+                <AppointmentDetails isDoctor={user.role=='patient'?false:true} item={selectedItem} open={open} handleClose={handleClose} />
               )
             }
         </Box>
@@ -136,14 +136,15 @@ const AppointmentTableRow=({item,index})=>{
 const AppointmentTableBody=({filterValue})=>{
       const user=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):null
       const userID = user?._id;
-      const {getHealthHub}=useStoreActions(actions=>actions.healthHub)
-      const {healthHub,updatedData}=useStoreState(state=>state.healthHub)
+      const {getPatient}=useStoreActions(actions=>actions.patient)
+      const {patient,updatedData}=useStoreState(state=>state.patient)
 
     useEffect(()=>{
-        getHealthHub({id:userID})
-    },[getHealthHub,userID])
+      getPatient(userID)
+    },[getPatient,userID])
+
   
-     if (!healthHub) {
+     if (!patient.appointments) {
         return (
           <Box
             sx={{
@@ -155,7 +156,7 @@ const AppointmentTableBody=({filterValue})=>{
           </Box>
         );
       }
-      const appointments=healthHub?.appointments
+      const appointments=patient?.appointments || []
       const filterAppointment = [...appointments].filter((item) => item.status === filterValue);
       if(filterAppointment?.length==0){
         return (
@@ -184,7 +185,7 @@ const AppointmentTableBody=({filterValue})=>{
     )
 }
 
-export default function AppointmentTable({filterValue}) {
+export default function AppointmentTablePatient({filterValue}) {
 
 
   return (

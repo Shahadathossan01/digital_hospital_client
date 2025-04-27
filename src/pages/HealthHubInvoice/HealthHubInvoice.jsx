@@ -47,7 +47,7 @@ const InvoiceTable=({appointments})=>{
               appointments?.length ==0?(
                 <Typography>No Data</Typography>
               ):(
-                appointments.map((item,index) =>(
+                appointments.reverse().map((item,index) =>(
                 <TableRow key={item?._id}>
                     <TableCell>{index+1}</TableCell>
                     <TableCell>{item?.doctor?.title} {item?.doctor?.firstName} {item?.doctor?.lastName}</TableCell>
@@ -98,7 +98,7 @@ const InvoiceTable=({appointments})=>{
                     </TableCell>
                     <TableCell></TableCell>
                 </TableRow>
-              )).reverse()
+              ))
               )
             }
           </TableBody>

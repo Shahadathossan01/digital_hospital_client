@@ -4,7 +4,7 @@ import { List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/mater
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 const Header = () => {
     return (
-      <Box sx={{ textAlign: 'center',marginBottom:"10px"}}>
+      <Box sx={{ textAlign: 'center',marginBottom:"10px",pt:5,pb:4}}>
         <Typography 
           variant="h7" 
           sx={{ 

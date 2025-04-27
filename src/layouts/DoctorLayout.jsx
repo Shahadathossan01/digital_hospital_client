@@ -1,11 +1,13 @@
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
-import { Box, Divider, List, ListItem, ListItemText } from "@mui/material";
+import { Box, Divider, IconButton, List, ListItem, ListItemText } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useEffect, useState } from "react";
 
 import { Card, CardContent, Typography, Avatar } from "@mui/material";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { getUpcommingAppointments } from "../utils";
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import ShieldIcon from '@mui/icons-material/Shield';
 
 const HeaderCard = ({ logo, number, title, subtitle }) => {
   return (
@@ -148,11 +150,38 @@ const SideBarItem = () => {
     );
   };
 const DoctorLayout = () => {
-    const {user}=useStoreState(state=>state.user)
+        const {getDoctorById}=useStoreActions(action=>action.doctor)
+        const {doctor}=useStoreState(state=>state.doctor)
+        const {user}=useStoreState(state=>state.user)
+
+        const userID=user?._id
+        useEffect(()=>{
+          getDoctorById(userID)
+        },[getDoctorById,userID])
+        
+        if(!doctor){
+          return null
+        }
     return (
         <>
         <Box  sx={{fontWeight:"bold",textAlign:"center",bgcolor:"green",color:"white",p:1}}>
-          <Typography><span style={{color:"yellow"}}>Hello,</span> {user?.username} [<span style={{color:"#ffca28",fontWeight:"bold"}}>{user?.role=="doctor"?"Doctor":"Admin"}</span>]</Typography>
+          <Typography><span style={{color:"yellow"}}>Hello,</span> {user?.username} [<span style={{color:"#ffca28",fontWeight:"bold"}}>{user?.role=="doctor"?"Doctor":"Admin"}</span>]
+          <span>
+            {
+              doctor?.isValid?(
+                <IconButton>
+                  <VerifiedUserIcon sx={{color:'#2196f3'}}></VerifiedUserIcon>
+                  <Typography sx={{color:'#d1c4e9'}}>Verified</Typography>
+                </IconButton>
+              ):(
+                <IconButton>
+                  <ShieldIcon sx={{color:'#2196f3'}}></ShieldIcon>
+                  <Typography sx={{color:'#dd2c00'}}>Checking Period</Typography>
+                </IconButton>
+              )
+            }
+          </span>
+          </Typography>
           <Typography variant="h3">Welcome to Your Dashboard!</Typography>
 
         </Box>

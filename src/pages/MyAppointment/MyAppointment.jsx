@@ -1,6 +1,8 @@
 import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import AppointmentTable from "../../components/shared/AppointmentTable/AppointmentTable";
+import AppointmentTablePatient from "../../components/shared/AppointmentTablePatient/AppointmentTablePatient";
+
 
 const FilterValue=({handleFilterValue,activeFilter })=>{
     return (
@@ -27,6 +29,7 @@ const FilterValue=({handleFilterValue,activeFilter })=>{
         </>
     )
 }
+
 const MyAppointments = () => {
     const [filterValue,setFilterValue]=useState('panding')
     const handleFilterValue=(data)=>{
@@ -35,7 +38,7 @@ const MyAppointments = () => {
     return (
         <Box>
             <FilterValue handleFilterValue={handleFilterValue}  activeFilter={filterValue}></FilterValue>
-            <AppointmentTable filterValue={filterValue}></AppointmentTable>
+            <AppointmentTablePatient filterValue={filterValue}></AppointmentTablePatient>
         </Box>
     )
 };

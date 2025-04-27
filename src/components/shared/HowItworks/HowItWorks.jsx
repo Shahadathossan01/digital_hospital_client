@@ -3,7 +3,7 @@ import { CheckCircleOutline } from '@mui/icons-material'; // For icons
 import {  Card, CardContent, CardMedia } from "@mui/material";
 const Header = () => {
     return (
-      <Box sx={{ textAlign: 'center'}}>
+      <Box sx={{ textAlign: 'center',pt:5,pb:4}}>
         <Typography 
           variant="h7" 
           sx={{ 

@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 
 const Header = () => {
   return (
-    <Box sx={{ textAlign: 'center'}}>
+    <Box sx={{ textAlign: 'center',pb:5}}>
       <Typography 
         variant="h4" 
         sx={{ 

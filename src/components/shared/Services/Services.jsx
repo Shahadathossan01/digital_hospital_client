@@ -3,7 +3,7 @@ import ServiceList from "../ServiceList/ServiceList";
 
 const Header = () => {
   return (
-    <Box sx={{ textAlign: 'center'}}>
+    <Box sx={{ textAlign: 'center',pt:5,pb:3}}>
       <Typography 
         variant="h7" 
         sx={{ 
@@ -22,14 +22,16 @@ const Services = () => {
     const serviceItem=[
         {
             id:"1",
-            img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2cFwy4wtH_IyPBezuAgzPTmlrEuT4Mh0riw&s",
+            img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFdObjaGPobK4Os8qVldNBwtBK-4wu7DDeDg&s",
             title:"Get Instant Video Call",
+            path:"/findDoctors",
             body:"The Instant Video Call feature in our online treatment app enables quick and secure consultations with doctors, ensuring timely medical advice from anywhere."
         },
         {
             id:"2",
             img:"https://equivahealth.com/wp-content/uploads/2022/08/digital-health-hub.jpg",
             title:"Health Hub",
+            path:"/health_hub",
             body:"HealthHub in our online treatment app provides access to medical records, lab results, appointments, and referrals from public healthcare institutions."
         },
         {

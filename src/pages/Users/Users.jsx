@@ -43,6 +43,7 @@ const AllUsers = () => {
                   <MenuItem value="patient">Patient</MenuItem>
                   <MenuItem value="doctor">Doctor</MenuItem>
                   <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="healthHub">HealthHub</MenuItem>
                 </Select>
               </FormControl>
               <Button type="submit" variant="contained" color="primary" size="small">

@@ -9,11 +9,11 @@ const ServiceList = ({ serviceItem }) => {
     spacing={2}
     sx={{
       justifyContent: {
-        xs: "center", // Center horizontally on small screens
+        xs: "center",
         sm: "flex-start",
         padding:"20px"
       },
-      alignItems: "center", // Center vertically
+      alignItems: "center",
     }}
   >
     {serviceItem.map((item) => (
@@ -33,7 +33,7 @@ const ServiceList = ({ serviceItem }) => {
       </Grid>
     ))}
   </Grid>
-</Box>
+    </Box>
 
   );
 };

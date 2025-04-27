@@ -1,35 +1,46 @@
 import React from "react";
-import { Card, CardContent, Typography, CardMedia, Box } from "@mui/material";
+import { Card, CardContent, Typography, CardMedia } from "@mui/material";
+import { Link } from "react-router-dom";
 
-const ServiceCard = ({item}) => {
+const ServiceCard = ({ item }) => {
   return (
-    <Card
-      sx={{
-        maxWidth: 345,
-        borderRadius: "10px", // Rounded corners
-        boxShadow: 3, // Light shadow for the card
-        overflow: "hidden", // Ensures the image fits correctly
-        textAlign: "center", // Centers the header and body text
-      }}
-    >
-      <CardMedia
-        component="img"
-        alt="Video Call"
-        height="200"
-        image={item.img} // Replace with your image URL
+    <Link to={item?.path} style={{ textDecoration: "none" }}> {/* Remove underline from the link */}
+      <Card
         sx={{
-          objectFit: "cover", // Ensures the image covers the card's top
+          maxWidth: 345,
+          borderRadius: "10px",
+          boxShadow: 3, 
+          overflow: "hidden", 
+          textAlign: "center",
         }}
-      />
-      <CardContent>
-        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
-          {item.title}
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          {item.body}
-        </Typography>
-      </CardContent>
-    </Card>
+      >
+        <CardMedia
+          component="img"
+          alt="Video Call"
+          height="200"
+          image={item.img} 
+          sx={{
+            objectFit: "cover",
+          }}
+        />
+        <CardContent>
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{ fontWeight: "bold"}} 
+          >
+            {item.title}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+
+          >
+            {item.body}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
 

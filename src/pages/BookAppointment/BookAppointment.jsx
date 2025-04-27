@@ -117,7 +117,7 @@ const areMonthsEqual=isEqual(month1,month2)
   }
 
   return (
-    <Box sx={{flexGrow:1}}>
+    <Box sx={{flexGrow:1,mt:10}}>
       <Grid container spacing={2} justifyContent="center" 
   >
       <Grid xs={12} sm={12} md={4} 

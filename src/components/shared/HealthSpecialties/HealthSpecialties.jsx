@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 const Header = ({doctor}) => {
     return (
-      <Box sx={{ textAlign: 'center'}}>
+      <Box sx={{ textAlign: 'center',pt:5,pb:3}}>
         <Typography 
           variant="h7" 
           sx={{ 
@@ -42,7 +42,7 @@ const HealthSpecialties = () => {
     }
     const filterValidData=data.filter((item)=>item.isValid==true)
     return (
-        <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"},bgcolor:"#f3e5f5"}}>
+        <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"},bgcolor:"#f3e5f5",pb:4}}>
             <Header doctor={filterValidData}></Header>
             <HealthSpecialitiesList filterDoctor={filterValidData} home="true"></HealthSpecialitiesList>
         </Box>

@@ -20,6 +20,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Margin, Padding } from '@mui/icons-material';
 
 export default function ProfileAvatorCard({item}) {
+  console.log(item?.image)
      const { register, handleSubmit, reset } = useForm();
      const {updateDoctorImage}=useStoreActions(action=>action.doctor)
      const {updatePatientImage}=useStoreActions(action=>action.patient)

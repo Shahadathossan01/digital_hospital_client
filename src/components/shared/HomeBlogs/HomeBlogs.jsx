@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
     return (
-      <Box sx={{ textAlign: 'center'}}>
+      <Box sx={{ textAlign: 'center',mb:4}}>
         <Typography 
           variant="h7" 
           sx={{ 
