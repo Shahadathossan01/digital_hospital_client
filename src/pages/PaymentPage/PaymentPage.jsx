@@ -107,7 +107,24 @@ const BillSection=({patientData})=>{
 
     const handleFreeAppointment=()=>{
         const payload={
-            ...patientData,
+            age,
+            dateOfBirth,
+            dateValue,
+            doctorID,
+            fee,
+            fullName,
+            gender,
+            height,
+            patientID:user?.role=='patient'?patientID:null,
+            referenceHealhtHubID: user?.role === 'healthHub'
+            ? user?._id
+            : promoCodeByCode?.valid === 'patient' &&
+              promoCodeByCode?.author?.role === 'healthHub'
+            ? promoCodeByCode?.author?._id
+            : null,
+            scheduleID,
+            slotID,timeValue,
+            weight,
             totalFee
         }
      createFreeAppointment({payload,navigate})
@@ -136,16 +153,28 @@ const BillSection=({patientData})=>{
                         {
                             promoCodeByCode?.percent==100?
                             <Button
-                            onClick={handleFreeAppointment}
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              sx={{marginTop:"-10px",marginBottom:"10px"}}
-            >
-              Fee Appointment
-            </Button>:
-            <Button
+                                onClick={handleFreeAppointment}
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                sx={{marginTop:"-10px",marginBottom:"10px"}}
+                                >
+                                Fee Appointment
+                            </Button>:
+                            <Button
+                                disabled
+                                onClick={handleFreeAppointment}
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                sx={{marginTop:"-10px",marginBottom:"10px"}}
+                                >
+                                Fee Appointment
+                            </Button>
+                        }
+             {/* <Button
             onClick={handlePayment}
             variant="contained"
             color="primary"
@@ -153,7 +182,7 @@ const BillSection=({patientData})=>{
             sx={{marginTop:"-10px",marginBottom:"10px"}}
           >
             Continue to payment
-          </Button> }                  
+          </Button>                   */}
         </Box>
     )
 }

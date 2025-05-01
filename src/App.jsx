@@ -94,9 +94,7 @@ function App() {
                 <Route path="/profile/invoice" element={user?.role=='patient' ? <PatientInvoice />: <HealthHubInvoice />}/>
                 <Route path="/profile/refferedInvoice" element={<RefferedInvoice></RefferedInvoice>}/>
               </Route>
-          
         
-          
           <Route path="/success/:transactionId" element={<Success></Success>}/>
           <Route path="/cancel" element={<Cancel></Cancel>}/>
           <Route path="/fail" element={<Fail></Fail>}/>

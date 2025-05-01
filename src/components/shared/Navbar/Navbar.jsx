@@ -121,6 +121,59 @@ const RegistrationRoute=()=>{
   )
 }
 
+const RegistrationRouteMobile=()=>{
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+
+    return(
+      <>
+        <Link style={{textDecoration:'none',color:'black'}}>   
+                <MenuItem >
+                    <Typography 
+                    sx={{ color: 'black'}} 
+                      onClick={handleClick}
+                  >
+                    Registration Now
+                    </Typography>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                    >
+                      <MenuItem onClick={handleClose}>
+                      <Link to="/register" style={{ textDecoration: 'none', color: 'black' }}>
+                      Patient Registration
+                      </Link>
+                      </MenuItem>
+
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/becomeADoctor" style={{ textDecoration: 'none', color: 'black' }}>
+                        Doctor Registration
+                        </Link>
+                      </MenuItem>
+                      
+                      <MenuItem onClick={handleClose}>
+                      <Link to="/registerHealthHub" style={{ textDecoration: 'none', color: 'black' }}>
+                        Health Hub Registration
+                      </Link>
+                      </MenuItem>
+                    </Menu>
+                </MenuItem>
+              </Link>
+      </>
+    )
+}
+
+
+
 const Navbar=()=>{
   const [anchorElNav, setAnchorElNav] =useState(null);
   const {user,isLogoutUser,isLogIn}=useStoreState(state=>state.user)
@@ -158,6 +211,7 @@ const Navbar=()=>{
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           
+          {/**Destop */}
           <Typography
             variant="h6"
             noWrap
@@ -177,6 +231,7 @@ const Navbar=()=>{
             <Link to="/" style={{textDecoration:'none',color:'white'}}>Sureline Health</Link>
           </Typography>
 
+            {/**mobile */}
           <Typography
             variant="h5"
             noWrap
@@ -196,6 +251,7 @@ const Navbar=()=>{
             <Link to="/" style={{textDecoration:'none',color:'white'}}>Sureline Health</Link>
           </Typography>
 
+            {/**modile */}
           <Box sx={{ flexGrow:0, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -239,30 +295,40 @@ const Navbar=()=>{
                 </MenuItem>
               </Link>
 
-              <Link to="/becomeADoctor" style={{textDecoration:'none',color:'black'}}>
+              <Link to="/about_us" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
-                  Become a Doctor
+                    About Us
                   </Typography>
                 </MenuItem>
               </Link>
-              <Link style={{textDecoration:'none',color:'black'}}>
-              
-              <MenuItem >
-                <Typography 
-                sx={{ color: 'black'}} 
-                  onClick={handleClick}
-              >
-                Emergency Service
-                </Typography>
-                <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleClose}>
+
+              <Link to="/blogs" style={{textDecoration:'none',color:'black'}}>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>
+                    Blogs
+                  </Typography>
+                </MenuItem>
+              </Link>
+
+              <RegistrationRouteMobile></RegistrationRouteMobile>
+
+              <Link style={{textDecoration:'none',color:'black'}}>   
+                <MenuItem >
+                  <Typography 
+                  sx={{ color: 'black'}} 
+                    onClick={handleClick}
+                >
+                  More..
+                  </Typography>
+                  <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleClose}>
           <Link to="/instant_video" style={{ textDecoration: 'none', color: 'black' }}>
-           Instant Video Call
+            Instant Video Call
           </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
@@ -280,26 +346,38 @@ const Navbar=()=>{
             Lab Testing
           </Link>
         </MenuItem>
-                </Menu>
-              </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/termsOrconditions" style={{ textDecoration: 'none', color: 'black' }}>
+          Terms & Conditions
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/privacy_policy" style={{ textDecoration: 'none', color: 'black' }}>
+            Privacy & Policy
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/refund_policy" style={{ textDecoration: 'none', color: 'black' }}>
+            Refund Policy
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/faq" style={{ textDecoration: 'none', color: 'black' }}>
+            FAQ?
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/leadershipProfile" style={{ textDecoration: 'none', color: 'black' }}>
+            Company Leadership Profile
+          </Link>
+        </MenuItem>
+                  </Menu>
+                </MenuItem>
               </Link>
             
-              <Link to="/about_us" style={{textDecoration:'none',color:'black'}}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    About Us
-                  </Typography>
-                </MenuItem>
-              </Link>
+             
 
-              <Link to="/blogs" style={{textDecoration:'none',color:'black'}}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    Blogs
-                  </Typography>
-                </MenuItem>
-              </Link>
-
+              
               <Link to="/register" style={{textDecoration:'none',color:'black'}}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
@@ -336,14 +414,17 @@ const Navbar=()=>{
                 
             </Menu>
           </Box>
+          
+          {/**desktop */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' },alignItems:"center"}}>
+
               <Link to="/" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button></Link>
+
               <Link to="/findDoctors" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Find Doctor</Button></Link>
-              {/* <Link to="/becomeADoctor" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Become a Doctor</Button></Link> */}
               
               <Link to="/about_us" style={{textDecoration:'none'}}><Button  size='small' sx={{ my: 2, color: 'white', display: 'block' }}>About Us</Button></Link>
+
               <Link to="/blogs" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Blogs</Button></Link>
-              {/* <Link to="/register" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Register</Button></Link> */}
 
               {/* registration */}
               <RegistrationRoute></RegistrationRoute>
@@ -354,7 +435,9 @@ const Navbar=()=>{
               :
               <Link to="/login" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
             }
+
             <EmergencyRoute></EmergencyRoute>
+            
               <Link to="/profile" style={{textDecoration:'none'}}>
               <Button sx={{ my: 2, color: 'white' }}>
                 <AccountCircleIcon></AccountCircleIcon>
