@@ -145,6 +145,7 @@ const RegisterHealthHub = () => {
     formData.append("credential",data.credential)
     formData.append("password",data.password)
     formData.append("role","healthHub")
+    
     registerUser({formData,navigate,credential:data.credential})
     reset()    
   };

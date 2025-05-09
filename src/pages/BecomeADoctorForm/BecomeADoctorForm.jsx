@@ -184,12 +184,12 @@ const BecomeADoctorForm = () => {
 
             {/* Organization */}
             <Grid size={{xs:12,sm:6,md:4,lg:3}}>
-              <TextField required {...register("organization")} label="Organization" name="organization" fullWidth />
+              <TextField {...register("organization")} label="Organization" name="organization" fullWidth />
             </Grid>
 
             {/* Biography */}
             <Grid size={{xs:12}}>
-              <TextField required {...register("biography")} label="Biography" name="biography" multiline rows={3} fullWidth />
+              <TextField {...register("biography")} label="Biography" name="biography" multiline rows={3} fullWidth />
             </Grid>
           </Grid>
             </Box>
@@ -220,7 +220,6 @@ const BecomeADoctorForm = () => {
             {/* BMDC Expiry Date */}
             <Grid size={{xs:12,sm:6,md:4,lg:3}}>
             <TextField
-                required
                 {...register("bmdcExpiryDate")} 
                 type="date" 
                 name="bmdcExpiryDate" 
@@ -232,7 +231,7 @@ const BecomeADoctorForm = () => {
 
             {/* Degree */}
             <Grid size={{xs:12,sm:6,md:4,lg:3}}>
-              <TextField required {...register("degrees")} type="text" label="Degrees" name="degrees" fullWidth />
+              <TextField {...register("degrees")} type="text" label="Degrees" name="degrees" fullWidth />
             </Grid>
 
             {/* Speciality */}
