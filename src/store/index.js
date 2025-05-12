@@ -7,6 +7,7 @@ const userModel={
     registerData:null,
     registerError:null,
     isLogoutUser:false,
+    loginError:null,
     isLogIn:false,
     user:localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):null,
     addUser:action((state,payload)=>{
@@ -30,8 +31,11 @@ const userModel={
            }
        }catch(e){
         console.log(e)
-        toast.error(e?.response?.data.error)
-        actions.addRegisterError(e?.response?.data.error)
+        toast.error(e?.response?.data.message)
+        actions.addRegisterError({
+            field: e?.response?.data?.field || null,
+            message: e?.response?.data?.message || "Something went wrong"
+        });
        }
     }),
     otpVerify:thunk(async(actions,{verifyingData,navigate})=>{
@@ -47,18 +51,23 @@ const userModel={
                     navigate("/")
                   }
                 if(data?.user?.role=="doctor"){
-                    toast.success("Successfully Created New Doctor Account.",{position:'top-right'})
+                    toast.success("Successfully Created New Doctor Account. Please Login.",{position:'top-right'})
                     navigate("/")
                 }  
 
             }
         }catch(error){
             console.log(error)
+            toast.error(error?.response?.data?.message)
         }
     }),
+    addLoginError:action((state,payload)=>{
+        state.loginError=payload
+    }),
     loginUser:thunk(async(actions,{loginData,from,navigate})=>{
-        console.log(loginData)
-        const {data}=await axios.post(`${api_base_url}/api/login`,loginData)
+
+        try{
+            const {data}=await axios.post(`${api_base_url}/api/login`,loginData)
         if(data.success){
             toast.success(data.message,{position:'top-right'})
             actions.addUser(data.user)
@@ -71,7 +80,11 @@ const userModel={
               }
             
                navigate("/")
-        }   
+        }
+        }catch(error){
+            console.log(error)
+            actions.addLoginError(error?.response?.data?.message)
+        }
     }),
     addLogoutData:action((state)=>{
         state.user=null

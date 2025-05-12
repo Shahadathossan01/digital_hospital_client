@@ -1,4 +1,4 @@
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Grid, Box, Typography, TextField, Button } from '@mui/material';
@@ -6,13 +6,16 @@ import { Password } from '@mui/icons-material';
 import { isValidEmailOrPhone } from '../../utils';
 
 const Login = () => {
-    const { register, handleSubmit } = useForm();
-    const { loginUser} = useStoreActions(action => action.user);
+    const { register, handleSubmit,formState:{errors} } = useForm({mode:'onChange'});
+    const { loginUser,addLoginError} = useStoreActions(action => action.user);
+    const { loginError } = useStoreState(state => state.user);
     const navigate=useNavigate()
     const location=useLocation()
     const from=location.state?.from?.pathname || "/"
 
+    console.log(loginError)
     const onSubmit = async(data) => {
+        addLoginError(null)
         const loginData={
             credential:data.credential,
             password:data.password
@@ -40,23 +43,39 @@ const Login = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Box display="flex" flexDirection="column" gap={2} marginBottom={3}>
                         <TextField
-  required
-  label="Email"
-  {...register("credential", {
-    required: "This field is required",
-    validate: (value) =>
-      isValidEmailOrPhone(value) || "Enter a valid email or 11-digit phone number",
-  })}
-  type="text" // Change type to text to allow numbers
-  fullWidth
-/>
+                            label="Email"
+                            {...register("credential", {
+                                required: "This field is required",
+                                validate: (value) =>
+                                isValidEmailOrPhone(value) || "Enter a valid email",
+                                onChange: () => {
+                                if (loginError) addLoginError(null);
+                                }
+                                
+                            })}
+                            type="text" // Change type to text to allow numbers
+                            fullWidth
+                            error={!!errors.credential} // show error if from backend
+                            helperText={
+                                errors.credential?.message
+                            }
+                            />
                             <TextField
-                                required
+                                
                                 label="Password"
-                                {...register("password")}
+                                {...register("password",{required:'This field is required'})}
                                 type="password"
                                 fullWidth
+                                error={!!errors?.password}
+                                helperText={errors?.password?.message}
                             />
+                        </Box>
+                        <Box>
+                            {loginError && (
+                        <Typography color="error" align="center" sx={{ mb: 2 }}>
+                            {loginError}
+                        </Typography>
+                    )}
                         </Box>
                         <Typography sx={{display:'flex',justifyContent:"end",marginTop:"-15px",marginBottom:"10px"}}>
                             <Link to={"/password/forgot"}>Forgot your password?</Link>

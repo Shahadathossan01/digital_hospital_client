@@ -7,7 +7,7 @@ import {
 import { useForm } from 'react-hook-form';
 import Grid from "@mui/material/Grid2"
 import { useState } from 'react';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useNavigate } from 'react-router-dom';
 import CreateSlotForm from '../../components/shared/CreateSlotForm/CreateSlotForm';
 import { createSchedule, getTotalDaysInMonth, isValidEmailOrPhone } from '../../utils';
@@ -65,10 +65,11 @@ const specialitys = [
   { id: "34", name: "Veterinary" }
 ];
 const BecomeADoctorForm = () => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({mode:'all'});
   const [profileImage,setProfileImage]=useState(null)
   const [signature,setSignature]=useState(null)
-  const { registerUser } = useStoreActions(action => action.user);
+  const { registerUser,addRegisterError } = useStoreActions(action => action.user);
+  const { registerError } = useStoreState(state => state.user);
   const navigate = useNavigate();
 
   const [times, setTimes] = useState([]);
@@ -76,7 +77,11 @@ const BecomeADoctorForm = () => {
   const totalMonthDays = getTotalDaysInMonth(date);
   const schedule = createSchedule(totalMonthDays, times);
 
+  const errorMessage = registerError?.message;
+    const errorField = registerError?.field;
+
   const onSubmit=(data)=>{
+     addRegisterError(null)
       const formData=new FormData()
       formData.append("profile",profileImage)
       formData.append("firstName",data.firstName)
@@ -103,7 +108,6 @@ const BecomeADoctorForm = () => {
       formData.append("designation",data.designation)
       formData.append("schedule",JSON.stringify(schedule))
       registerUser({formData,navigate,credential:data.credential})
-      reset()
     }
 
     return (
@@ -271,19 +275,26 @@ const BecomeADoctorForm = () => {
                         />
             </Grid>
             <Grid size={{xs:12,sm:6,md:4,lg:3}}>
-            <TextField
-  required
-  label="Email"
-  {...register("credential", {
-    required: "This field is required",
-    validate: (value) =>
-      isValidEmailOrPhone(value) || "Enter a valid email or 11-digit phone number",
-  })}
-  type="text" // Change type to text to allow numbers
-  fullWidth
-  error={!!errors.credential} // Show red border if error
-  helperText={errors.credential?.message} // Show error message below field
-/>
+           <TextField
+                                       
+                                       label="Email *"
+                                       {...register("credential", {
+                                           required: "This field is required",
+                                           validate: (value) =>
+                                           isValidEmailOrPhone(value) || "Enter a valid email",
+                                           onChange: () => {
+                                           if (registerError) addRegisterError(null);
+                                           }
+                                           
+                                       })}
+                                       type="text" // Change type to text to allow numbers
+                                       fullWidth
+                                       error={!!errors.credential || errorField === "credential"} // show error if from backend
+                                       helperText={
+                                           errors.credential?.message ||
+                                           (errorField === "credential" ? errorMessage : "")
+                                       }
+                                       />
             </Grid>
             <Grid size={{xs:12,sm:6,md:4,lg:3}}>
             <TextField

@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { isValidEmailOrPhone } from "../../utils";
 import { useNavigate } from "react-router-dom";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';;
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -106,32 +106,28 @@ const MultipleSelectChip=({ facilities, setFacilities })=>{
   );
 }
 
-
-
-
-
-
 const RegisterHealthHub = () => {
   const navigate = useNavigate();
-  const { registerUser } = useStoreActions(action => action.user);
+  const { registerUser ,addRegisterError} = useStoreActions(action => action.user);
+  const { registerError } = useStoreState(state => state.user);
+  
   const [facilities, setFacilities] = React.useState([]);
   const categories = ["Model", "No Model"];
-  const paymentServices = ["bKash", "Nagad", "Rocket"];
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = (data) => {
+  const paymentServices = ["bKash", "Nagad", "Rocket","Bank"];
+  const {register,reset,handleSubmit,formState: { errors }} = useForm({mode:'all'});
+    const errorMessage = registerError?.message;
+    const errorField = registerError?.field;
+    const onSubmit = (data) => {
+      
+    addRegisterError(null)
+    console.log('first',registerError)
     const formData = new FormData();
-    formData.append('profile', data.profile[0]);
-    formData.append('signature', data.pharmacy[0]);
+    formData.append('profile', data?.profile[0]);
+    formData.append('signature', data?.pharmacy[0]);
     formData.append("username",data.username)
     formData.append("nid",data.nid)
     formData.append("pharmacyName",data.pharmacyName)
-    formData.append("phanmacyReg",data.phanmacyReg)
+    formData.append("phanmacyReg",data.pharmacyReg)
     formData.append("facilities",facilities)
     formData.append("description",data.description)
     formData.append("country",data.country)
@@ -147,7 +143,7 @@ const RegisterHealthHub = () => {
     formData.append("role","healthHub")
     
     registerUser({formData,navigate,credential:data.credential})
-    reset()    
+    
   };
 
   return (
@@ -186,62 +182,85 @@ const RegisterHealthHub = () => {
             
             {/**pharmacy picture */}
             <Grid item xs={12}>
-                <Typography variant="body2" color="primary">Pharmacy Picture</Typography>
-                        <input
-                          required
-                          type="file"
-                          {...register('pharmacy', { required: 'Pharmacy Picture is required' })}
-                          accept="image/*"
-                        />
-                        {errors.image && (
-                          <Typography variant="body2" color="error">
-                            {errors.image.message}
-                          </Typography>
-                        )}
-              </Grid>
+            <Typography variant="body2" color="primary">
+              Pharmacy Picture
+            </Typography>
+            <input
+              
+              type="file"
+              accept="image/*"
+              {...register('pharmacy',{required:'Pharmacy picture must be required'})}
+            /><br></br>
+            {errors.pharmacy && (
+                        <Typography variant="caption" color="error">
+                          {errors?.profile?.message}
+                        </Typography>
+                      )}
+          </Grid>
 
-            {/**Pharmacy Name */}
+
+            {/**Phamacy name */}
             <Grid item xs={12}>
               <TextField
-                required
-                label="Pharmacy Name"
+                
+                label="Pharmacy Name *"
                 {...register("pharmacyName", {
                   required: "This field is required"
                 })}
-                type="text" // Change type to text to allow numbers
                 fullWidth
                 error={!!errors.pharmacyName} // Show red border if error
                 helperText={errors.pharmacyName?.message} // Show error message below field
               />
             </Grid>
 
-            {/**PharmacyReg and NID */}
-            {[
-              { name: "phanmacyReg", label: "Pharmacy Reg. No" },
-              { name: "nid", label: "NID" },
-            ].map(({ name, label, multiline }) => (
-              <Grid item xs={12} sm={6} key={name}>
+            
+
+            {/**pharmacy reg */}
+            <Grid item xs={12} sm={6}>
                 <TextField
-                  required
-                  label={label}
-                  fullWidth
-                  multiline={multiline}
-                  rows={multiline ? 3 : 1}
-                  {...register(name, { required: "This field is required" })}
-                  error={!!errors[name]}
-                  helperText={errors[name]?.message}
+                
+                  type='number'
+                  label="Pharmacy Reg. *"
+                  {...register('pharmacyReg', { required: "This field is required",
+                    onChange: () => {
+                                if (registerError) addRegisterError(null);
+                                }
+                  })}
+                  error={!!errors.pharmacyReg || errorField==='pharmacyReg'}
+                  helperText={errors.pharmacyReg?.message ||
+                    (errorField ==='pharmacyReg' ?errorMessage:'')
+                  }
                   variant="outlined"
                   sx={{ bgcolor: "#fafafa" }}
                 />
               </Grid>
-            ))}
+
+              
+              <Grid item xs={12} sm={6}>
+                <TextField
+                
+                  type='number'
+                  label="NID *"
+                  {...register("nid", { required: "This field is required",
+                    onChange: () => {
+                                if (registerError) addRegisterError(null);
+                                }
+                  })}
+                  error={!!errors.nid || errorField==="nid"}
+                  helperText={errors.nid?.message ||
+                    (errorField ==="nid" ?errorMessage:'')
+                  }
+                  variant="outlined"
+                  sx={{ bgcolor: "#fafafa" }}
+                />
+              </Grid>
 
             {/** Phone */}
             <Grid item xs={12} sm={6} key={name}>
               <TextField
-                required
-                label="Phone"
+                label="Phone *"
                 fullWidth
+                type="number"
                 {...register('phone',{ required: "Enter valid phone number" })}
                 error={!!errors['phone']}
                 helperText={errors['phone']?.message}
@@ -252,32 +271,36 @@ const RegisterHealthHub = () => {
 
             {/* Category & Status */}
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                select
-                label="Category"
-                fullWidth
-                defaultValue=""
-                {...register("category", { required: "Select a category" })}
-                error={!!errors.category}
-                helperText={errors.category?.message}
-              >
-                {categories.map((opt) => (
-                  <MenuItem key={opt} value={opt}>
-                    {opt}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+          <TextField
+            select
+            label="Category *"
+            fullWidth
+            defaultValue="Model" // Start with empty value
+            {...register("category", {
+              required: "Select a category",
+              validate: (value) => value !== "" || "Select a valid category",
+            })}
+            error={!!errors.category}
+            helperText={errors.category?.message}
+          >
+            <MenuItem value="">Select a category</MenuItem> {/* Placeholder */}
+            {categories.map((opt) => (
+              <MenuItem key={opt} value={opt}>
+                {opt}
+              </MenuItem>
+            ))}
+          </TextField>
+
+        </Grid>
+
 
             {/**payment service */}
             <Grid item xs={12} sm={6}>
               <TextField
-                required
                 select
-                label="Payment Service"
+                label="Payment Service *"
                 fullWidth
-                defaultValue=""
+                defaultValue="bKash"
                 {...register("service", {
                   required: "Select a payment method",
                 })}
@@ -295,9 +318,9 @@ const RegisterHealthHub = () => {
             {/**Payment Number */}
             <Grid item xs={12} sm={6}>
               <TextField
-                required
-                label="Payment Number"
+                label="Payment Number *"
                 fullWidth
+                type="number"
                 {...register("number", {
                   required: "Enter payment number",
                 })}
@@ -335,13 +358,12 @@ const RegisterHealthHub = () => {
             
             {/**Division,District,Upazila */}
             {[
-              { name: "division", label: "Division" },
-              { name: "district", label: "District" },
-              { name: "upazila", label: "Upazila" },
+              { name: "division", label: "Division *" },
+              { name: "district", label: "District *" },
+              { name: "upazila", label: "Upazila *" },
             ].map(({ name, label }) => (
               <Grid item xs={12} sm={6} key={name}>
                 <TextField
-                  required
                   label={label}
                   fullWidth
                   {...register(name, { required: "This field is required" })}
@@ -356,8 +378,8 @@ const RegisterHealthHub = () => {
             {/**Username */}
             <Grid item xs={12} sx={{mt:10}}>
               <TextField
-                required
-                label="Username"
+                
+                label="Username *"
                 {...register("username", {
                   required: "This field is required"
                 })}
@@ -371,28 +393,37 @@ const RegisterHealthHub = () => {
             {/**email */}
             <Grid item xs={12} sm={6}>
               <TextField
-                required
-                label="Email"
-                {...register("credential", {
-                  required: "This field is required",
-                  validate: (value) =>
-                    isValidEmailOrPhone(value) || "Enter a valid email or 11-digit phone number",
-                })}
-                type="text" // Change type to text to allow numbers
-                fullWidth
-                error={!!errors.credential} // Show red border if error
-                helperText={errors.credential?.message} // Show error message below field
-              />
+                            
+                            label="Email *"
+                            {...register("credential", {
+                                required: "This field is required",
+                                validate: (value) =>
+                                isValidEmailOrPhone(value) || "Enter a valid email",
+                                onChange: () => {
+                                if (registerError) addRegisterError(null);
+                                }
+                                
+                            })}
+                            type="text" // Change type to text to allow numbers
+                            fullWidth
+                            error={!!errors.credential || errorField === "credential"} // show error if from backend
+                            helperText={
+                                errors.credential?.message ||
+                                (errorField === "credential" ? errorMessage : "")
+                            }
+                            />
             </Grid>
 
             {/**password */}
             <Grid item xs={12} sm={6}>
                 <TextField
-                  required
-                  label="Password"
-                  {...register("password")}
+                  
+                  label="Password *"
+                  {...register("password",{required:"Password is required"})}
                   type="password"
                   fullWidth
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
                 />
             </Grid>
 
@@ -401,20 +432,23 @@ const RegisterHealthHub = () => {
                 <Box>
                 <Typography variant="body2" color="primary">Porfile Picture</Typography>
                         <input
-                          required
                           type="file"
-                          {...register('profile', { required: 'Profile is required' })}
+                          {...register('profile',{required:'Profile picture must be required'})}
                           accept="image/*"
-                        />
-                        {errors.image && (
-                          <Typography variant="body2" color="error">
-                            {errors.image.message}
-                          </Typography>
-                        )}
+                        /><br></br>
+                        {errors.profile && (
+                        <Typography variant="caption" color="error">
+                          {errors.profile.message}
+                        </Typography>
+                      )}
                 </Box>
             </Grid>
                         
-
+                {!errorField && errorMessage && (
+                        <Typography color="error" align="center" sx={{ mb: 2 }}>
+                            {errorMessage}
+                        </Typography>
+                    )}
             <Grid item xs={12}>
               <Button
                 fullWidth

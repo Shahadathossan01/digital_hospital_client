@@ -5,13 +5,14 @@ import { Grid, Box, Typography, TextField, Button } from '@mui/material';
 import { isValidEmailOrPhone } from "../../utils";
 
 const Register = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const { registerUser } = useStoreActions(action => action.user);
+    const { register, handleSubmit, watch, formState: { errors } } = useForm({mode:'onChange'});
+    const { registerUser,addRegisterError } = useStoreActions(action => action.user);
     const { registerError } = useStoreState(state => state.user);
     const navigate = useNavigate();
     const location=useLocation()
     const from=location.state?.from?.pathname || "/"
     const onSubmit = (data) => {
+        addRegisterError(null)
         const { username, credential, confirmPassword } = data;
         const formData=new FormData()
         formData.append("username",username)
@@ -21,6 +22,8 @@ const Register = () => {
         
     };
     const password = watch("password");
+    const errorMessage = registerError?.message;
+    const errorField = registerError?.field;
 
     return (
         <Box 
@@ -54,18 +57,25 @@ const Register = () => {
                             helperText={errors.username?.message} 
                         />
                         <TextField
-  required
-  label="Email"
-  {...register("credential", {
-    required: "This field is required",
-    validate: (value) =>
-      isValidEmailOrPhone(value) || "Enter a valid email or 11-digit phone number",
-  })}
-  type="text" // Change type to text to allow numbers
-  fullWidth
-  error={!!errors.credential} // Show red border if error
-  helperText={errors.credential?.message} // Show error message below field
-/>
+                            required
+                            label="Email"
+                            {...register("credential", {
+                                required: "This field is required",
+                                validate: (value) =>
+                                isValidEmailOrPhone(value) || "Enter a valid email",
+                                onChange: () => {
+                                if (registerError) addRegisterError(null);
+                                }
+                                
+                            })}
+                            type="text" // Change type to text to allow numbers
+                            fullWidth
+                            error={!!errors.credential || errorField === "credential"} // show error if from backend
+                            helperText={
+                                errors.credential?.message ||
+                                (errorField === "credential" ? errorMessage : "")
+                            }
+                            />
                     </Box>
                     <Box display="flex" flexDirection="column" gap={2} marginBottom={3}>
                         <TextField
@@ -79,17 +89,21 @@ const Register = () => {
                             required
                             label="Confirm Password"
                             {...register("confirmPassword", {
-                                validate: value => value === password || "Passwords do not match!"
+                                required: "This field is required", // 👈 Added required rule
+                                validate: value =>
+                                    value === password || "Password not match!",
                             })}
                             type="password"
                             fullWidth
+                            error={!!errors.confirmPassword}
+                            helperText={errors.confirmPassword?.message}
                         />
-                        {errors.confirmPassword && (
-                            <Typography variant="body2" color="error">
-                                {errors.confirmPassword.message}
-                            </Typography>
-                        )}
                     </Box>
+                    {!errorField && errorMessage && (
+                        <Typography color="error" align="center" sx={{ mb: 2 }}>
+                            {errorMessage}
+                        </Typography>
+                    )}
                     <Button type="submit" variant="contained" color="primary" fullWidth>
                         Register
                     </Button>
