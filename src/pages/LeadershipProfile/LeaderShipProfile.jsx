@@ -135,10 +135,6 @@ const Vision = () => {
     </Card>
   );
 };
-
-
-
-
   
 const LeaderShipProfile = () => {
     const executiveLeaderShip=[

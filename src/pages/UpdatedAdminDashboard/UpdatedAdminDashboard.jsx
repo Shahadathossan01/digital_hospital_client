@@ -98,18 +98,17 @@ const DoctorTable=({data})=>{
 
 
 const UpdatedAdminDashboard = () => {
-    const {getDoctors}=useStoreActions(actions=>actions.doctor)
-    const {data,deleteDoctorData,updatedProfileData}=useStoreState(state=>state.doctor)
+    const {getRequestedDoctors}=useStoreActions(actions=>actions.doctor)
+    const {requestedDoctor,deleteDoctorData,updatedProfileData}=useStoreState(state=>state.doctor)
 
     useEffect(()=>{
-        getDoctors()
-    },[getDoctors,deleteDoctorData,updatedProfileData])
+        getRequestedDoctors()
+    },[getRequestedDoctors,deleteDoctorData,updatedProfileData])
 
-    const filterData=data?.filter(item=>item.isValid===false)
     return (
         <div>
             <Typography variant="h6"><span style={{color:"red"}}>Requested Doctors</span> For Join Our Platform.</Typography>
-            <DoctorTable data={filterData}></DoctorTable>
+            <DoctorTable data={requestedDoctor}></DoctorTable>
         </div>
     );
 };

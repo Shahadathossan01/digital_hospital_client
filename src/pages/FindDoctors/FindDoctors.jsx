@@ -19,7 +19,7 @@ const FilterSection = ({specialty,handleFilterValue}) => {
           <Select
             defaultValue="all"
             onChange={(e)=>{handleFilterValue(e.target.value)}}
-            sx={{width:"300px"}}
+            sx={{width:"300px",minWidth:'250px'}}
             label="Speciality"
           >
             <MenuItem  value="all">All</MenuItem>
@@ -47,7 +47,7 @@ const FilterSection = ({specialty,handleFilterValue}) => {
 
 const FindDoctors = () => {
   const { getDoctors } = useStoreActions((action) => action.doctor);
-  const { data } = useStoreState((state) => state.doctor);
+  const { data ,isLoading} = useStoreState((state) => state.doctor);
   
   const [filterValue, setFilterValue] = useState("all");
 
@@ -58,7 +58,8 @@ const FindDoctors = () => {
   useEffect(() => {
     getDoctors();
   }, [getDoctors]);
-  if (!data) {
+
+  if (isLoading) {
     return (
       <Box
       sx={{
@@ -80,28 +81,28 @@ const FindDoctors = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh",
+        minHeight: "50vh",
         textAlign: "center"
       }}
       >
         <Typography variant="h4" color="textSecondary">
-          There is no doctor available
+          There is no doctors are available
         </Typography>
       </Box>
     );
   }
   
-  const filterValidDoctor=data.filter((item)=>item.isValid===true)
-  const specialty = specialityName(filterValidDoctor);
+  // const filterValidDoctor=data.filter((item)=>item.isValid===true)
+  const specialty = specialityName(data);
 
-  const filterDoctor = filterDoctorBySpecialty(filterValidDoctor, filterValue);
+  const filterDoctor = filterDoctorBySpecialty(data, filterValue);
   return (
     <Box sx={{padding:"100px 30px 0px 30px"}}>
-      <Box sx={{padding:"50px 0px 0px 50px"}}>
-        <Typography variant="h6">Select Doctors By Speciality:</Typography>
+      <Box>
+        {/* <Typography variant="h6">Select Doctors By Speciality:</Typography> */}
         <FilterSection handleFilterValue={handleFilterValue} specialty={specialty}></FilterSection>
-        <Typography variant="h6" sx={{marginTop:"20px",textAlign:"center"}}><strong style={{color:"red"}}>{filterDoctor?.length}</strong> doctors are available</Typography>
       </Box>
+        <Typography variant="h6" sx={{marginTop:"20px",textAlign:"center"}}><strong style={{color:"red"}}>{filterDoctor?.length}</strong> doctors are available</Typography>
       <Box sx={{marginTop:"10px"}}>
         <HealthSpecialitiesList filterDoctor={filterDoctor}></HealthSpecialitiesList>
       </Box>

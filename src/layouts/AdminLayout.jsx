@@ -55,12 +55,14 @@ const Header=()=>{
   const {getAllPromoCode}=useStoreActions(actions=>actions.promoCode)
   const {allPromoData,createdPromoData,deletedData}=useStoreState(state=>state.promoCode)
 
-  const {getDoctors}=useStoreActions(actions=>actions.doctor)
-    const {data,deleteDoctorData,updatedProfileData}=useStoreState(state=>state.doctor)
+
+  const {getRequestedDoctors}=useStoreActions(actions=>actions.doctor)
+    const {requestedDoctor,deleteDoctorData,updatedProfileData}=useStoreState(state=>state.doctor)
 
     useEffect(()=>{
-        getDoctors()
-    },[getDoctors,deleteDoctorData,updatedProfileData,registerData])
+        getRequestedDoctors()
+    },[getRequestedDoctors,deleteDoctorData,updatedProfileData,registerData])
+
 
     
     useEffect(() => {
@@ -77,11 +79,10 @@ const Header=()=>{
 
 
     
-    if (allUserData.length==0 || data.length==0 ) return null;
+    if (allUserData.length==0 || requestedDoctor.length==0 ) return null;
     const totalAdmins=allUserData.filter((item)=>item.role=="admin")
     // const totalPatients=allUserData.filter((item)=>item.role=="patient")
     
-    const filterRequestedDoctor=data?.filter(item=>item.isValid===false)
 
    
 
@@ -89,7 +90,7 @@ const Header=()=>{
         <Box flexGrow={1}>
             <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:6,md:3}}>
-                    <HeaderCard number={filterRequestedDoctor?.length} title={"Total Requested"} subtitle={"Doctors"}/>
+                    <HeaderCard number={requestedDoctor?.length} title={"Total Requested"} subtitle={"Doctors"}/>
                 </Grid>
                 <Grid size={{xs:12,sm:6,md:3}}>
                     <HeaderCard number={appointments.length} title={"Total"} subtitle={"Appointments"} />
@@ -123,7 +124,7 @@ const SideBarItem = () => {
             { text: "Invoice", path: "/adminInvoice" },
             { text: "Ref. Invoice", path: "/refAllAppointments" },
             { text: "Blogs", path: "/adminBlogs" },
-            { text: "Change Password", path: "/changePassword" },
+            // { text: "Change Password", path: "/changePassword" },
           ].map(({ text, path }) => (
             <ListItem
               key={text}

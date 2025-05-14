@@ -1,6 +1,6 @@
-import { Grid, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import ServiceCard from '../ServiceCard/ServiceCard';
-
+import Grid from '@mui/material/Grid2';
 const ServiceList = ({ serviceItem }) => {
   return (
     <Box sx={{ }}>
@@ -18,11 +18,7 @@ const ServiceList = ({ serviceItem }) => {
   >
     {serviceItem.map((item) => (
       <Grid
-        item
-        xs={12}
-        sm={6}
-        md={4}
-        lg={3}
+        size={{xs:12,sm:6,md:4,lg:3}}
         key={item.id}
         sx={{
           display: "flex", // Ensures proper card centering within each Grid item

@@ -18,9 +18,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function AcceptAppointmentModal({ open, handleClose, appointmentID, reqApplyedID ,date,time}) {
   const { register, handleSubmit, reset } = useForm();
   const { updateAppointment } = useStoreActions((action) => action.appointment);
-
+  const token=localStorage.getItem('token') || null
   const onSubmit = (data) => {
-    updateAppointment({ data, appointmentID, reqApplyedID,date,time});
+    updateAppointment({ data, appointmentID, reqApplyedID,date,time,token});
     reset();
     handleClose();
   };

@@ -20,7 +20,7 @@ import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 const TableRowAction=({item})=>{
     const {updateStatus}=useStoreActions(actions=>actions.appointment)
-    
+    const token=localStorage.getItem('token')  || null;
     const { user } = useStoreState((state) => state.user);
     const [open, setOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -34,8 +34,9 @@ const TableRowAction=({item})=>{
         setSelectedItem(null)
       };
       if(!item) return null
-      const today=isToday(parseISO(item?.date),new Date)
-      const upcomming=isAfter(parseISO(item?.date),new Date)
+      const today=isToday(parseISO(item.date),new Date)
+    const upcomming=!today && isAfter(parseISO(item.date),new Date)
+    // const over=!today && isBefore(parseISO(item.date),new Date)
       const id=item?._id
     return(
         <Box sx={{display:"flex",justifyContent:"space-between"}}>
@@ -83,7 +84,7 @@ const TableRowAction=({item})=>{
     },
   }}
 >
-  <IconButton onClick={()=>updateStatus({id})}>
+  <IconButton onClick={()=>updateStatus({id,token})}>
     <BeenhereIcon 
       onClick={item?.status == "confirmed" ? () => console.log("clicked") : undefined} 
       sx={{ 

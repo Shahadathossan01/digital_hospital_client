@@ -20,14 +20,14 @@ const ProfileDetails=({patient})=>{
                             <Typography variant="body1">
                                 First Name
                             </Typography>
-                            <Typography variant="body3">{patient?.profile?patient.profile.firstName:user?.username}</Typography>
+                            <Typography variant="body3">{patient?.profile?patient.profile.firstName: 'N/A'}</Typography>
                         </Box><hr />
 
                         <Box sx={{display:"flex",justifyContent:"space-between"}}>
                             <Typography >
                                 Last Name
                             </Typography>
-                            <Typography variant="body3">{patient?.profile?patient.profile.lastName:""}
+                            <Typography variant="body3">{patient?.profile?patient.profile.lastName:"N/A"}
                             </Typography>
                         </Box><hr />
 
@@ -35,7 +35,8 @@ const ProfileDetails=({patient})=>{
                             <Typography >
                                 Phone
                             </Typography>
-                            <Typography variant="body3">0{patient?.profile?patient.profile.phone:""}
+                            <Typography variant="body3">
+                                {patient?.profile?.phone ? `0${patient.profile.phone}` : 'N/A'}
                             </Typography>
                         </Box><hr />
 
@@ -43,42 +44,42 @@ const ProfileDetails=({patient})=>{
                             <Typography >
                                 Address
                             </Typography>
-                            <Typography variant="body3">{patient?.profile?patient.profile.address:""}</Typography>
+                            <Typography variant="body3">{patient?.profile?patient.profile.address:"N/A"}</Typography>
                         </Box><hr />
 
                         <Box sx={{display:"flex",justifyContent:"space-between"}}>
                             <Typography >
                                Date of Birth
                             </Typography>
-                            <Typography variant="body3">{patient?.profile?.dateOfBirth?format(patient.profile.dateOfBirth, 'd/M/yyyy'):""}</Typography>
+                            <Typography variant="body3">{patient?.profile?.dateOfBirth?format(patient.profile.dateOfBirth, 'd/M/yyyy'):"N/A"}</Typography>
                         </Box><hr />
 
                         <Box sx={{display:"flex",justifyContent:"space-between"}}>
                             <Typography >
                                Gender
                             </Typography>
-                            <Typography variant="body3">{patient?.profile?patient.profile.gender:""}</Typography>
+                            <Typography variant="body3">{patient?.profile?patient.profile.gender:"N/A"}</Typography>
                         </Box><hr />
 
                         <Box sx={{display:"flex",justifyContent:"space-between"}}>
                             <Typography >
                                Blood
                             </Typography>
-                            <Typography variant="body3">{patient?.profile?patient.profile.blood:""}</Typography>
+                            <Typography variant="body3">{patient?.profile?patient.profile.blood:"N/A"}</Typography>
                         </Box><hr />
 
                         <Box sx={{display:"flex",justifyContent:"space-between"}}>
                             <Typography >
                                Age
                             </Typography>
-                            <Typography variant="body3">{patient?.profile?patient.profile.age:""}</Typography>
+                            <Typography variant="body3">{patient?.profile?patient.profile.age:"N/A"}</Typography>
                         </Box><hr />
 
                         <Box sx={{display:"flex",justifyContent:"space-between"}}>
                             <Typography >
                             Height
                             </Typography>
-                            <Typography variant="body3">{patient?.profile?patient.profile.height:""}</Typography>
+                            <Typography variant="body3">{patient?.profile?patient.profile.height:"N/A"}</Typography>
                         </Box><hr />
 
                         <Box sx={{display:"flex",justifyContent:"space-between"}}>
@@ -99,14 +100,13 @@ const MyProfile = () => {
         const { patient, updatedData,patientImageData } = useStoreState((state) => state.patient);
         const [open, setOpen] = useState(false);
         const [openCP, setOpenCP] = useState(false);
-    
+        const token=localStorage.getItem('token') || null;
         const userID = user?._id;
         const userEmail = user?.email;
         useEffect(() => {
-            getPatient(userID);
-        }, [userID, getPatient, updatedData,patientImageData]);
+            getPatient({id:userID,token});
+        }, [userID, getPatient, updatedData,patientImageData,token]);
     
-
 
         const handleClickOpen = () => {
             setOpen(true);
@@ -155,21 +155,21 @@ const MyProfile = () => {
                         >
                             Edit Profile
                         </Button>
-                        <Button
+                        {/* <Button
                             variant="contained"
                             color="secondary"
                             onClick={handleClickOpenCP}
                             sx={{ textTransform: 'none' }}
                         >
                             Change Password
-                        </Button>
+                        </Button> */}
                         <OpenModal open={open} handleClose={handleClose}>
                             <EditPatientProfile handleClose={handleClose} userID={userID}></EditPatientProfile>
                         </OpenModal>
                         {/* <EditProfilePatientModal userID={userID} open={open} handleClose={handleClose} /> */}
-                        <OpenModal handleClose={handleCloseCP} open={openCP}>
+                        {/* <OpenModal handleClose={handleCloseCP} open={openCP}>
                             <ChangePassword handleClose={handleCloseCP} userEmail={userEmail} userID={userID} />
-                        </OpenModal>
+                        </OpenModal> */}
                         </Box>
                     </Grid>
                     <Grid size={{xs:12,sm:8,md:8}}>

@@ -4,16 +4,19 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Grid, Box, Typography, TextField, Button } from '@mui/material';
 import { Password } from '@mui/icons-material';
 import { isValidEmailOrPhone } from '../../utils';
+import { useEffect } from 'react';
 
 const Login = () => {
-    const { register, handleSubmit,formState:{errors} } = useForm({mode:'onChange'});
     const { loginUser,addLoginError} = useStoreActions(action => action.user);
+    useEffect(() => {
+    addLoginError(null);
+}, [addLoginError]);
+    const { register, handleSubmit,formState:{errors} } = useForm({mode:'onChange'});
     const { loginError } = useStoreState(state => state.user);
     const navigate=useNavigate()
     const location=useLocation()
     const from=location.state?.from?.pathname || "/"
 
-    console.log(loginError)
     const onSubmit = async(data) => {
         addLoginError(null)
         const loginData={
@@ -93,8 +96,13 @@ const Login = () => {
                         <Button variant="outlined" color="secondary">Github</Button>
                     </Box> */}
                     <Typography variant="body1" align="center" marginTop={2}>
-                        Don't have an account? <Link style={{ textDecoration: 'none' }} to="/register">Create account</Link>
+                        Don't have an account?
                     </Typography>
+                    <Box sx={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                        <Link style={{ textDecoration: 'none',color:'#2979ff' }} to="/register">Patient Registration</Link>
+                        <Link style={{ textDecoration: 'none' ,color:'#2979ff'}} to="/becomeADoctor">Doctor Registration</Link>
+                        <Link style={{ textDecoration: 'none',color:'#2979ff' }} to="/registerHealthHub">HealthHub Registration</Link>
+                    </Box>
         </Box>
         </Box>
     );

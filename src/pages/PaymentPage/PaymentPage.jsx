@@ -16,7 +16,7 @@ const PromoSection=()=>{
     const {user}=useStoreState(state=>state.user)
     const {getPromoCodeByCode,}=useStoreActions(actions=>actions.promoCode)
     const {error,promoCodeByCode}=useStoreState(state=>state.promoCode)
-    const {register,handleSubmit,reset}=useForm()
+    const {register,handleSubmit,reset,formState:{errors}}=useForm()
     const onSubmit=async(data)=>{
         const code=data.promoCode
         getPromoCodeByCode({code,userId:user?._id})
@@ -35,11 +35,13 @@ const PromoSection=()=>{
           <Grid item xs={12} sm={6} md={8}>
             <TextField
               type="text"
-              {...register("promoCode",{required:true})}
+              {...register("promoCode",{required:'This field is required'})}
               label="Enter Promo Code"
               name="promoCode"
               fullWidth
               variant="outlined"
+              error={!!errors?.promoCode}
+              helperText={errors?.promoCode?.message || ''}
             />
             <Box sx={{marginTop:"-10px",display:"flex",justifyContent:"center",marginBottom:"-20px"}}>
             {error && <p style={{ color: "red" }}>{error}</p>}
@@ -158,7 +160,7 @@ const BillSection=({patientData})=>{
                                 variant="contained"
                                 color="primary"
                                 fullWidth
-                                sx={{marginTop:"-10px",marginBottom:"10px"}}
+                                sx={{}}
                                 >
                                 Fee Appointment
                             </Button>:
@@ -169,12 +171,12 @@ const BillSection=({patientData})=>{
                                 variant="contained"
                                 color="primary"
                                 fullWidth
-                                sx={{marginTop:"-10px",marginBottom:"10px"}}
+                                sx={{}}
                                 >
                                 Fee Appointment
                             </Button>
                         }
-             {/* <Button
+             <Button
             onClick={handlePayment}
             variant="contained"
             color="primary"
@@ -182,7 +184,7 @@ const BillSection=({patientData})=>{
             sx={{marginTop:"-10px",marginBottom:"10px"}}
           >
             Continue to payment
-          </Button>                   */}
+          </Button>                  
         </Box>
     )
 }

@@ -8,6 +8,7 @@ const ServiceCard = ({ item }) => {
       <Card
         sx={{
           maxWidth: 345,
+          height:400,
           borderRadius: "10px",
           boxShadow: 3, 
           overflow: "hidden", 

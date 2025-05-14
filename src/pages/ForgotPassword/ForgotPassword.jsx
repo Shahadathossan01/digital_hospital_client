@@ -6,7 +6,7 @@ import { useStoreActions } from "easy-peasy";
 
 const ForgotPassword = () => {
     const {sendResetLink}=useStoreActions(actions=>actions.user)
- const {register,handleSubmit}=useForm()
+    const {register,handleSubmit}=useForm()
 
   const handleForgotPassword = ({credential}) => {
     sendResetLink({credential})

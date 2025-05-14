@@ -20,9 +20,7 @@ const Success = () => {
     (item) => item.transactionId === transactionId
   );
 
-  if(filteredAppointment?.length==0){
-    return null
-  }
+  if(!filteredAppointment) return null
 
   return (
     <Box

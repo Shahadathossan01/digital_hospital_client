@@ -407,7 +407,7 @@ const TestRecommendationList=({item})=>{
                 :
                 <ol>
                 {item?.testRecommendation?.map((rec,index) => (
-                  <TestRecommendation isDoctor={user.role=='patient'?false:true} key={rec._id} item={rec} index={index} />
+                  <TestRecommendation isDoctor={(user.role=='patient' || user.role=='healthHub')?false:true} key={rec._id} item={rec} index={index} />
                 ))}
               </ol>
               }
@@ -609,7 +609,7 @@ const Section2=({isDoctor,appointmentByIdData,item})=>{
   useEffect(()=>{
     getPrescriptionById({id})
   },[id,getPrescriptionById,updatedData])
-console.log(getPrescriptionByIdData)
+
   return(
     <Box>
       <Typography variant="h6">Rx.</Typography>
@@ -634,10 +634,9 @@ console.log(getPrescriptionByIdData)
       </Box>
       
       <Box sx={{marginTop:"0px"}}>
-            {isDoctor && <AddInstructionForm id={appointmentByIdData?.prescription?._id} />}
             <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                <Box>
-                  <Box sx={{display:"flex",alignItems:"center"}}>
+                  <Box sx={{display:"flex",alignItems:"center",mb:4}}>
                     <Typography><strong style={{textDecoration:"underline"}}>Follow-up within:</strong> {getPrescriptionByIdData?.followUp || "N/A"}</Typography>
                     {
                       isDoctor && (
@@ -645,6 +644,7 @@ console.log(getPrescriptionByIdData)
                       )
                     }
                   </Box>
+                    {isDoctor && <AddInstructionForm id={appointmentByIdData?.prescription?._id} />}
                   <Box>
                     <Typography sx={{textDecoration:"underline"}} variant="h6">Advice:</Typography>
                     <Typography>{getPrescriptionByIdData?.advice || "Not Provided."}</Typography>

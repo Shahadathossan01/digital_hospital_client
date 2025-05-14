@@ -104,7 +104,7 @@ const SideBarItem = () => {
             { text: "Appointments", path: "/doctorAppointments" },
             { text: "My Schedule", path: "/mySchedule" },
             { text: "Profile", path: "/profile" },
-            { text: "Change Password", path: "/changePassword" },
+            // { text: "Change Password", path: "/changePassword" },
             { text: "Create New Account", path: "/createNewAccount" },
           ].map(({ text, path }) => (
             <ListItem

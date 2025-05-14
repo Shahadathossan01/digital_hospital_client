@@ -14,11 +14,16 @@ import {
   Box,
   TextField,
   MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  OutlinedInput,
 } from "@mui/material";
 import OpenModal from "../../modal/OpenModal";
 import { useForm } from "react-hook-form";
 import { isValidEmailOrPhone } from "../../utils";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from '@mui/material/styles';
 const EditReferedCode = ({singlePromoCode}) => {
   const {updatePromoCode}=useStoreActions(actions=>actions.promoCode)
   const id=singlePromoCode?._id
@@ -86,12 +91,97 @@ const ReferedCode=({singlePromoCode})=>{
           </Box>
     )
 }
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+  const names = [
+  'Available Medicine',
+  'Doctor Appointments',
+  'BP Test',
+  'Blood Sugar Test',
+  'Health Checkup',
+  '24/7 Service',
+  'Wheelchair Access',
+  'First Aid Supplies',
+  'Baby & Mother Care Products',
+  'Skin & Beauty Products',
+  'Return/Exchange Policy',
+  'Video Consultation',
+  'Oxygen Cylinder Supply',
+  'Free Health Advice',
+  'Promo Codes',
+  'Eye Care Products',
+  'Pet Medicine',
+];
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight: personName.includes(name)
+      ? theme.typography.fontWeightMedium
+      : theme.typography.fontWeightRegular,
+  };
+}
+
+const MultipleSelectChip=({ facilities, setFacilities })=>{
+  const theme = useTheme();
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setFacilities(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+
+  return (
+    <div>
+      <FormControl sx={{ m: 1, width: 300 }}>
+        <InputLabel id="demo-multiple-chip-label">Facilities</InputLabel>
+        <Select
+          labelId="demo-multiple-chip-label"
+          id="demo-multiple-chip"
+          multiple
+          value={facilities}
+          onChange={handleChange}
+          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} />
+              ))}
+            </Box>
+          )}
+          MenuProps={MenuProps}
+        >
+          {names.map((name) => (
+            <MenuItem
+              key={name}
+              value={name}
+              style={getStyles(name, facilities, theme)}
+            >
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
+  );
+}
 const EditProfile=({userId})=>{
 
   const categories = ["Model", "No Model"];
   const paymentServices = ["bKash", "Nagad", "Rocket"];
   const { updateHealthHub } = useStoreActions(action => action.healthHub);
-
+ const [facilities, setFacilities] = useState([]);
 
 const {
   register,
@@ -101,13 +191,14 @@ const {
 } = useForm();
 
 const onSubmit = (data) => {
+  
   const formData = new FormData();
   formData.append('profile', data.profile[0]);
   formData.append('signature', data.pharmacy[0]);
   formData.append("nid",data.nid)
   formData.append("pharmacyName",data.pharmacyName)
   formData.append("phanmacyReg",data.phanmacyReg)
-  formData.append("facilities",data.facilities)
+  formData.append("facilities",facilities)
   formData.append("description",data.description)
   formData.append("country",data.country)
   formData.append("division",data.division)
@@ -118,7 +209,8 @@ const onSubmit = (data) => {
   formData.append("service",data.service)
   formData.append("number",data.number)
   updateHealthHub({id:userId,formData})
-  // reset()    
+  reset()
+  setFacilities([])    
 };
 
 return (
@@ -151,24 +243,14 @@ return (
           <Grid item xs={12}>
               <Box>
               <Typography variant="body2" color="primary">Porfile Picture</Typography>
-                      <input
-                        type="file"
-                        {...register('profile')}
-                        accept="image/*"
-                      />
-                      {errors.image && (
-                        <Typography variant="body2" color="error">
-                          {errors.image.message}
-                        </Typography>
-                      )}
+                  <input
+                    type="file"
+                    {...register('profile')}
+                    accept="image/*"
+                  />
               </Box>
-                    </Grid>
-                    {/* Pharmacy Info */}
-          <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
-              Pharmacy Information
-            </Typography>
           </Grid>
+
           <Grid item xs={12}>
               <Typography variant="body2" color="primary">Pharmacy Picture</Typography>
                       <input
@@ -176,64 +258,48 @@ return (
                         {...register('pharmacy')}
                         accept="image/*"
                       />
-                      {errors.image && (
-                        <Typography variant="body2" color="error">
-                          {errors.image.message}
-                        </Typography>
-                      )}
-                    </Grid>
+            </Grid>
 
-          {[
-            { name: "nid", label: "NID" },
-            { name: "pharmacyName", label: "Pharmacy Name" },
-            { name: "phanmacyReg", label: "Pharmacy Reg. No" },
-            { name: "facilities", label: "Facilities (comma separated)" },
-            { name: "description", label: "Description", multiline: true },
-          ].map(({ name, label, multiline }) => (
-            <Grid item xs={12} sm={6} key={name}>
+            <Grid item xs={12}>
               <TextField
-                label={label}
+                label='Pharmacy Name'
                 fullWidth
-                multiline={multiline}
-                rows={multiline ? 3 : 1}
-                {...register(name)}
-                error={!!errors[name]}
-                helperText={errors[name]?.message}
+                {...register('pharmacyName')}
                 variant="outlined"
                 sx={{ bgcolor: "#fafafa" }}
               />
             </Grid>
-          ))}
 
-          {/* Address Info */}
-          <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
-              Address Details
-            </Typography>
-          </Grid>
-
-          {[
-            { name: "country", label: "Country" },
-            { name: "division", label: "Division" },
-            { name: "district", label: "District" },
-            { name: "upazila", label: "Upazila" },
-            { name: "phone", label: "Phone" },
-          ].map(({ name, label }) => (
-            <Grid item xs={12} sm={6} key={name}>
+            <Grid item xs={12} sm={6}>
               <TextField
-                label={label}
+                label='phanmacyReg'
                 fullWidth
-                {...register(name)}
-                error={!!errors[name]}
-                helperText={errors[name]?.message}
+                {...register('phanmacyReg')}
                 variant="outlined"
                 sx={{ bgcolor: "#fafafa" }}
               />
             </Grid>
-          ))}
 
-          {/* Category & Status */}
-          <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label='nid'
+                fullWidth
+                {...register('nid')}
+                variant="outlined"
+                sx={{ bgcolor: "#fafafa" }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label='phone'
+                fullWidth
+                {...register('phone')}
+                variant="outlined"
+                sx={{ bgcolor: "#fafafa" }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
             <TextField
               select
               label="Category"
@@ -249,15 +315,6 @@ return (
                 </MenuItem>
               ))}
             </TextField>
-          </Grid>
-
-          
-
-          {/* Payment Info */}
-          <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
-              Payment Information
-            </Typography>
           </Grid>
 
           <Grid item xs={12} sm={6}>
@@ -287,6 +344,51 @@ return (
               helperText={errors.number?.message}
             />
           </Grid>
+       
+              <Grid item xs={12} sm={6}>
+                  <MultipleSelectChip facilities={facilities} setFacilities={setFacilities}></MultipleSelectChip>
+              </Grid>
+
+              <Grid item xs={12}>
+              <TextField
+                label="description"
+                fullWidth
+                multiline
+                rows={3}
+                {...register('description')}
+
+                variant="outlined"
+                sx={{ bgcolor: "#fafafa" }}
+              />
+            </Grid>
+
+
+              {/* Address Info */}
+          <Grid item xs={12}>
+            <Typography variant="h6" gutterBottom>
+              Address Details
+            </Typography>
+          </Grid>
+
+          {[
+            { name: "division", label: "Division" },
+            { name: "district", label: "District" },
+            { name: "upazila", label: "Upazila" },
+          ].map(({ name, label }) => (
+            <Grid item xs={12} sm={6} key={name}>
+              <TextField
+                label={label}
+                fullWidth
+                {...register(name)}
+                variant="outlined"
+                sx={{ bgcolor: "#fafafa" }}
+              />
+            </Grid>
+          ))}
+
+
+
+          
        
   
           <Grid item xs={12}>
@@ -446,9 +548,6 @@ const ProfileView = ({ profileData, onEdit,userId}) => {
         <Grid item xs={12} sm={6}>
           <List>
             <ListItem>
-              <ListItemText primary="Country" secondary={country} />
-            </ListItem>
-            <ListItem>
               <ListItemText primary="Division" secondary={division} />
             </ListItem>
             <ListItem>
@@ -462,7 +561,7 @@ const ProfileView = ({ profileData, onEdit,userId}) => {
         <Grid item xs={12} sm={6}>
           <List>
             <ListItem>
-              <ListItemText primary="Phone" secondary={phone} />
+              <ListItemText primary="Phone" secondary={`0${phone}`} />
             </ListItem>
           </List>
         </Grid>

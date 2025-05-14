@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardMedia, Chip, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Chip, CircularProgress, List, ListItem, ListItemText, Typography } from '@mui/material';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import{ useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
@@ -6,14 +6,13 @@ import { filterHealthHubByDivison, healthHubDivisionName } from '../../utils';
 
 const InfoCard = ({item}) => {
     const {category,country,description,district,division,facilities,pharmacyImage,pharmacyName,status,upazila,phone}=item
-    console.log(facilities)
     const facilitiesArray = facilities.split(',').map(item => item.trim());
     return (
-      <Card sx={{ display: 'flex', maxWidth: 1000, mx: 'auto', my: 2 ,mb:10}}>
+      <Card sx={{ display: 'flex',flexWrap:'wrap', maxWidth: 1000, mx: 'auto', my: 2 ,mb:10}}>
         {/* Image */}
         <CardMedia
           component="img"
-          sx={{ width: 300 }}
+          sx={{ width: {xs:'100%',sm:300} }}
           image={pharmacyImage}
           alt={name}
         />
@@ -78,16 +77,45 @@ const ListsOfHealthHub=({item})=>{
 }
 const HealthHub = () => {
     const {getAllHealthHub}=useStoreActions(actions=>actions.healthHub)
-    const {allHealthHub}=useStoreState(state=>state.healthHub)
+    const {allHealthHub,isLoading}=useStoreState(state=>state.healthHub)
     const [filterValue,setFilterValue]=useState('all')
     useEffect(()=>{
         getAllHealthHub()
     },[getAllHealthHub])
-    if(allHealthHub.length===0){
+
+    if (isLoading) {
         return (
-            <Typography>There is no Health Hub here...</Typography>
-        )
-    }
+          <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+          }}
+          >
+            <CircularProgress />
+          </Box>
+        );
+      }
+      
+      if (allHealthHub.length === 0) {
+        return (
+          <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "50vh",
+            textAlign: "center"
+          }}
+          >
+            <Typography variant="h4" color="textSecondary">
+              There is no health hub are available
+            </Typography>
+          </Box>
+        );
+      }
+
     const categoryDivision=healthHubDivisionName(allHealthHub)
     const filterdHealthHub=filterHealthHubByDivison(allHealthHub,filterValue)
     return (

@@ -73,7 +73,7 @@ function App() {
           <Route path="/findDoctors" element={<FindDoctors></FindDoctors>}/>
           <Route path="/becomeADoctor" element={<BecomeADoctor></BecomeADoctor>}/>
           <Route path="/instant_video" element={<PrivateRoute><GetInstantVideo /></PrivateRoute>}/>
-          <Route path="/health_hub" element={<PrivateRoute><HealthHub/></PrivateRoute>}/>
+          <Route path="/health_hub" element={<HealthHub/>}/>
           <Route path="/medicine_hub" element={<PrivateRoute><MedicineHub/></PrivateRoute>}/>
           <Route path="/lab_testing" element={<PrivateRoute><LabTesting></LabTesting></PrivateRoute>}/>
           <Route path="/about_us" element={<AboutUs></AboutUs>}/>                   
@@ -121,7 +121,7 @@ function App() {
               <Route path="mySchedule" element={<MySchedule />}/>
               <Route path="reqAppointments" element={<RequestedAppointment />}/>
               <Route path="profile" element={<DoctorProfile />}/>
-              <Route path="changePassword" element={<ChangePassword />}/>
+              {/* <Route path="changePassword" element={<ChangePassword />}/> */}
               <Route path="createNewAccount" element={<CreateNewAccount />}/>
               <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
             </Route>
@@ -138,7 +138,7 @@ function App() {
               <Route path="allUsers" element={<PrivateRoute><AllUsers/></PrivateRoute>}/>
               <Route path="promoCode" element={<PrivateRoute><PromoCode/></PrivateRoute>}/>
               <Route path="addDoctor" element={<PrivateRoute><AddDoctor/></PrivateRoute>}/>
-              <Route path="changePassword" element={<PrivateRoute><ChangePassword /></PrivateRoute>}/>
+              {/* <Route path="changePassword" element={<PrivateRoute><ChangePassword /></PrivateRoute>}/> */}
               <Route path="addAdminOrPatient" element={<PrivateRoute><AddAdminOrPatient/></PrivateRoute>}/>
               <Route path="adminInvoice" element={<PrivateRoute><AdminInvoice/></PrivateRoute>}/>
               <Route path="refAllAppointments" element={<PrivateRoute><RefAllAppointments/></PrivateRoute>}/>

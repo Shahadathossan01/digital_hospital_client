@@ -109,7 +109,7 @@ const DoctorProfile = () => {
     const ProfessionalInfo=({doctor})=>{
         if(!doctor) return null
         const {bmdcNumber,bmdcExpiryDate,degrees,designation,fee,organization}=doctor
-        console.log(doctor)
+        
         return(
             <>
                 <Typography color="primary" sx={{textAlign:"center"}}>Professional Info:</Typography>
@@ -128,7 +128,13 @@ const DoctorProfile = () => {
                                 BMDC EXpiry Date
                             </Typography>
                             <Typography variant="body3">
-                               {format(bmdcExpiryDate,"M/d/yyyy")}
+                               {
+                                bmdcExpiryDate ? (
+                                    format(bmdcExpiryDate,"M/d/yyyy")
+                                ):(
+                                    'N/A'
+                                )
+                               }
                             </Typography>
                         </Box><Divider/>
                         <Box sx={{display:"flex",justifyContent:"space-between"}}>
@@ -191,12 +197,18 @@ const DoctorProfile = () => {
                                 </Grid>
                             </Grid>
 
-                            <Box>
-                                <Typography variant="h6">Biography</Typography><Divider/>
-                                <Typography variant="body">
-                                    {doctor?.biography}
-                                </Typography>
-                            </Box>
+                            {
+                                doctor?.biography && (
+                                    <Box>
+                                        <Typography variant="h6">Biography</Typography><Divider/>
+                                        <Typography variant="body">
+                                            {doctor?.biography}
+                                        </Typography>
+                                    </Box>
+
+                                )
+                            }
+
                         </Box>
                         <Box sx={{textAlign:"center",marginTop:"20px"}}>
                             <Button

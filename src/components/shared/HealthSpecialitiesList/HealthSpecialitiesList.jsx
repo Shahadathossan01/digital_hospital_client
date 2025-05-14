@@ -1,7 +1,7 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import SpecialitiesCard from "../ServiceList/SpecialitiesCard/SpecialitiesCard";
 import { Link } from "react-router-dom";
-
+import Grid from '@mui/material/Grid2';
 
 
 const HealthSpecialitiesList = ({home,filterDoctor}) => {
@@ -10,7 +10,7 @@ const HealthSpecialitiesList = ({home,filterDoctor}) => {
       <Typography>There is no doctor available now.</Typography>
     </Box>
   }
-    const cardItem=home?filterDoctor?.slice(0,8):filterDoctor
+    const cardItem=home?filterDoctor?.slice(0,24):filterDoctor
     return (
         <Box sx={{ flexGrow: 1 }}>
       <Grid
@@ -26,7 +26,6 @@ const HealthSpecialitiesList = ({home,filterDoctor}) => {
       >
         {cardItem.map((item) => (
           <Grid
-            item
             xs={12}
             sm={6}
             md={4}

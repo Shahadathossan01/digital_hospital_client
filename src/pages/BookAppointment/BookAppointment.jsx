@@ -1,4 +1,4 @@
-import { format, formatISO, isBefore, isEqual, parse, set } from 'date-fns';
+import { format, formatISO, isBefore, isEqual, parse, set, startOfDay } from 'date-fns';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -31,18 +31,19 @@ const BookAppointment = () => {
   const { getPatient } = useStoreActions((action) => action.patient);
   const {resetPromoCode}=useStoreActions((action=>action.promoCode))
     const { user } = useStoreState((state) => state.user);
-
+  const userID=user?._id
     const navigate=useNavigate()
-
+  const token=localStorage.getItem('token') || null;
 useEffect(() => {
     if (user?._id) {
-      getPatient(user?._id);
+      getPatient({id:userID,token});
     }
-  }, [getPatient,user]);
-
+  }, [getPatient,user,token,userID]);
+  
   const [dateValue, setDateValue] = useState(null);
   const [scheduleID,setScheduleID]=useState(null)
   const [slotID,setSlotID]=useState(null)
+
 
   const { getSingleDoctor} = useStoreActions((action) => action.doctor);
   const { singleDoctor } = useStoreState((state) => state.doctor);
@@ -86,7 +87,7 @@ const updatedDate = set(localDate, {
 });
 
 const isoLocalDate = format(updatedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");  
- 
+
 const date1 = new Date(scheduleDate);
 const date2 = new Date(isoLocalDate);
 
@@ -111,6 +112,7 @@ const areMonthsEqual=isEqual(month1,month2)
       weight:data.weight
     };
     resetPromoCode()
+    // console.log(payload)
     navigate("/paymentPage",{state:payload})
     
   }
@@ -212,9 +214,12 @@ const areMonthsEqual=isEqual(month1,month2)
   ) : (
     <Grid container spacing={2} sx={{ mb: 4 }}>
         {singleDoctor?.schedule?.map((item, index) => (
+          
           <Grid item size={{xs:6, sm:4, md:2}} key={index}>
             <Button
-              disabled={item?.status=="busy"}
+              disabled={
+                item?.status === "busy"
+              }
               variant="contained"
               color={item.date === dateValue ? 'primary' : 'inherit'}
               onClick={() => handleDate(item)}
@@ -253,26 +258,26 @@ const areMonthsEqual=isEqual(month1,month2)
       </Typography>
     </Box>
   ) : (
-    <Stack
-      direction="row"
-      spacing={2}
-      justifyContent="center"
-      flexWrap="wrap"
-      sx={{ mb: 4 }}
+   <Stack
+  direction="row"
+  justifyContent="center"
+  flexWrap="wrap"
+  sx={{ mb: 4, mt: 4, gap: 2 }} // ✅ use gap instead of spacing
+>
+  {singleSchedule[0]?.slots?.map((item, index) => (
+    <Button
+      disabled={item.status === 'unavailable' || item.status === 'booked'}
+      key={index}
+      variant="contained"
+      color={item.time === timeValue ? 'primary' : 'inherit'}
+      onClick={() => handleTime(item)}
+      sx={{ minWidth: 120 }}
     >
-      {singleSchedule[0]?.slots?.map((item, index) => (
-        <Button
-          disabled={item.status === 'unavailable' || item.status === 'booked'}
-          key={index}
-          variant="contained"
-          color={item.time === timeValue ? 'primary' : 'inherit'}
-          onClick={() => handleTime(item)}
-          sx={{ minWidth: 120 }}
-        >
-          {item.time}
-        </Button>
-      ))}
-    </Stack>
+      {item.time}
+    </Button>
+  ))}
+</Stack>
+
   )
 }
 
@@ -355,9 +360,16 @@ const areMonthsEqual=isEqual(month1,month2)
         color="success"
         size="large"
         fullWidth
+        disabled={(!scheduleID || !slotID)}
       >
         Book Appointment
       </Button>
+      {
+        (!scheduleID || !slotID) && (
+          <Typography textAlign='center' color='warning'>Please choose schedule and slot!</Typography>
+        )
+      }
+
           </form>
         </Box>
         </Box>

@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardMedia, Container, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Grid, Typography } from "@mui/material";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -41,13 +41,26 @@ const BlogCard = ({ item }) => {
     );
   };
   
-const BlogList = () => {
-    const {getAllBlogs}=useStoreActions((actions)=>actions.blog)
-    const {allBlogsData}=useStoreState(state=>state.blog)
+const BlogList = ({allBlogsData}) => {
 
-    useEffect(()=>{
-      getAllBlogs()
-    },[getAllBlogs])
+    if (allBlogsData.length === 0) {
+    return (
+      <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "50vh",
+        textAlign: "center"
+      }}
+      >
+        <Typography variant="h4" color="textSecondary">
+          There is no blogs are available
+        </Typography>
+      </Box>
+    );
+  }
+   
       return (
         <Box sx={{ flexGrow: 1,marginTop:"10px"}}>
       <Grid
@@ -83,9 +96,31 @@ const BlogList = () => {
       );
 };
 const Blogs = () => {
+   const {getAllBlogs}=useStoreActions((actions)=>actions.blog)
+    const {allBlogsData,isLoading}=useStoreState(state=>state.blog)
+
+    useEffect(()=>{
+      getAllBlogs()
+    },[getAllBlogs])
+    console.log(isLoading)
+    console.log(allBlogsData)
+  if (isLoading) {
+      return (
+        <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+        >
+          <CircularProgress />
+        </Box>
+      );
+    }
     return (
         <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"}}}>
-          <BlogList></BlogList>
+          <BlogList allBlogsData={allBlogsData}></BlogList>
         </Box>
     );
 };

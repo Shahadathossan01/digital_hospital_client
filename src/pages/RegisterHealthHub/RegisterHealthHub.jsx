@@ -13,7 +13,7 @@ import { isValidEmailOrPhone } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';;
+import { useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -115,12 +115,15 @@ const RegisterHealthHub = () => {
   const categories = ["Model", "No Model"];
   const paymentServices = ["bKash", "Nagad", "Rocket","Bank"];
   const {register,reset,handleSubmit,formState: { errors }} = useForm({mode:'all'});
+
     const errorMessage = registerError?.message;
     const errorField = registerError?.field;
-    const onSubmit = (data) => {
-      
+
+
+  const onSubmit = (data) => {
+    console.log(facilities,'register hub')
     addRegisterError(null)
-    console.log('first',registerError)
+
     const formData = new FormData();
     formData.append('profile', data?.profile[0]);
     formData.append('signature', data?.pharmacy[0]);

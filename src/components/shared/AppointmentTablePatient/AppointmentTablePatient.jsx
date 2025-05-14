@@ -33,7 +33,7 @@ const TableRowAction=({item})=>{
       };
         if(!item) return null
         const today=isToday(parseISO(item?.date),new Date)
-          const upcomming=isAfter(parseISO(item?.date),new Date)
+          const upcomming=!today && isAfter(parseISO(item?.date),new Date)
     return(
         <Box sx={{display:"flex",justifyContent:"space-between"}}>
             <Button
@@ -138,10 +138,10 @@ const AppointmentTableBody=({filterValue})=>{
       const userID = user?._id;
       const {getPatient}=useStoreActions(actions=>actions.patient)
       const {patient,updatedData}=useStoreState(state=>state.patient)
-
+      const token=localStorage.getItem('token') || null
     useEffect(()=>{
-      getPatient(userID)
-    },[getPatient,userID])
+      getPatient({id:userID,token})
+    },[getPatient,userID,token])
 
   
      if (!patient?.appointments) {

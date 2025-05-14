@@ -118,7 +118,7 @@ const AppointmentDetails = ({item, open, handleClose, isDoctor }) => {
       <Box sx={{ p: { xs: 2, sm: 3 } ,marginTop:"50px"}}>
             {
               appointmentByIdData.prescription?(
-                <Prescription appointmentByIdData={appointmentByIdData} isDoctor={user.role=='patient'?false:true} item={appointmentByIdData} />
+                <Prescription appointmentByIdData={appointmentByIdData} isDoctor={(user.role=='patient' || user.role=='healthHub')?false:true} item={appointmentByIdData} />
               ):(
                 <Box>
               <Typography variant="h6" color="textSecondary" mb={2}>

@@ -8,9 +8,9 @@ import { useTheme } from 'styled-components';
 
 const SuccessFreeAppointment = () => {
     const { freeAppointmentId } = useParams();
-    console.log(freeAppointmentId)
+
      const { getAppointments } = useStoreActions((actions) => actions.appointment);
-      const { appointments } = useStoreState((state) => state.appointment);
+     const { appointments } = useStoreState((state) => state.appointment);
     
       useEffect(() => {
         getAppointments();
@@ -26,6 +26,7 @@ const SuccessFreeAppointment = () => {
 
         return acc;
      },{})
+     
      if(!filteredAppointment) return null
       return (
         <>

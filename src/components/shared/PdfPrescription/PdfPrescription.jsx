@@ -571,7 +571,7 @@ const FollowUPAction=({id})=>{
     </Box>
   )
 }
-const Section2=({isDoctor,appointmentByIdData})=>{
+const Section2=({isDoctor,appointmentByIdData,item})=>{
   const {getPrescriptionById}=useStoreActions(actions=>actions.prescription)
   const {getPrescriptionByIdData,updatedData}=useStoreState(state=>state.prescription)
   const id=appointmentByIdData?.prescription?._id
@@ -600,19 +600,28 @@ const Section2=({isDoctor,appointmentByIdData})=>{
           </Typography>
             )}
       </Box>
-      <Box sx={{display:"flex",alignItems:"center",marginTop:"100px"}}>
-        <Typography><strong style={{textDecoration:"underline"}}>Follow-up within:</strong> {getPrescriptionByIdData?.followUp}</Typography>
-        {
-          isDoctor && (
-            <FollowUPAction id={id}></FollowUPAction>
-          )
-        }
-      </Box>
-      <Box sx={{marginTop:"50px"}}>
-            {isDoctor && <AddInstructionForm id={appointmentByIdData?.prescription?._id} />}
-            <Typography sx={{textDecoration:"underline"}} variant="h6">Advice:</Typography>
-            <Typography>{getPrescriptionByIdData?.advice || "Not Provided."}</Typography>
-      </Box>
+       <Box sx={{marginTop:"0px"}}>
+                 <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                    <Box>
+                       <Box sx={{display:"flex",alignItems:"center",mb:4}}>
+                         <Typography><strong style={{textDecoration:"underline"}}>Follow-up within:</strong> {getPrescriptionByIdData?.followUp || "N/A"}</Typography>
+                         {
+                           isDoctor && (
+                             <FollowUPAction id={id}></FollowUPAction>
+                           )
+                         }
+                       </Box>
+                         {isDoctor && <AddInstructionForm id={appointmentByIdData?.prescription?._id} />}
+                       <Box>
+                         <Typography sx={{textDecoration:"underline"}} variant="h6">Advice:</Typography>
+                         <Typography>{getPrescriptionByIdData?.advice || "Not Provided."}</Typography>
+                       </Box>
+                    </Box>
+                    <Box sx={{mt:20}}>
+                       <Signature item={item} />
+                    </Box>
+                 </Box>
+           </Box>
     </Box>
   )
 }
@@ -625,7 +634,7 @@ const MainSection=({item,isDoctor,appointmentByIdData})=>{
         <Section1 item={item} isDoctor={isDoctor}></Section1>
       </Grid>
       <Grid size={{xs:12,sm:12,md:7}}>
-        <Section2 isDoctor={isDoctor} appointmentByIdData={appointmentByIdData}></Section2>
+        <Section2 item={item} isDoctor={isDoctor} appointmentByIdData={appointmentByIdData}></Section2>
       </Grid>
     </Grid>
   </Box><Divider></Divider>
@@ -664,9 +673,6 @@ const PresFooter = ({ item }) => {
               <strong>Ref. No-</strong> {item?.prescription?.ref}
             </Typography>
           </Box>
-        </Grid>
-        <Grid item xs={12} md={4} display="flex" justifyContent="flex-end">
-        <Signature item={item} />
         </Grid>
       </Grid>
     </Box>

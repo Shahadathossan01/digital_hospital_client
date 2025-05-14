@@ -20,7 +20,7 @@ const Header = () => {
       </Box>
     );
   };
-  const BlogCard = ({ item }) => {
+const BlogCard = ({ item }) => {
     if(!item) return null
     const id=item?._id
     return (
@@ -59,14 +59,8 @@ const Header = () => {
     );
   };
   
-const BlogList = () => {
-  const {getAllBlogs}=useStoreActions((actions)=>actions.blog)
-  const {allBlogsData}=useStoreState(state=>state.blog)
-
-
-  useEffect(()=>{
-    getAllBlogs()
-  },[getAllBlogs])
+const BlogList = (allBlogsData) => {
+  
       return (
         <Box sx={{ flexGrow: 1,marginTop:"10px"}}>
       <Grid
@@ -116,10 +110,19 @@ const BlogList = () => {
       );
 };
 const HomeBlogs = () => {
-    return (
+  const {getAllBlogs}=useStoreActions((actions)=>actions.blog)
+  const {allBlogsData}=useStoreState(state=>state.blog)
+
+
+  useEffect(()=>{
+    getAllBlogs()
+  },[getAllBlogs])
+
+  if(allBlogsData.length===0) return null
+     return (
         <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"}}}>
             <Header></Header>
-            <BlogList></BlogList>
+            <BlogList allBlogsData={allBlogsData}></BlogList>
         </Box>
     );
 };
