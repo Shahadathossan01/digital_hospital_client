@@ -9,10 +9,17 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+const activeStyle = {
+  backgroundColor:'white',
+  color: 'blue',
+};
+
+
 
 const EmergencyRoute=()=>{
     const [anchorEl, setAnchorEl] = useState(null);
@@ -95,7 +102,9 @@ const RegistrationRoute=()=>{
   }
   return(
       <>
-        <Link  style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }} onClick={handleClick}> Registration Now</Button></Link>           
+
+
+        <Link style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }} onClick={handleClick}> Registration Now</Button></Link>           
               <Menu
         anchorEl={anchorEl}
         open={open}
@@ -120,7 +129,6 @@ const RegistrationRoute=()=>{
       </>
   )
 }
-
 const RegistrationRouteMobile=()=>{
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -279,37 +287,72 @@ const Navbar=()=>{
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              <Link to="/" style={{textDecoration:'none',color:'black'}}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
+
+              
+              <NavLink to="/" style={{textDecoration:'none',color:'black'}}>
+                {
+                  ({isActive})=>(
+                    <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography
+                    sx={{
+                      textAlign:'center',
+                      ...(isActive && activeStyle)
+                    }}
+                  >
                   Home
                   </Typography>
                 </MenuItem>
-              </Link>
-
-              <Link to="/findDoctors" style={{textDecoration:'none',color:'black'}}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
+                  )
+                }
+              </NavLink>
+              <NavLink to="/findDoctors" style={{textDecoration:'none',color:'black'}}>
+                {
+                  ({isActive})=>(
+                    <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography
+                    sx={{
+                      textAlign:'center',
+                      ...(isActive && activeStyle)
+                    }}
+                  >
                   Find Doctor
                   </Typography>
                 </MenuItem>
-              </Link>
-
-              <Link to="/about_us" style={{textDecoration:'none',color:'black'}}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    About Us
+                  )
+                }
+              </NavLink>
+              <NavLink to="/about_us" style={{textDecoration:'none',color:'black'}}>
+                {
+                  ({isActive})=>(
+                    <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography
+                    sx={{
+                      textAlign:'center',
+                      ...(isActive && activeStyle)
+                    }}
+                  >
+                  About Us
                   </Typography>
                 </MenuItem>
-              </Link>
-
-              <Link to="/blogs" style={{textDecoration:'none',color:'black'}}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    Blogs
+                  )
+                }
+              </NavLink>
+              <NavLink to="/blogs" style={{textDecoration:'none',color:'black'}}>
+                {
+                  ({isActive})=>(
+                    <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography
+                    sx={{
+                      textAlign:'center',
+                      ...(isActive && activeStyle)
+                    }}
+                  >
+                  Blogs
                   </Typography>
                 </MenuItem>
-              </Link>
+                  )
+                }
+              </NavLink>
 
               <RegistrationRouteMobile></RegistrationRouteMobile>
 
@@ -375,16 +418,7 @@ const Navbar=()=>{
                 </MenuItem>
               </Link>
             
-             
-
-              
-              <Link to="/register" style={{textDecoration:'none',color:'black'}}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    Register
-                  </Typography>
-                </MenuItem>
-              </Link>
+            
             
               {
                 user?
@@ -396,13 +430,23 @@ const Navbar=()=>{
                 </MenuItem>
                 </Link>
                 :
-              <Link to="/login" style={{textDecoration:'none',color:'black'}}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
+
+                <NavLink to="/login" style={{textDecoration:'none',color:'black'}}>
+                {
+                  ({isActive})=>(
+                    <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography
+                    sx={{
+                      textAlign:'center',
+                      ...(isActive && activeStyle)
+                    }}
+                  >
                   Login
                   </Typography>
                 </MenuItem>
-                </Link>
+                  )
+                }
+              </NavLink>
               }
                
 
@@ -417,23 +461,100 @@ const Navbar=()=>{
           
           {/**desktop */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' },alignItems:"center"}}>
-
-              <Link to="/" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button></Link>
-
-              <Link to="/findDoctors" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Find Doctor</Button></Link>
               
-              <Link to="/about_us" style={{textDecoration:'none'}}><Button  size='small' sx={{ my: 2, color: 'white', display: 'block' }}>About Us</Button></Link>
+              <NavLink to="/" style={{textDecoration:'none'}} >
+                {({ isActive }) => (
+                  <Button
+                    size="small"
+                    sx={{
+                      my: 2, color: 'white', display: 'block',
+                      ...(isActive && activeStyle),
+                    }}
+                  >
+                    Home
+                  </Button>
+                )}
+              </NavLink>
 
-              <Link to="/blogs" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Blogs</Button></Link>
+              <NavLink to="/findDoctors" style={{textDecoration:'none'}} >
+                {({ isActive }) => (
+                  <Button
+                    size="small"
+                    sx={{
+                      my: 2, color: 'white', display: 'block',
+                      ...(isActive && activeStyle),
+                    }}
+                  >
+                    Find Doctor
+                  </Button>
+                )}
+              </NavLink>
+              <NavLink to="/about_us" style={{textDecoration:'none'}} >
+                {({ isActive }) => (
+                  <Button
+                    size="small"
+                    sx={{
+                      my: 2, color: 'white', display: 'block',
+                      ...(isActive && activeStyle),
+                    }}
+                  >
+                    About Us
+                  </Button>
+                )}
+              </NavLink>
+              <NavLink to="/blogs" style={{textDecoration:'none'}} >
+                {({ isActive }) => (
+                  <Button
+                    size="small"
+                    sx={{
+                      my: 2, color: 'white', display: 'block',
+                      ...(isActive && activeStyle),
+                    }}
+                  >
+                    Blogs
+                  </Button>
+                )}
+              </NavLink>
+
+        
+
 
               {/* registration */}
               <RegistrationRoute></RegistrationRoute>
 
             {
               user?
-              <Link onClick={handleLogout} style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Logout</Button></Link>
+              <NavLink to="/about_us" style={{textDecoration:'none'}} >
+                {({ isActive }) => (
+                  <Button
+                    size="small"
+                    sx={{
+                      my: 2, color: 'white', display: 'block',
+                      ...(isActive && activeStyle),
+                    }}
+                  >
+                    Logout
+                  </Button>
+                )}
+              </NavLink>
+              
+
+              // <Link onClick={handleLogout} style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Logout</Button></Link>
               :
-              <Link to="/login" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
+              <NavLink to="/login" style={{textDecoration:'none'}} >
+                {({ isActive }) => (
+                  <Button
+                    size="small"
+                    sx={{
+                      my: 2, color: 'white', display: 'block',
+                      ...(isActive && activeStyle),
+                    }}
+                  >
+                    Login
+                  </Button>
+                )}
+              </NavLink>
+              // <Link to="/login" style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></Link>
             }
 
             <EmergencyRoute></EmergencyRoute>

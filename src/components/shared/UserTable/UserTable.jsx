@@ -15,10 +15,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import OpenModal from "../../../modal/OpenModal";
 import { InsertEmoticon } from "@mui/icons-material";
+import ForcedResetPassFrom from "../../../pages/ForcedResetPassFrom/ForcedResetPassFrom";
 
 
 const UserTable = ({ users }) => {
-  
+    const [open,setOpen]=useState(false)
     const {deleteUser}=useStoreActions(action=>action.admin)
     const [visibility, setVisibility] = useState({});
     const {user:currentUser}=useStoreState(state=>state.user)
@@ -28,6 +29,13 @@ const UserTable = ({ users }) => {
         [userId]: !prev[userId],
       }));
     };
+
+    const handleClose=()=>{
+      setOpen(false)
+    }
+    const handleClickOpen=()=>{
+      setOpen(true)
+    }
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -91,14 +99,18 @@ const UserTable = ({ users }) => {
                   </Box> */}
                 </TableCell>
               <TableCell>
-                {/* <Button
+                <Button
+                  onClick={()=>{handleClickOpen()}}
                   variant="contained"
                   color="primary"
                   size="small"
                   style={{ marginRight: 8 }}
                 >
-                  change password
-                </Button> */}
+                  Force Password Rest
+                </Button>
+                <OpenModal open={open} handleClose={handleClose}>
+                    <ForcedResetPassFrom id={user?._id} handleClose={handleClose}></ForcedResetPassFrom>
+                </OpenModal>
                 <IconButton
                 onClick={()=>deleteUser(user._id)}
                 aria-label="delete"

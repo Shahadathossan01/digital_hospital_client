@@ -58,6 +58,7 @@ import HealthHubInvoice from "./pages/HealthHubInvoice/HealthHubInvoice";
 import HealthHubProfileLayout from "./layouts/HealthHubProfileLayout";
 import RefferedInvoice from "./pages/RefferedInvoice/RefferedInvoice";
 import RefAllAppointments from "./pages/RefAllAppointments/RefAllAppointments";
+import CompleteForcedRestFrom from "./pages/CompleteForcedRestFrom/CompleteForcedRestFrom";
 
 function App() {
   const {user}=useStoreState(state=>state.user)
@@ -85,6 +86,7 @@ function App() {
           <Route path="/password/forgot" element={<ForgotPassword></ForgotPassword>}/>
           <Route path="/password/reset/:resetToken" element={<ResetPassword></ResetPassword>}/>
           <Route path="/otp-verification/:credential" element={<OtpVerification></OtpVerification>}/>
+          <Route path="/completeForceRestFrom/:credential" element={<PrivateRoute><CompleteForcedRestFrom></CompleteForcedRestFrom></PrivateRoute>}/>
 
           {/**Patient Profile */}
   

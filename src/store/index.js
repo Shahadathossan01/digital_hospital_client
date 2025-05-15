@@ -72,16 +72,23 @@ const userModel={
         try{
             const {data}=await axios.post(`${api_base_url}/api/login`,loginData)
         if(data.success){
-            toast.success(data.message,{position:'top-right'})
             actions.addUser(data.user)
             actions.addIslogIn('true')
             localStorage.setItem("token",data.token)
             localStorage.setItem("user",JSON.stringify(data.user))
+            
+            if (data?.user?.forcePasswordReset) {
+                toast.success('Reset Your Password!')
+                navigate(`/completeForceRestFrom/${data.user.credential}`);
+                return;
+            }
             if(data?.user?.role=="patient" || data?.user?.role=="healthHub"){
+                toast.success(data.message,{position:'top-right'})
                 navigate(from,{replace:true})
                 return
-              }
+            }
             
+               toast.success(data.message,{position:'top-right'})
                navigate("/")
         }
         }catch(error){
@@ -102,6 +109,7 @@ const userModel={
         state.allUsers=payload
     }),
     getAllUsers:thunk(async(actions)=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.get(`${api_base_url}/api/users`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -196,7 +204,7 @@ const doctorModel={
         state.doctor=payload
     }),
     getDoctorById:thunk(async(actions,payload)=>{
-        const token=localStorage.getItem('token') || null
+        // const token=localStorage.getItem('token') || null
         try{
             const {data}=await axios.get(`${api_base_url}/api/doctors/${payload}`,{
             headers:{
@@ -420,6 +428,7 @@ const patientModel={
     }),
     deletePatientAppointment:thunk(async(actions,payload)=>{
         const {patientID,appointmentID,doctorID}=payload
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.patch(`${api_base_url}/api/patientAppointment/${patientID}`,{
             appointmentID,
             doctorID
@@ -433,6 +442,7 @@ const patientModel={
     }),
     updateProfile:thunk(async(actions,payload)=>{
         const id=payload.userID
+        const token=localStorage.getItem('token') || null
         const formData=payload.updatedFormData
         const {data}=await axios.patch(`${api_base_url}/api/patient/${id}`,formData,{
             headers:{
@@ -445,6 +455,7 @@ const patientModel={
         state.patientImageData=payload
     }),
     updatePatientImage:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         const {userID,formData}=payload
         const {data}=await axios.patch(`${api_base_url}/api/patientImage/${userID}`,formData,{
             headers:{'Content-Type':'multipart/form-data',Authorization: `Bearer ${token}`}
@@ -472,6 +483,7 @@ const testRecommendationModel={
     }),
     createTest:thunk(async(actions,payload)=>{
         const {testName}=payload.data
+        const token=localStorage.getItem('token') || null
         const {apppintmentID}=payload
         const {data}=await axios.post(`${api_base_url}/api/testRecommendations`,{
             testName,
@@ -487,6 +499,7 @@ const testRecommendationModel={
         state.deletedData=payload
     }),
     deleteTest:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.delete(`${api_base_url}/api/testRecommendations/${payload}`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -508,6 +521,7 @@ const prescriptionModel={
         state.deletedMedicin=payload
     }),
     medicinDelete:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.delete(`${api_base_url}/api/medicinInstructions/${payload}`,{
              headers:{
                 Authorization: `Bearer ${token}`
@@ -536,6 +550,7 @@ const prescriptionModel={
         state.updatedData=payload
     }),
     updatePrescription:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         const {id}=payload
         const {data:updatedData}=payload
         const {data}=await axios.patch(`${api_base_url}/api/prescriptions/${id}`,{
@@ -571,6 +586,7 @@ const prescriptionModel={
         state.instructionData=payload
     }),
     updateAdditionalInstruction:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         const {prescriptionID}=payload
         const {advice}=payload.data
         const {data}=await axios.patch(`${api_base_url}/api/prescriptions/${prescriptionID}`,{
@@ -586,6 +602,7 @@ const prescriptionModel={
         state.getPrescriptionByIdData=payload
     }),
     getPrescriptionById:thunk(async(actions,{id})=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.get(`${api_base_url}/api/prescriptions/${id}`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -600,6 +617,7 @@ const medicalRecordModel={
         state.data=payload
     }),
     getMedicalRecord:thunk(async(actions)=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.get(`${api_base_url}/api/medicalRecord`,{
              headers:{
                 Authorization: `Bearer ${token}`
@@ -621,8 +639,9 @@ const appointmentModel={
         state.updatedData=payload
     }),
     updateAppointment:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         try{
-            const {appointmentID,reqApplyedID,date,time,token}=payload
+            const {appointmentID,reqApplyedID,date,time}=payload
         const {googleMeetLink}=payload.data
         const {data}=await axios.patch(`${api_base_url}/api/appointments/${appointmentID}`,{
             date,
@@ -641,6 +660,7 @@ const appointmentModel={
         }
     }),
     getAppointments:thunk(async(actions)=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.get(`${api_base_url}/api/appointments`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -652,6 +672,7 @@ const appointmentModel={
         state.appointmentByIdData=payload
     }),
     getAppointmentByid:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.get(`${api_base_url}/api/appointments/${payload}`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -665,8 +686,8 @@ const appointmentModel={
     addedUpdatedStatusData:action((state,payload)=>{
         state.updatedStatusData=payload
     }),
-    updateStatus:thunk(async(actions,{id,token})=>{
-
+    updateStatus:thunk(async(actions,{id})=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.patch(`${api_base_url}/api/appointments/status/${id}`,{},{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -732,6 +753,7 @@ const freeAppointmentModel={
         state.data=payload
     }),
     createFreeAppointment:thunk(async(actions,{payload,navigate})=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.post(`${api_base_url}/api/freeAppointments`,payload,{
              headers:{
                 Authorization:`Bearer ${token}`
@@ -750,6 +772,7 @@ const adminModel={
         state.data=payload
     }),
     addAdmin:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         const {username,credential,password,role}=payload.data
         try{
          const {data}=await axios.post(`${api_base_url}/api/setupAdmin`,{
@@ -785,12 +808,60 @@ const adminModel={
         state.deletedData=payload
      }),
      deleteUser:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.delete(`${api_base_url}/api/users/${payload}`,{
             headers:{
                 Authorization: `Bearer ${token}`
             }
         })
         actions.addDeletedData(data)
+     }),
+     forceResetPassword:thunk(async(actions,{password,navigate,id})=>{
+         const token=localStorage.getItem('token') || null
+
+        try{
+            const {data}=await axios.patch(`${api_base_url}/api/users/${id}/forceResetPassword`,{tempPassword:password},{
+                headers:{
+                Authorization: `Bearer ${token}`
+            }
+            })
+
+            if(data.success){
+                toast.success(data.message)
+                return;
+            }
+            
+        }catch(e){
+            toast.error(e?.response?.data?.message)
+        }
+     }),
+
+     completeForcedReset:thunk(async(actions,{password,credential,navigate,from})=>{
+         const token=localStorage.getItem('token') || null
+         console.log(password,credential,token)
+        try{
+            const {data}=await axios.patch(`${api_base_url}/api/users/completeForcedReset`,{
+                credential,
+                newPassword:password
+            },{
+                headers:{
+                Authorization: `Bearer ${token}`
+            }
+            })
+
+            if(data.success){
+                toast.success('Login Successfull.')
+                if(data?.user?.role=="patient" || data?.user?.role=="healthHub"){
+                    navigate(from,{replace:true})
+                    return
+                }
+                
+                toast.success('Login Successfull.')
+               navigate("/")
+            }
+        }catch(e){
+            toast.error(e?.response?.data?.message)
+        }
      })
 }
 const promoCodeModel={
@@ -938,6 +1009,7 @@ const blogModel={
         state.createdBlog=payload
     }),
     createBlogs:thunk(async(actions,{formData})=>{
+        const token=localStorage.getItem('token') || null
         try{
             const {data}=await axios.post(`${api_base_url}/api/blogs`,formData,{
                 headers: { 'Content-Type': 'multipart/form-data',Authorization: `Bearer ${token}` }
@@ -984,6 +1056,7 @@ const blogModel={
         state.updatedData=payload
     }),
     updateBlogs:thunk(async(actions,{id,formData})=>{
+        const token=localStorage.getItem('token') || null
         try{
             const {data}=await axios.patch(`${api_base_url}/api/blogs/${id}`,formData,{
                 headers: { 'Content-Type': 'multipart/form-data',Authorization: `Bearer ${token}` }
@@ -998,6 +1071,7 @@ const blogModel={
         state.deletedData=payload
     }),
     deleteBlogs:thunk(async(actions,{id})=>{
+        const token=localStorage.getItem('token') || null
         try{
             const {data}=await axios.delete(`${api_base_url}/api/blogs/${id}`,{
                 headers:{
@@ -1063,6 +1137,7 @@ const healthHubModel={
         state.allHealthHub=payload
     }),
     getAllHealthHub:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         try{
             const {data}=await axios.get(`${api_base_url}/api/healthHub`,{
                 headers:{
