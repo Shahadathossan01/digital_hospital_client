@@ -18,9 +18,10 @@ import { InsertEmoticon } from "@mui/icons-material";
 
 
 const UserTable = ({ users }) => {
+  
     const {deleteUser}=useStoreActions(action=>action.admin)
     const [visibility, setVisibility] = useState({});
-
+    const {user:currentUser}=useStoreState(state=>state.user)
     const toggleVisibility = (userId) => {
       setVisibility((prev) => ({
         ...prev,
@@ -36,7 +37,7 @@ const UserTable = ({ users }) => {
             <TableCell>Username</TableCell>
             <TableCell>Email</TableCell>
             <TableCell>Role</TableCell>
-            <TableCell>Password</TableCell>
+            {/* <TableCell>Password</TableCell> */}
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -61,13 +62,13 @@ const UserTable = ({ users }) => {
             :
         <TableBody>
           {users.map((user, index) => (
-            <TableRow  key={user._id}>
+            <TableRow sx={{ bgcolor: currentUser._id === user._id ? '#b0bec5' : 'transparent' }}  key={user._id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>{user?.username}</TableCell>
               <TableCell>{user?.credential}</TableCell>
               <TableCell>{user?.role}</TableCell>
               <TableCell>
-              <Box
+              {/* <Box
                     sx={{
                       display: "flex",
                       gap: "5px",
@@ -87,22 +88,23 @@ const UserTable = ({ users }) => {
                         <VisibilityOffIcon />
                       )}
                     </IconButton>
-                  </Box>
+                  </Box> */}
                 </TableCell>
               <TableCell>
-                <Button
+                {/* <Button
                   variant="contained"
                   color="primary"
                   size="small"
                   style={{ marginRight: 8 }}
                 >
                   change password
-                </Button>
+                </Button> */}
                 <IconButton
                 onClick={()=>deleteUser(user._id)}
                 aria-label="delete"
                 color="error"
                 size="small"
+                disabled={currentUser._id ===user._id}
                 sx={{
                   "&:hover": {
                     backgroundColor: "rgba(255, 0, 0, 0.1)",

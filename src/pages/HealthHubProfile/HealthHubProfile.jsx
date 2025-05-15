@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import { isValidEmailOrPhone } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
-const EditReferedCode = ({singlePromoCode}) => {
+const EditReferedCode = ({singlePromoCode,handleClose}) => {
   const {updatePromoCode}=useStoreActions(actions=>actions.promoCode)
   const id=singlePromoCode?._id
   const {
@@ -37,6 +37,7 @@ const EditReferedCode = ({singlePromoCode}) => {
   const onSubmit = (data) => {
     updatePromoCode({id,data})
     reset()
+    handleClose()
   };
 
   return (
@@ -51,10 +52,6 @@ const EditReferedCode = ({singlePromoCode}) => {
         mx: 'auto',
         mt: 4,
         p: 3,
-        border: '1px solid #ccc',
-        borderRadius: 2,
-        boxShadow: 2,
-        backgroundColor: '#fff',
       }}
     >
       <TextField
@@ -86,7 +83,7 @@ const ReferedCode=({singlePromoCode})=>{
                 change refered code
               </Button>
               <OpenModal open={open} handleClose={handleClose}>
-                <EditReferedCode singlePromoCode={singlePromoCode}></EditReferedCode>
+                <EditReferedCode handleClose={handleClose}  singlePromoCode={singlePromoCode}></EditReferedCode>
               </OpenModal>
           </Box>
     )
@@ -433,7 +430,6 @@ const ProfileView = ({ profileData, onEdit,userId}) => {
     phanmacyReg,
     facilities,
     description,
-    country,
     division,
     district,
     upazila,
@@ -451,26 +447,27 @@ const ProfileView = ({ profileData, onEdit,userId}) => {
         {/* Pharmacy Image and Actions */}
         <Grid item xs={12}>
           <Box
-            sx={{
-              position: "relative",
-              width: "100%",
-              height: 300,
-              overflow: "hidden",
-              borderRadius: 2,
-              mb: 2,
-            }}
-          >
-            <img
-              src={pharmacyImage}
-              alt="Pharmacy"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                borderRadius: "8px",
-              }}
-            />
-          </Box>
+  sx={{
+    position: "relative",
+    width: "100%",
+    height: 300,
+    overflow: "hidden",
+    borderRadius: 2,
+    mb: 2,
+  }}
+>
+  <img
+    src={pharmacyImage}
+    alt="Pharmacy"
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "contain", // changed from 'cover' to 'contain'
+      borderRadius: "8px",
+    }}
+  />
+</Box>
+
         </Grid>
 
         {/* Profile Header */}

@@ -67,9 +67,10 @@ const PatientInvoice = () => {
     const {patient}=useStoreState(state=>state.patient)
     const userId=user?._id
     useEffect(()=>{
-        getPatient(userId)
+        getPatient({id:userId})
     },[getPatient,userId])
 
+    console.log()
     if(!patient) return null
 
     return (

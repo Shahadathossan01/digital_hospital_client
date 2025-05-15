@@ -12,16 +12,16 @@ import ClearIcon from '@mui/icons-material/Clear';
 import OpenModal from "../../modal/OpenModal";
 import { checkUpdatedData } from "../../utils";
 const PromoForm = ({handlePromo,update,handleClose,id}) => {
-  const { register, handleSubmit, setValue,reset } = useForm();
+  const { register, handleSubmit, setValue,reset,watch } = useForm();
   const [promoCode, setPromoCode] = useState("");
-  const {error}=useStoreState(state=>state.promoCode)
   const {user}=useStoreState(state=>state.user)
+  const promoCodeWatch = watch("code");
   // Function to generate a random promo code
-  const generatePromoCode = () => {
-    const code = Math.random().toString(36).substring(2, 10).toUpperCase();
-    setPromoCode(code);
-    setValue("code", code); // Set the generated code in the form
-  };
+ const generatePromoCode = () => {
+  const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+  setPromoCode(code);
+  setValue("code", code, { shouldValidate: true });
+};
 
   // Handle form submission
   const onSubmit = (data) => {
@@ -43,23 +43,17 @@ const PromoForm = ({handlePromo,update,handleClose,id}) => {
           <Typography variant="h5" sx={{ mb: 2, textAlign: "center", fontWeight: "bold" }}>
             Create Promo Code
           </Typography>
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
               {/* Promo Code */}
               <Grid item xs={8}>
                 <TextField
-                  fullWidth
-                  label="Promo Code"
-                  value={promoCode}
-                  {...register("code", { required:update?false: true })}
-                  InputProps={{ readOnly: true }}
-                />
+  fullWidth
+  label="Promo Code"
+  {...register("code", { required: !update })}
+  InputLabelProps={{ shrink: Boolean(promoCodeWatch) }} // only shrink when value exists
+/>
               </Grid>
               <Grid item xs={4}>
                 <Button 
@@ -84,8 +78,8 @@ const PromoForm = ({handlePromo,update,handleClose,id}) => {
                 />
               </Grid>
 
-              {/* Expiry Date */}
-              <Grid item xs={12}>
+              
+              {/* <Grid item xs={12}>
                 <TextField
                   fullWidth
                   type="date"
@@ -93,10 +87,10 @@ const PromoForm = ({handlePromo,update,handleClose,id}) => {
                   InputLabelProps={{ shrink: true }}
                   {...register("expiryDate", {  required:update?false: true })}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* Usage Limit */}
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="Usage Limit"
@@ -104,7 +98,7 @@ const PromoForm = ({handlePromo,update,handleClose,id}) => {
                   {...register("usageLimit", {  required:update?false: true })}
                   inputProps={{ min: 1 }}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* Submit Button */}
               <Grid item xs={12}>
@@ -206,21 +200,22 @@ const PromoCodeTable = () => {
         <TableHead>
           <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
             <TableCell sx={{ fontWeight: "bold" }}>No.</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Author</TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>Promo Code</TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>Discount (%)</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Expiry Date</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Usage Limit</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>role</TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {allPromoData.map((item, index) => (
+            console.log(item),
             <TableRow key={index}>
               <TableCell>{index+1}</TableCell>
+              <TableCell>{item.author.role==='admin' ? item?.author?.username : item?.healthHub?.pharmacyName}</TableCell>
               <TableCell>{item.code}</TableCell>
               <TableCell>{item.percentage}%</TableCell>
-              <TableCell>{format(new Date(item.expiryDate),"M/d/yyyy")}</TableCell>
-              <TableCell>{item.usageLimit}</TableCell>
+              <TableCell>{item?.author?.role}</TableCell>
               <TableCell sx={{display:"flex",gap:"2px"}}>
                 <TableAction id={item._id}></TableAction>
               </TableCell>

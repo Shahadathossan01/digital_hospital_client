@@ -405,7 +405,8 @@ const patientModel={
     addPatient:action((state,payload)=>{
         state.patient=payload
     }),
-    getPatient:thunk(async(actions,{id,token})=>{
+    getPatient:thunk(async(actions,{id})=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.get(`${api_base_url}/api/patient/${id}`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -677,7 +678,7 @@ const appointmentModel={
         state.updatedRefPayment=payload
     }),
     updateReferredPayment:thunk(async(actions,{id,referredPayment})=>{
-        
+        const token=localStorage.getItem('token') || null;
         const {data}=await axios.patch(`${api_base_url}/api/appointments/referredPayment/${id}`,{
             referredPayment
         },{
@@ -695,6 +696,7 @@ const applyedAppointmentModel={
         state.deleteData=payload
     }),
     deleteApplyedData:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.delete(`${api_base_url}/api/applyForAppointments/${payload}`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -744,28 +746,34 @@ const adminModel={
     data:null,
     deletedData:null,
     allUserData:[],
-    addUserData:action((state,payload)=>{
+    addAdminData:action((state,payload)=>{
         state.data=payload
     }),
-    addUser:thunk(async(actions,payload)=>{
+    addAdmin:thunk(async(actions,payload)=>{
         const {username,credential,password,role}=payload.data
         try{
-         const {data}=await axios.post(`${api_base_url}/api/register`,{
+         const {data}=await axios.post(`${api_base_url}/api/setupAdmin`,{
              username,
              credential,
              password,
              role,
+            },{
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
             })
-            actions.addUserData(data.user)
-            toast.success("Created New User.",{position:'top-right'})
+            actions.addAdminData(data.user)
+            toast.success(data?.message,{position:'top-right'})
         }catch(e){
          console.log(e)
+         toast.error(e?.response?.data?.message)
         }
      }),
      addAllUserData:action((state,payload)=>{
         state.allUserData=payload
      }),
      getAllUser:thunk(async(actions)=>{
+        const token=localStorage.getItem('token') || null;
         const {data}=await axios.get(`${api_base_url}/api/users`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -803,6 +811,7 @@ const promoCodeModel={
         state.createdPromoData=payload
     }),
     createPromoCode:thunk(async(actions,{data:createData})=>{
+        const token=localStorage.getItem('token') || null
         try{
             const {data}=await axios.post(`${api_base_url}/api/promoCode`,createData,{
                 headers:{
@@ -814,20 +823,27 @@ const promoCodeModel={
             toast.success("Created a New Promo Code",{position:'top-right'})
         }catch(e){
             actions.addError(e?.response?.data?.message)
+            toast.error(e?.response?.data?.message)
         }
     }),
     addAllPromoData:action((state,payload)=>{
         state.allPromoData=payload
     }),
     getAllPromoCode:thunk(async(actions)=>{
-        const {data}=await axios.get(`${api_base_url}/api/promoCodes`,{
+        const token=localStorage.getItem('token') || null
+        try{
+            const {data}=await axios.get(`${api_base_url}/api/promoCodes`,{
             headers:{
                 Authorization: `Bearer ${token}`
             }
         })
         actions.addAllPromoData(data)
+        }catch(e){
+            console.log(e)
+        }
     }),
     getPromoCodeByCode:thunk(async(actions,{code,userId})=>{
+        const token=localStorage.getItem('token') || null
         try{
             const {data}=await axios.post(`${api_base_url}/api/promoCodeValidate`,{code,userId},{
                 headers:{
@@ -846,6 +862,7 @@ const promoCodeModel={
         state.deletedData=payload
     }),
     deletePromoCode:thunk(async(actions,{id})=>{
+        const token=localStorage.getItem('token') || null
         try{
             const {data}=await axios.delete(`${api_base_url}/api/promoCodes/${id}`,{
                 headers:{
@@ -865,6 +882,7 @@ const promoCodeModel={
         state.updatedData=payload
     }),
     updatePromoCode:thunk(async(actions,{id,data:updateData})=>{
+        const token=localStorage.getItem('token') || null
         try{
             const {data}=await axios.patch(`${api_base_url}/api/promoCodes/${id}`,updateData,{
                 headers:{
@@ -885,6 +903,7 @@ const promoCodeModel={
         state.singlePromoCode=payload
     }),
     getSinglePromoCode:thunk(async(actions,{id})=>{
+        const token=localStorage.getItem('token') || null
         const {data}=await axios.get(`${api_base_url}/api/promoCodes/${id}`,{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -1077,6 +1096,7 @@ const healthHubModel={
         }
     }),
     getAllRefAppointments:thunk(async(actions,payload)=>{
+        const token=localStorage.getItem('token') || null
         try{
             const {data}=await axios.get(`${api_base_url}/api/allRefAppointments`,{
                 headers:{

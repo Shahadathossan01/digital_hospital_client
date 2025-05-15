@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import AdminCreateUser from "../AdminCreateUser/AdminCreateUser";
 
-const AddAdminOrPatient = () => {
+const AddAdmin = () => {
     return (
         <Box>
             <AdminCreateUser></AdminCreateUser>
@@ -9,4 +9,4 @@ const AddAdminOrPatient = () => {
     );
 };
 
-export default AddAdminOrPatient;
+export default AddAdmin;

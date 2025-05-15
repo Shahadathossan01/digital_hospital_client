@@ -27,7 +27,6 @@ export default function EditScheduleSlotStatusModal({
     const { time, status } = updatedData;
 
     const formatedTime=time && format(parse(time, "HH:mm", new Date()),"h:mm a")
-    console.log(formatedTime)
     
     if (time || status) {
       updateScheduleSlotStatus({
@@ -69,7 +68,7 @@ export default function EditScheduleSlotStatusModal({
                 select
                 fullWidth
                 label="Status"
-                defaultValue=""
+                defaultValue="available"
                 InputLabelProps={{
                   shrink: true,
                 }}

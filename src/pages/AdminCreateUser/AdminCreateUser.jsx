@@ -7,9 +7,9 @@ import { TextField, Select, MenuItem, Button, Typography, Box, FormControl, Inpu
 
 const AdminCreateUser = () => {
   const { register, handleSubmit, reset } = useForm();
-  const { addUser } = useStoreActions(action => action.admin);
+  const { addAdmin } = useStoreActions(action => action.admin);
   const onSubmit = (data) => {
-    addUser({data});
+    addAdmin({data});
     reset()
   };
 
@@ -49,8 +49,7 @@ const AdminCreateUser = () => {
           />
   <FormControl fullWidth sx={{ marginBottom: 2 }}>
     <InputLabel>Role</InputLabel>
-    <Select {...register("role")}>
-      <MenuItem value="patient">Patient</MenuItem>
+    <Select defaultValue='admin' {...register("role")}>
       <MenuItem value="admin">Admin</MenuItem>
     </Select>
   </FormControl>

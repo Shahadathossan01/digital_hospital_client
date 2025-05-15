@@ -59,8 +59,8 @@ const BlogCard = ({ item }) => {
     );
   };
   
-const BlogList = (allBlogsData) => {
-  
+const BlogList = ({allBlogsData}) => {
+
       return (
         <Box sx={{ flexGrow: 1,marginTop:"10px"}}>
       <Grid
@@ -74,7 +74,7 @@ const BlogList = (allBlogsData) => {
           alignItems: "center", // Center vertically
         }}
       >
-        {allBlogsData.map((item) => (
+        {allBlogsData?.map((item) => (
           <Grid
             item
             xs={12}
@@ -118,7 +118,7 @@ const HomeBlogs = () => {
     getAllBlogs()
   },[getAllBlogs])
 
-  if(allBlogsData.length===0) return null
+  if(allBlogsData?.length===0) return null
      return (
         <Box sx={{marginTop:{xs:"40px",sm:"40px",md:"60px",lg:"80px"}}}>
             <Header></Header>

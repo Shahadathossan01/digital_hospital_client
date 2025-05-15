@@ -30,7 +30,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import AllUsers from "./pages/Users/Users";
 import PromoCode from "./pages/PromoCode/PromoCode";
 import AddDoctor from "./pages/AddDoctor/AddDoctor";
-import AddAdminOrPatient from "./pages/AddAdminOrPatient/AddAdminOrPatient";
+import AddAdmin from "./pages/AddAdmin/AddAdmin";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import UpdatedAdminDashboard from "./pages/UpdatedAdminDashboard/UpdatedAdminDashboard";
 import GetInstantVideo from "./pages/GetInstantVideo/GetInstantVideo";
@@ -137,9 +137,9 @@ function App() {
               <Route path="/" element={<PrivateRoute><UpdatedAdminDashboard/></PrivateRoute>}/>
               <Route path="allUsers" element={<PrivateRoute><AllUsers/></PrivateRoute>}/>
               <Route path="promoCode" element={<PrivateRoute><PromoCode/></PrivateRoute>}/>
-              <Route path="addDoctor" element={<PrivateRoute><AddDoctor/></PrivateRoute>}/>
+              {/* <Route path="addDoctor" element={<PrivateRoute><AddDoctor/></PrivateRoute>}/> */}
               {/* <Route path="changePassword" element={<PrivateRoute><ChangePassword /></PrivateRoute>}/> */}
-              <Route path="addAdminOrPatient" element={<PrivateRoute><AddAdminOrPatient/></PrivateRoute>}/>
+              <Route path="addAdmin" element={<PrivateRoute><AddAdmin/></PrivateRoute>}/>
               <Route path="adminInvoice" element={<PrivateRoute><AdminInvoice/></PrivateRoute>}/>
               <Route path="refAllAppointments" element={<PrivateRoute><RefAllAppointments/></PrivateRoute>}/>
               <Route path="adminBlogs" element={<PrivateRoute><AdminBlogs/></PrivateRoute>}/>

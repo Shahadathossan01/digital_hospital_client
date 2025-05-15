@@ -11,7 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import { format } from "date-fns";
 
 const columns = [
-  "No","Patient Name","CreatedAt","TransactionId","Schedule Date","Slot","Fee"
+  "No","Author","CreatedAt","TransactionId","Schedule Date","Slot","Fee"
 ];
 
 

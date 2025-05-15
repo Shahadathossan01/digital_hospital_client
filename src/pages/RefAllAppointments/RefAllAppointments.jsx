@@ -11,7 +11,7 @@ import { format } from "date-fns";
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 const columns = [
-  "No","Author","CreatedAt","TransactionId","Schedule Date&Slot","Fee","Ref. Payment","Payment Status"
+  "No","CreatedAt","Pharmacy","Pharmacy Reg.","TransactionId","Date&Slot","Fee","Ref. Payment","Payment Num.","Contact","Payment Status"
 ];
 
 const InvoiceTable=({appointments})=>{
@@ -50,19 +50,23 @@ const InvoiceTable=({appointments})=>{
               ):(
                 appointments
               .map((item,index) =>(
+              console.log(item),
                 <TableRow key={item?._id}>
+
                     <TableCell>{index+1}</TableCell>
-                    <TableCell>
-                        {item?.patient?
-                            'Patient'
-                        
-                        :
-                            'HealthHub'
-                        }
-                    </TableCell>
+
                     <TableCell>
                       {format(new Date(item?.createdAt),"M/d/yyyy")}
                     </TableCell>
+
+                    <TableCell>
+                      {item?.referenceHealhtHubID?.pharmacyName}
+                    </TableCell>
+
+                    <TableCell>
+                      {item?.referenceHealhtHubID?.phanmacyReg}
+                    </TableCell>
+
                     <TableCell>
                     {item?.transactionId
                     ? (user.role === 'healthHub'
@@ -70,24 +74,29 @@ const InvoiceTable=({appointments})=>{
                         : item.transactionId)
                     : "N/A free appointment"} 
                     </TableCell>
+
                     <TableCell>
                       {format(new Date(item?.date),"M/d/yyyy")}<br></br>
                       {item?.time}
-
                     </TableCell>
+
                     <TableCell>{item?.totalFee}</TableCell>
+
                     <TableCell>
                       <Box sx={{display:'flex',justifyContent:'center',alignItems:'center',gap:'10px'}}>
                           <Typography>20%: {item?.totalFee * 0.2}</Typography>
-                          {/* {
-                            item?.referredPayment?(
-                              <PriceCheckIcon color="success"></PriceCheckIcon>
-                            ):(
-                              <CurrencyExchangeIcon color="disabled"></CurrencyExchangeIcon>
-                            )
-                          } */}
                       </Box>
                     </TableCell>
+
+                      <TableCell>
+                          {item?.referenceHealhtHubID?.payment.service}<br></br>
+                          {item?.referenceHealhtHubID?.payment.number}
+                      </TableCell>
+
+                      <TableCell>
+                        {item?.referenceHealhtHubID?.phone}
+                      </TableCell>
+
                     <TableCell>
                     {
                       item?.referredPayment ? (
