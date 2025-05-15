@@ -524,19 +524,18 @@ const Navbar=()=>{
 
             {
               user?
-              <NavLink to="/about_us" style={{textDecoration:'none'}} >
-                {({ isActive }) => (
+              
                   <Button
+                    onClick={()=>logoutUser()}
                     size="small"
                     sx={{
                       my: 2, color: 'white', display: 'block',
-                      ...(isActive && activeStyle),
+                 
                     }}
                   >
                     Logout
                   </Button>
-                )}
-              </NavLink>
+            
               
 
               // <Link onClick={handleLogout} style={{textDecoration:'none'}}><Button size='small' sx={{ my: 2, color: 'white', display: 'block' }}>Logout</Button></Link>

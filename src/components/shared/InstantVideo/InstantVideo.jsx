@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
+import { Link } from "react-router-dom";
 const Header = () => {
     return (
       <Box sx={{ textAlign: 'center',mb:5}}>
@@ -55,7 +56,8 @@ const InstantVideo = () => {
         <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2, textAlign: "center",color:"white" }}>
           Consult with Doctors For Only TK 100!
         </Typography>
-        <Button
+        <Link to='findDoctors' style={{textDecoration:'none'}}>
+          <Button
           variant="contained"
           color="secondary"
           sx={{
@@ -66,6 +68,7 @@ const InstantVideo = () => {
         >
           Live Consultation Now
         </Button>
+        </Link>
       </Grid>
     </Grid>
         </Box>

@@ -132,10 +132,10 @@ const AboutUs = () => {
 
       <SectionTitle title="Our Address" />
       <Typography variant="body1" paragraph align="center">
-        Savar, Dhaka, Bangladesh | Sureline Private Company Ltd.
+        Basar house, Polashbari, Savar, Dhaka, Bangladesh | Sureline Private Company Ltd.
       </Typography>
       <Typography variant="body2" align="center">
-        Trade License Number: <strong>TRAD/DNCC/085514/2024</strong>
+        Trade License Number: <strong>033003</strong>
       </Typography>
     </Container>
   );
