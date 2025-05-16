@@ -17,7 +17,7 @@ const Main = () => {
             </Box>
 
             {/* Content should take up remaining space */}
-            <Box>
+            <Box sx={{mt:8}}>
                 <Outlet />
             </Box>
 

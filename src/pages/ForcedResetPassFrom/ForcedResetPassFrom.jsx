@@ -14,7 +14,6 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 
 const ForcedResetPassFrom = ({handleClose,id}) => {
     const {forceResetPassword}=useStoreActions(actions=>actions.admin)
-
     const navigate=useNavigate()
 
     const {
@@ -22,10 +21,12 @@ const ForcedResetPassFrom = ({handleClose,id}) => {
     handleSubmit,
     watch,
     formState: { errors },
+    reset
   } = useForm();
 
   const onSubmit =({password}) => {
     forceResetPassword({id,password,navigate})
+    reset()
     handleClose()
   };
 

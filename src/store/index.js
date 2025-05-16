@@ -104,6 +104,7 @@ const userModel={
         localStorage.removeItem("token")
         localStorage.removeItem("user")
         actions.addLogoutData()
+        toast.success('Logout Successful.')
     }),
     addAllUsers:action((state,payload)=>{
         state.allUsers=payload
@@ -838,7 +839,6 @@ const adminModel={
 
      completeForcedReset:thunk(async(actions,{password,credential,navigate,from})=>{
          const token=localStorage.getItem('token') || null
-         console.log(password,credential,token)
         try{
             const {data}=await axios.patch(`${api_base_url}/api/users/completeForcedReset`,{
                 credential,

@@ -1,7 +1,18 @@
 import { TextField, InputAdornment, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useState } from "react";
 
 const SearchDoctor = () => {
+  const [open, setOpen] = useState(false);
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+
   return (
     <Box
       sx={{
@@ -14,7 +25,8 @@ const SearchDoctor = () => {
         borderRadius:"20px"
        }}
         variant="outlined"
-        fullWidth 
+        fullWidth
+        onClick={handleClickOpen}
         placeholder="Search doctor by name"
         InputProps={{
           startAdornment: (

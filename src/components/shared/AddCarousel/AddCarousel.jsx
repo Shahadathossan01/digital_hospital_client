@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 
-const ImageCarousel = () => {
+const AddCarousel = () => {
   const settings = {
     dots: true,
     infinite: true,
@@ -31,9 +31,8 @@ const ImageCarousel = () => {
   };
 
   const images = [
-    "https://res.cloudinary.com/dmel68anu/image/upload/v1739467963/syhrycaeg1sbkubwq8xv.jpg",
-    "http://res.cloudinary.com/dmel68anu/image/upload/v1739551136/vmrxrcdajyzzpdreid0p.png",
-    "https://res.cloudinary.com/dcinvxm2u/image/upload/v1747399527/2_fybggc.jpg"
+    "https://res.cloudinary.com/dcinvxm2u/image/upload/v1747399526/1_h27mva.jpg",
+    "https://res.cloudinary.com/dcinvxm2u/image/upload/v1747399526/1_h27mva.jpg",
   ];
 
   return (
@@ -67,4 +66,4 @@ const ImageCarousel = () => {
   );
 };
 
-export default ImageCarousel;
+export default AddCarousel;

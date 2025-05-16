@@ -11,12 +11,13 @@ import SearchDoctor from "../../components/shared/SearchDoctor/SearchDoctor";
 import Services from "../../components/shared/Services/Services";
 import HowItWorks from "../../components/shared/HowItworks/HowItWorks";
 import WhyChooseUs from "../../components/shared/WhyChooseUs/WhyChooseUs";
+import AddCarousel from "../../components/shared/AddCarousel/AddCarousel";
 
 const Home = () => {
     
     return (
         <>
-            <SearchDoctor></SearchDoctor>
+            {/* <SearchDoctor></SearchDoctor> */}
             <ImageCarousel></ImageCarousel>
             <Services></Services>
             <HealthConcerns></HealthConcerns>
@@ -25,6 +26,7 @@ const Home = () => {
             <AmbulanceService></AmbulanceService>
             <BloodBankService></BloodBankService>
             <HomeBlogs></HomeBlogs>
+            <AddCarousel></AddCarousel>
             <HowItWorks></HowItWorks>
             <WhyChooseUs></WhyChooseUs>
             <FrequentlyAsked></FrequentlyAsked>

@@ -19,6 +19,7 @@ import ForcedResetPassFrom from "../../../pages/ForcedResetPassFrom/ForcedResetP
 
 
 const UserTable = ({ users }) => {
+   const [selectedUserId, setSelectedUserId] = useState(null);
     const [open,setOpen]=useState(false)
     const {deleteUser}=useStoreActions(action=>action.admin)
     const [visibility, setVisibility] = useState({});
@@ -31,9 +32,11 @@ const UserTable = ({ users }) => {
     };
 
     const handleClose=()=>{
+      setSelectedUserId(null)
       setOpen(false)
     }
-    const handleClickOpen=()=>{
+    const handleClickOpen=(userId)=>{
+      setSelectedUserId(userId)
       setOpen(true)
     }
   return (
@@ -100,7 +103,7 @@ const UserTable = ({ users }) => {
                 </TableCell>
               <TableCell>
                 <Button
-                  onClick={()=>{handleClickOpen()}}
+                  onClick={()=>{handleClickOpen(user?._id)}}
                   variant="contained"
                   color="primary"
                   size="small"
@@ -109,7 +112,7 @@ const UserTable = ({ users }) => {
                   Force Password Rest
                 </Button>
                 <OpenModal open={open} handleClose={handleClose}>
-                    <ForcedResetPassFrom id={user?._id} handleClose={handleClose}></ForcedResetPassFrom>
+                    <ForcedResetPassFrom id={selectedUserId} handleClose={handleClose}></ForcedResetPassFrom>
                 </OpenModal>
                 <IconButton
                 onClick={()=>deleteUser(user._id)}
