@@ -9,6 +9,7 @@ const Success = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Check if the screen is small
   const { transactionId } = useParams();
+  console.log('check success page',transactionId)
   const { getAppointments } = useStoreActions((actions) => actions.appointment);
   const { appointments } = useStoreState((state) => state.appointment);
 

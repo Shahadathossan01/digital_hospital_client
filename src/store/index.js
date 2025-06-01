@@ -26,6 +26,7 @@ const userModel={
         state.registerError=payload
     }),
     registerUser:thunk(async(actions,{formData,navigate,credential})=>{
+        console.log(formData)
        try{
         const {data}=await axios.post(`${api_base_url}/api/register`,formData,{headers:{"Content-Type":"multipart/form-data"}})
            toast.success(data.message,{position:'top-right'})

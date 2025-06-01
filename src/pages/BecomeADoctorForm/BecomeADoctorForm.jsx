@@ -75,7 +75,9 @@ const BecomeADoctorForm = () => {
   const [times, setTimes] = useState([]);
   const date = new Date();
   const totalMonthDays = getTotalDaysInMonth(date);
+  console.log(totalMonthDays)
   const schedule = createSchedule(totalMonthDays, times);
+  console.log(schedule.length)
 
   const errorMessage = registerError?.message;
     const errorField = registerError?.field;

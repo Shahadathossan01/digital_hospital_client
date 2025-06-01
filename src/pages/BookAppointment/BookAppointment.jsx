@@ -111,8 +111,9 @@ const areMonthsEqual=isEqual(month1,month2)
       height:data.height,
       weight:data.weight
     };
-    resetPromoCode()
     // console.log(payload)
+    resetPromoCode()
+    // // console.log(payload)
     navigate("/paymentPage",{state:payload})
     
   }
